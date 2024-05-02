@@ -4,6 +4,7 @@
 #include "structs.h"
 
 int numUsersList = 0;
+char Tecla_entrada[1];
 
 void imprimirDatos(FILE* buffer){
     char c;
@@ -153,6 +154,39 @@ void verUsers(User_t** users){
             users++;
     }
 }
+
+
+void login_menu(){
+    printf("¿Tiene cuenta? S/N \n");
+    scanf("%s", Tecla_entrada);
+    if (Tecla_entrada == "S" || "s"){
+        printf("Ingrese nombre:");
+        //Pide los datos, aun no esta listo
+    }
+    if (Tecla_entrada == "N" || "n")
+    {
+        printf("Lo llevaremos a crear una cuenta, sera solo un momento");
+        //Aqui lo llevaria a la funcion de registro
+    }
+    else
+    {
+        printf("Caracter invalido, intente de nuevo \n");
+    }
+    
+    
+}
+
+void main_menu(){
+    printf("=================================\n");
+    printf("======SALVEN A LAS TORTUGAS======\n");
+    printf("=================================\n");
+    printf("PULSE CUALQUIER TECLA PARA ENTRAR \n");
+    scanf("%s", Tecla_entrada);
+    if (Tecla_entrada != NULL){
+        (login_menu());
+    }
+}
+
 
 int main (){
     numUsersList = contarUsers();
