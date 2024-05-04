@@ -21,9 +21,9 @@ int page = 0;
 
 void wait(int time){
     #ifdef _WIN32
-        Sleep(time*1000);
+        Sleep(time);
     #else
-        sleep(time);
+        sleep(time/1000);
     #endif
 }
 
@@ -38,26 +38,34 @@ void userInput(){
 }
 
 void startAnimation(){
-    for (int i = 0; i < 3; i++){
-        borrarPantalla();
-        printf(f_GREEN);
-        recuadro(0, 0, 120, 36);
-        printf(s_RESET_ALL);
-        
-        imgArbolBuho1(2, 13, f_LGREEN);
-        wait(2);
-        imgArbolBuho2(2, 13, f_LGREEN); 
-        wait(1);
-    }
+    borrarPantalla();
+    printf(f_GREEN);
+    recuadro(0, 0, 120, 36);
+    printf(s_RESET_ALL);
+    imgArbolFondoMain(2, 13, f_LGREEN);
+    imgBuho3(33, 17, f_LBLUE);
+    wait(500);
+
+    imgBuho2(33, 17, f_LBLUE);
+    wait(500);
+
+    imgBuho3(33, 17, f_LBLUE);
+    wait(500);
+
 }
 
 void menu_main(){
-    imgTextPrincipal(2, 2, f_LMAGENTA);
-    gotoxy(1,12); printf(f_LBLUE "Secundario Azul" s_RESET_ALL);
+    static int firtsTime = 1;
+    if (firtsTime){
+        gotoxy(1,12); printf(f_LBLUE "Secundario Azul" s_RESET_ALL);
 
-    imgArbolBuho1(2, 13, f_LGREEN);
+        imgArbolFondoMain(2, 13, f_LGREEN);
+        imgBuho1(33, 17, f_LBLUE);
+        firtsTime = 0;
+    }
+    imgTextPrincipal(2, 2, f_RED);
 
-    gotoxy(19,30);
+    gotoxy(2,2);
     userInput();
     if(input == '1'){
         page = 1;
@@ -119,10 +127,6 @@ int main (){
     startAnimation();
     while (1)
     {   
-        borrarPantalla();
-        printf(f_GREEN);
-        recuadro(0, 0, 120, 36);
-        printf(s_RESET_ALL);
 
         if (page == 0) menu_main();
         if (page == 1) menu_login();

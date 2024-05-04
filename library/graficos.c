@@ -30,6 +30,13 @@ void gotoxy(int x, int y){
     dwPos.Y = y;
     SetConsoleCursorPosition(hcon, dwPos);
 }
+void ocultarCursor(){
+    printf("\e[?25l");
+}
+
+void mostrarCursor() {
+    printf("\e[?25h");
+}
 void setConsoleColor(char bg, char fg){
     char cmd[30];
     sprintf(cmd, "color %c%c", bg, fg);
@@ -57,14 +64,6 @@ void circunferencia(int x, int y, int xr, int yr, char sprite){
 
 #else
 #define CLEAR "clear"
-
-void ocultarCursor(){
-    printf("\e[?25l");
-}
-
-void mostrarCursor() {
-    printf("\e[?25h");
-}
 /*
     Mueve el Cursor a una posicion especifica LINUX
 */
