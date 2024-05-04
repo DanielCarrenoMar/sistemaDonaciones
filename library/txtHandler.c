@@ -3,30 +3,28 @@
 #include <string.h>
 #include "structs.h"
 
-int countDonations(){
+void makeTXT(char* file_name){
     FILE *file;
-    char c;
-    int count = 1;
-    if ((file = fopen("./data/DONATIONS.txt", "r"))) {
-        while ((c = fgetc(file)) != EOF)
-            if (c == '\n') count++;
-    }else {
-        printf("El archivo no existe.\n");
-        return 0;
+    if (file = fopen(file_name, "r")){
+        fclose(file);
+    }else{
+        file = fopen(file_name, "w");
+        fclose(file);
     }
-    return count;
 }
-int countUsers(){
+
+int countLines(char* file_name){
     FILE *file;
     char c;
-    int count = 1;
-    if ((file = fopen("./data/USERS.txt", "r"))) {
+    int count = 0;
+    if (file = fopen(file_name, "r")) {
         while ((c = fgetc(file)) != EOF)
             if (c == '\n') count++;
     }else {
         printf("El archivo no existe.\n");
         return 0;
     }
+    if (count > 0) count++;
     return count;
 }
 
@@ -64,6 +62,8 @@ void cargarDonations(Donation_t** users, char* file_name){
             *users++;
         }
         fclose(file);
+    }else {
+        printf("El archivo no existe.\n");
     }
 }
 
@@ -101,10 +101,16 @@ void cargarUsers(User_t** users, char* file_name){
             *users++;
         }
         fclose(file);
+    }else {
+        printf("El archivo no existe.\n");
     }
 }
 
 void verDonations(Donation_t** users){
+    if(*users == NULL){
+        printf("No hay donaciones\n");
+        return;
+    }
     printf("-----\n");
     while (*users != NULL){
         printf("Cedula: %s\n", (*users)->cedula);
@@ -118,6 +124,10 @@ void verDonations(Donation_t** users){
 }
 
 void verUsers(User_t** users){
+    if(*users == NULL){
+        printf("No hay usuarios\n");
+        return;
+    }
     printf("-----\n");
     while (*users != NULL){
         printf("Nombre: %s\n", (*users)->nombre);

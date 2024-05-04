@@ -15,6 +15,9 @@ int isWindows10orGreater() {
 }
 
 void just_fix_windows_console() {
+
+    #ifdef _WIN32
+
     if (!isWindows10orGreater()) {
         printf("Colorma no funcion para versiones inferiores Windows 10\n");
         exit(1);
@@ -34,4 +37,7 @@ void just_fix_windows_console() {
     if (!SetConsoleMode(hConsole, consoleMode)) {
         return;
     }
+
+    #endif
+    return;
 }

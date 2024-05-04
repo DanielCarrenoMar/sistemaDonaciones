@@ -1,59 +1,75 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "./library/txtHandler.h"
 
-int numDonationsList = 0;
-int numUsersList = 0;
-char Tecla_entrada[1];
+#include "./library/txtHandler.h"
+#include "./library/colorama.h"
+#include "./library/graficos.h"
+#include "./library/screens.h"
+
+char key;
+
+// Paleta de colores
+// Resalte f_RED #AB0000
+// Secundarios f_BLUE f_LBLUE #0000AC #5354FC
+// Principal f_GREEN #00AB00
+
+void main_menu(){
+    imgTextPrincipal(2, 2, f_LMAGENTA);
+    gotoxy(2,12); printf(f_LBLUE "Secundario Azul" s_RESET_ALL);
+
+    imageGato(44, 1, f_BLUE);
+    imgArbolBuho1(1, 13, f_LGREEN);
+    Sleep(1500);
+    imgArbolBuho2(1, 13, f_LGREEN);
+    Sleep(500);
+}
+
+void login_menu(){
+    
+}
 
 int main (){
-    numDonationsList = countDonations();
-    numUsersList = countUsers();
+    just_fix_windows_console();
+
+    makeTXT("./data/DONATIONS.txt");
+    makeTXT("./data/USERS.txt");
+    int numDonationsList = countLines("./data/DONATIONS.txt");
+    int numUsersList = countLines("./data/USERS.txt");
     Donation_t** DonationList = (Donation_t**)malloc(numDonationsList * sizeof(Donation_t*));
     User_t** UsersList = (User_t**)malloc(numUsersList * sizeof(User_t*));
+    if (numDonationsList != 0 || numUsersList != 0){
+        cargarDonations(DonationList, "./data/DONATIONS.txt");
+        cargarUsers(UsersList, "./data/USERS.txt");
 
-    cargarDonations(DonationList, "./data/DONATIONS.txt");
-    cargarUsers(UsersList, "./data/USERS.txt");
+        verDonations(DonationList);
+        verUsers(UsersList);
+    }
 
-    verDonations(DonationList);
-    verUsers(UsersList);
+    int page = 0;
+    printf(f_GREEN);
+    borrarPantalla();
+    recuadro(0, 0, 120, 36);
+    printf(s_RESET_ALL);
+
+    imgTextPrincipal(2, 2, f_LMAGENTA);
+    gotoxy(2,12); printf(f_LBLUE "Secundario Azul" s_RESET_ALL);
+
+    while (1)
+    {   
+        key = getch();
+
+        imageGato(44, 1, f_BLUE);
+        imgArbolBuho1(1, 13, f_LGREEN);
+        Sleep(1500);
+        imgArbolBuho2(1, 13, f_LGREEN);
+        Sleep(500);
+
+        if (key == 'q')break;
+    }
 
     freeDonation(DonationList);
     freeUsers(UsersList);
-
-
+    printf(s_RESET_ALL);
     return 0;
-}
-
-
-void login_menu(){
-    printf("¿Tiene cuenta? S/N \n");
-    scanf("%s", Tecla_entrada);
-    if (Tecla_entrada == "S" || "s"){
-        printf("Ingrese nombre:");
-        //Pide los datos, aun no esta listo
-    }
-    if (Tecla_entrada == "N" || "n")
-    {
-        printf("Lo llevaremos a crear una cuenta, sera solo un momento");
-        //Aqui lo llevaria a la funcion de registro
-    }
-    else
-    {
-        printf("Caracter invalido, intente de nuevo \n");
-    }
-    
-    
-}
-
-void main_menu(){
-    printf("=================================\n");
-    printf("======SALVEN A LAS TORTUGAS======\n");
-    printf("=================================\n");
-    printf("PULSE CUALQUIER TECLA PARA ENTRAR \n");
-    scanf("%s", Tecla_entrada);
-    if (Tecla_entrada != NULL){
-        (login_menu());
-    }
 }
