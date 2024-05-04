@@ -27,12 +27,4 @@ typedef struct ActDonation
     struct ActDonation* next;
 }ActDonation_t;
 
-typedef struct ActUser
-{
-    char nombre[20];
-    int cedula;
-    int telefono;
-    char direccion[20];
-}ActUser_t;
-
 #endif

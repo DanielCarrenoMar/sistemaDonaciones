@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef _WIN32
 #include <windows.h>
 
 int isWindows10orGreater() {
@@ -13,31 +14,26 @@ int isWindows10orGreater() {
 
     return VerifyVersionInfo(&info, VER_MAJORVERSION, mask);
 }
+#endif
 
 void just_fix_windows_console() {
-
     #ifdef _WIN32
 
     if (!isWindows10orGreater()) {
         printf("Colorma no funcion para versiones inferiores Windows 10\n");
         exit(1);
     }
-
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     if (hConsole == INVALID_HANDLE_VALUE) {
         return;
     }
-
     DWORD consoleMode;
     if (!GetConsoleMode(hConsole, &consoleMode)) {
         return;
     }
-
     consoleMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
     if (!SetConsoleMode(hConsole, consoleMode)) {
         return;
     }
-
     #endif
-    return;
 }

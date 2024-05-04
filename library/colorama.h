@@ -1,9 +1,8 @@
 #ifndef _COLORAMA_H_
 #define _COLORAMA_H_
 
-
 void just_fix_windows_console();
-#include "Colorama.c"
+#include "colorama.c"
 
 #define s_RESET_ALL "\x1b[0m"
 #define s_BRIGHT    "\x1b[1m"

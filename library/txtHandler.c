@@ -28,6 +28,18 @@ int countLines(char* file_name){
     return count;
 }
 
+void saveUser(User_t* user, char* file_name){
+    FILE *file;
+    if (file = fopen(file_name, "a")) {
+        fprintf(file, "%s %s %s %s\n", user->nombre, user->cedula, user->telefono, user->direccion);
+        fclose(file);
+    }else {
+        printf("El archivo no existe.\n");
+    }
+}
+void saveDonation(){
+
+}
 void cargarDonations(Donation_t** users, char* file_name){
     FILE *file;
     char line[1028];
@@ -66,7 +78,6 @@ void cargarDonations(Donation_t** users, char* file_name){
         printf("El archivo no existe.\n");
     }
 }
-
 void cargarUsers(User_t** users, char* file_name){
     FILE *file;
     char line[1028];
