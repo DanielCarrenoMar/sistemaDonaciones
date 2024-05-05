@@ -18,7 +18,7 @@
 // Principal f_GREEN #00AB00
 
 char inputMenu;
-int pageIndex = 1;
+int pageIndex = 0;
 
 void wait(int time){
     #ifdef _WIN32
@@ -37,9 +37,10 @@ void layer_global(){
 
 void userInputMenu(int x, int y){
     char num[10];
-    gotoxy(x,y);
     printf(f_LRED);
-
+    gotoxy(x-3, y); printf("->");
+    printf(f_LBLUE);
+    gotoxy(x,y);
     fgets(num, 10, stdin);
     if (num[0] >= '0' && num[0] <= '9'){
         inputMenu = num[0];
@@ -102,11 +103,10 @@ void layer_main(){
     printf(f_LRED);
     gotoxy(58, 18); printf("1. Iniciar");
     gotoxy(58, 19); printf("0. Salir");
-    gotoxy(77, 18); printf("->");
     printf(s_RESET_ALL);
 
-    cuadrado(80, 18, 40, 2, ' ');
     userInputMenu(80,18);
+    cuadrado(80, 18, 40, 2, ' ');
     
     if(inputMenu == '1'){
         transition();
@@ -119,10 +119,9 @@ void layer_login(User_t* actualUser){
     if (firtsTime){
         borrarPantalla();
         layer_global();
-        firtsTime = 0;
-        printf(f_LRED);
-        gotoxy(55, 11); printf("1. Nombre");
-        gotoxy(55, 17); printf("2. Cedula");
+        
+        gotoxy(55, 11); printf(f_LRED); printf("1."); printf(f_LBLUE); printf(" Nombre");
+        gotoxy(55, 17); printf(f_LRED); printf("2. Cedula");
         gotoxy(55, 23); printf("3. Registarse");
         gotoxy(55, 25); printf("4. INICIAR");
         gotoxy(55, 27); printf("0. Salir");
@@ -130,46 +129,36 @@ void layer_login(User_t* actualUser){
         gotoxy(53, 25); printf("~");
         gotoxy(66, 25); printf("~");
         imgTextLogin(45, 2, f_LBLUE);
+        firtsTime = 0;
     }
 
-    printf(f_LBLUE);
+    printf(f_LGREEN);
     recuadro(40, 12, 40, 3);
     recuadro(40, 18, 40, 3);
     printf(s_RESET_ALL);
 
-    printf(f_LRED);
-    gotoxy(52, 29); printf("->");
-    printf(s_RESET_ALL);
     userInputMenu(55,29);
     cuadrado(52, 29, 40, 2, ' ');
     
     char nombre[20];
     char cedula[20];
     if(inputMenu == '1'){
-        printf(f_LRED);
-        gotoxy(41, 13); printf("->");
-        printf(f_LBLUE);
-        gotoxy(43, 13); fgets(nombre, 20, stdin);
-        gotoxy(41, 13); printf("  ");
-        printf(s_RESET_ALL);
+        userInputStr(41,13, nombre);
         inputMenu = 'n';
     }
     if(inputMenu == '2'){
-        printf(f_LRED);
-        gotoxy(41, 19); printf("->");
-        printf(f_LBLUE);
-        gotoxy(43, 19); fgets(cedula, 20, stdin);
-        gotoxy(41, 19); printf("  ");
-        printf(s_RESET_ALL);
+        userInputStr(41,19, cedula);
         inputMenu = 'n';
     }
     if(inputMenu == '3'){
         transition();
         pageIndex = 2;
+        firtsTime = 1;
     }
     if(inputMenu == '4'){
         transition();
         pageIndex = 3;
+        firtsTime = 1;
     }
 }
 
@@ -193,15 +182,11 @@ void layer_register(User_t* actualUser){
         imgTextRegister(40, 2, f_LBLUE);
         firtsTime = 0;
     }
-    printf(f_LBLUE);
+    printf(f_LGREEN);
     recuadro(13, 12, 40, 3);
     recuadro(13, 18, 40, 3);
     recuadro(68, 12, 40, 3);
     recuadro(68, 18, 40, 3);
-    printf(s_RESET_ALL);
-
-    printf(f_LRED);
-    gotoxy(52, 29); printf("->");
     printf(s_RESET_ALL);
 
     userInputMenu(55,29);
@@ -226,18 +211,20 @@ void layer_register(User_t* actualUser){
     if(inputMenu == '5'){
         transition();
         pageIndex = 1;
+        firtsTime = 1;
     }
     if(inputMenu == '6'){
         if(strlen(actualUser->nombre) != 0 && strlen(actualUser->cedula) != 0 && strlen(actualUser->telefono) != 0 && strlen(actualUser->direccion) != 0){
             transition();
             saveUser(actualUser, "./data/USERS.txt");
             pageIndex = 3;
+            firtsTime = 1;
         }
     }
 }
 
 void layer_options(){
-        static int firtsTime = 1;
+    static int firtsTime = 1;
     if (firtsTime){
         borrarPantalla();
         layer_global();
@@ -251,8 +238,8 @@ void layer_options(){
     gotoxy(77, 18); printf("->");
     printf(s_RESET_ALL);
 
-    cuadrado(80, 18, 40, 2, ' ');
-    userInputMenu(80,18);
+    userInputMenu(55,29);
+    cuadrado(52, 29, 40, 2, ' ');
     
     if(inputMenu == '1'){
         pageIndex = 2;
