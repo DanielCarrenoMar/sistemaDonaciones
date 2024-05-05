@@ -132,7 +132,7 @@ int main (){
     borrarPantalla();
     printf(f_GREEN);
     recuadro(0, 0, 120, 36);
-    gotoxy(1,1); printf("Daniel Carreno | Jose Pereira | Juan Roma");
+    gotoxy(1,1); printf("Daniel Carreno | Jose Pereira | Juan Salazar");
     printf(s_RESET_ALL);
     imgArbolFondoMain(2, 13, f_LGREEN);
     //startAnimation();
