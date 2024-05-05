@@ -18,7 +18,7 @@
 // Principal f_GREEN #00AB00
 
 char input;
-int page = 2;
+int page = 1;
 
 void wait(int time){
     #ifdef _WIN32
@@ -35,7 +35,7 @@ void globalLayer(){
     printf(s_RESET_ALL);
 }
 
-void userInput(int x, int y){
+void userInputMenu(int x, int y){
     char num[10];
     gotoxy(x,y);
     printf(f_LRED);
@@ -46,6 +46,16 @@ void userInput(int x, int y){
     }
     printf(s_RESET_ALL);
 }
+
+void userInputStr(int x, int y, char* buffer){
+    printf(f_LRED);
+    gotoxy(x, y); printf("->");
+    printf(f_LBLUE);
+    gotoxy(x+2, y); fgets(buffer, 20, stdin);
+    gotoxy(x, y); printf("  ");
+    printf(s_RESET_ALL);
+}
+
 
 void startAnimation(){
     imgBuho3(33, 17, f_LBLUE);
@@ -97,7 +107,7 @@ void menu_main(){
     printf(s_RESET_ALL);
 
     cuadrado(80, 18, 40, 2, ' ');
-    userInput(80,18);
+    userInputMenu(80,18);
     
     if(input == '1'){
         transition();
@@ -105,38 +115,42 @@ void menu_main(){
     }
 }
 
-void menu_login(){
+void menu_login(User_t* actUser){
     static int firtsTime = 1;
     if (firtsTime){
         borrarPantalla();
         globalLayer();
         firtsTime = 0;
+        printf(f_LRED);
+        gotoxy(55, 11); printf("1. Nombre");
+        gotoxy(55, 17); printf("2. Cedula");
+        gotoxy(55, 23); printf("3. Registarse");
+        gotoxy(55, 25); printf("4. INICIAR");
+        gotoxy(55, 27); printf("0. Salir");
+        printf(f_LGREEN);
+        gotoxy(53, 25); printf("~");
+        gotoxy(66, 25); printf("~");
+        imgTextLogin(45, 2, f_LBLUE);
     }
-    imgTextLogin(45, 2, f_LBLUE);
 
-    printf(f_LRED);
-    gotoxy(55, 11); printf("1. Nombre");
-    gotoxy(55, 17); printf("2. Cedula");
-    gotoxy(55, 23); printf("3. Registarse");
-    gotoxy(55, 25); printf("0. Salir");
-    printf(f_LGREEN);
+    printf(f_LBLUE);
     recuadro(40, 12, 40, 3);
     recuadro(40, 18, 40, 3);
     printf(s_RESET_ALL);
 
     printf(f_LRED);
-    gotoxy(52, 27); printf("->");
+    gotoxy(52, 29); printf("->");
     printf(s_RESET_ALL);
-
-    userInput(55,27);
-    cuadrado(52, 27, 40, 2, ' ');
+    userInputMenu(55,29);
+    cuadrado(52, 29, 40, 2, ' ');
     
-    char num[20];
+    char nombre[20];
+    char cedula[20];
     if(input == '1'){
         printf(f_LRED);
         gotoxy(41, 13); printf("->");
         printf(f_LBLUE);
-        gotoxy(43, 13); fgets(num, 20, stdin);
+        gotoxy(43, 13); fgets(nombre, 20, stdin);
         gotoxy(41, 13); printf("  ");
         printf(s_RESET_ALL);
         input = 'n';
@@ -145,7 +159,7 @@ void menu_login(){
         printf(f_LRED);
         gotoxy(41, 19); printf("->");
         printf(f_LBLUE);
-        gotoxy(43, 19); fgets(num, 20, stdin);
+        gotoxy(43, 19); fgets(cedula, 20, stdin);
         gotoxy(41, 19); printf("  ");
         printf(s_RESET_ALL);
         input = 'n';
@@ -154,10 +168,77 @@ void menu_login(){
         transition();
         page = 2;
     }
+    if(input == '4'){
+        transition();
+        page = 3;
+    }
 }
 
-void menu_register(){
+void menu_register(User_t* actUser){
     static int firtsTime = 1;
+    if (firtsTime){
+        borrarPantalla();
+        globalLayer();
+
+        printf(f_LRED);
+        gotoxy(14, 11); printf("1. Nombre");
+        gotoxy(14, 17); printf("2. Cedula");
+        gotoxy(69, 11); printf("3. Telefono");
+        gotoxy(69, 17); printf("4. Direccion");
+        gotoxy(55, 23); printf("5. Login");
+        gotoxy(55, 25); printf("6. INICIAR");
+        gotoxy(55, 27); printf("0. Salir");
+        printf(f_LGREEN);
+        gotoxy(53, 25); printf("~");
+        gotoxy(66, 25); printf("~");
+        imgTextRegister(40, 2, f_LBLUE);
+        firtsTime = 0;
+    }
+    printf(f_LBLUE);
+    recuadro(13, 12, 40, 3);
+    recuadro(13, 18, 40, 3);
+    recuadro(68, 12, 40, 3);
+    recuadro(68, 18, 40, 3);
+    printf(s_RESET_ALL);
+
+    printf(f_LRED);
+    gotoxy(52, 29); printf("->");
+    printf(s_RESET_ALL);
+
+    userInputMenu(55,29);
+    cuadrado(52, 29, 40, 2, ' ');
+    
+    if(input == '1'){
+        userInputStr(14,13, actUser->nombre);
+        input = 'n';
+    }
+    if(input == '2'){
+        userInputStr(14,19, actUser->cedula);
+        input = 'n';
+    }
+    if(input == '3'){
+        userInputStr(69,13, actUser->telefono);
+        input = 'n';
+    }
+    if(input == '4'){
+        userInputStr(69,19, actUser->direccion);
+        input = 'n';
+    }
+    if(input == '5'){
+        transition();
+        page = 1;
+    }
+    if(input == '6'){
+        if(strlen(actUser->nombre) != 0 && strlen(actUser->cedula) != 0 && strlen(actUser->telefono) != 0 && strlen(actUser->direccion) != 0){
+            transition();
+            saveUser(actUser, "./data/USERS.txt");
+            page = 3;
+        }
+    }
+}
+
+void menu_options(){
+        static int firtsTime = 1;
     if (firtsTime){
         borrarPantalla();
         globalLayer();
@@ -166,13 +247,13 @@ void menu_register(){
     imgTextGarritas(62, 2, f_LBLUE);
 
     printf(f_LRED);
-    gotoxy(58, 18); printf("1. Iniciar");
+    gotoxy(58, 18); printf("1. Hacer Donacion");
     gotoxy(58, 19); printf("0. Salir");
     gotoxy(77, 18); printf("->");
     printf(s_RESET_ALL);
 
     cuadrado(80, 18, 40, 2, ' ');
-    userInput(80,18);
+    userInputMenu(80,18);
     
     if(input == '1'){
         page = 2;
@@ -195,7 +276,7 @@ void menu_makeDonation(){
     printf(s_RESET_ALL);
 
     cuadrado(80, 18, 40, 2, ' ');
-    userInput(80,18);
+    userInputMenu(80,18);
     
     if(input == '1'){
         page = 2;
@@ -218,7 +299,7 @@ void menu_myDonations(){
     printf(s_RESET_ALL);
 
     cuadrado(80, 18, 40, 2, ' ');
-    userInput(80,18);
+    userInputMenu(80,18);
     
     if(input == '1'){
         page = 2;
@@ -241,7 +322,7 @@ void menu_listDonations(){
     printf(s_RESET_ALL);
 
     cuadrado(80, 18, 40, 2, ' ');
-    userInput(80,18);
+    userInputMenu(80,18);
     
     if(input == '1'){
         page = 2;
@@ -265,27 +346,35 @@ int main (){
         verUsers(UsersList);
     }
 
+    User_t* actUser = (User_t*)malloc(sizeof(User_t));
+    strcpy(actUser->nombre, "");
+    strcpy(actUser->cedula, "");
+    strcpy(actUser->telefono, "");
+    strcpy(actUser->direccion, "");
+
     ocultarCursor();
     borrarPantalla();
     globalLayer();
 
     imgArbolFondoMain(2, 13, f_LGREEN);
-    //startAnimation();
+    startAnimation();
     while (1)
     {   
 
         if (page == 0) menu_main();
-        if (page == 1) menu_login();
-        if (page == 2) menu_register();
-        if (page == 3) menu_makeDonation();
-        if (page == 4) menu_myDonations();
-        if (page == 5) menu_listDonations();
+        if (page == 1) menu_login(actUser);
+        if (page == 2) menu_register(actUser);
+        if (page == 3) menu_options();
+        if (page == 4) menu_makeDonation();
+        if (page == 5) menu_myDonations();
+        if (page == 6) menu_listDonations();
 
         if (input == '0'){
             break;
         }
     }
 
+    free(actUser);
     freeDonation(DonationList);
     freeUsers(UsersList);
     printf(s_RESET_ALL);

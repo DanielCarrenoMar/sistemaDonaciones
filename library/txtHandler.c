@@ -30,6 +30,10 @@ int countLines(char* file_name){
 
 void saveUser(User_t* user, char* file_name){
     FILE *file;
+    user->nombre[strlen(user->nombre)-1] = '\0';
+    user->cedula[strlen(user->cedula)-1] = '\0';
+    user->telefono[strlen(user->telefono)-1] = '\0';
+    user->direccion[strlen(user->direccion)-1] = '\0';
     if (file = fopen(file_name, "a")) {
         fprintf(file, "%s %s %s %s\n", user->nombre, user->cedula, user->telefono, user->direccion);
         fclose(file);
