@@ -11,6 +11,7 @@
 #include "./library/graficos.h"
 #include "./library/screens.h"
 
+// Fuente https://patorjk.com/software/taag/#p=testall&f=Big%20Money-se&t=Donaciones%0A
 // Paleta de colores
 // Resalte f_RED #AB0000
 // Secundarios f_BLUE f_LBLUE #0000AC #5354FC
@@ -27,22 +28,20 @@ void wait(int time){
     #endif
 }
 
-void userInput(){
+void userInput(int x, int y){
     char* error;
     char num[10];
+    gotoxy(x,y);
+    printf(f_LRED);
 
     fgets(num, 10, stdin);
     if (error != NULL && num[0] >= '0' && num[0] <= '9'){
         input = num[0];
     }
+    printf(s_RESET_ALL);
 }
 
 void startAnimation(){
-    borrarPantalla();
-    printf(f_GREEN);
-    recuadro(0, 0, 120, 36);
-    printf(s_RESET_ALL);
-    imgArbolFondoMain(2, 13, f_LGREEN);
     imgBuho3(33, 17, f_LBLUE);
     wait(500);
 
@@ -57,48 +56,55 @@ void startAnimation(){
 void menu_main(){
     static int firtsTime = 1;
     if (firtsTime){
-        gotoxy(1,12); printf(f_LBLUE "Secundario Azul" s_RESET_ALL);
-
         imgArbolFondoMain(2, 13, f_LGREEN);
         imgBuho1(33, 17, f_LBLUE);
+        printf(f_LBLUE);
+        gotoxy(58,10); printf("Apoya nuestra causa de proteger, restaurar y promover");
+        gotoxy(58,11); printf("el uso sostenible de los ecosistemas terrestres, gestionar");
+        gotoxy(58,12); printf("los bosques de manera sostenible, luchar contra");
+        gotoxy(58,13); printf("la desertificacion, detener e invertir la degradacion");
+        gotoxy(58,14); printf("de las tierras y la perdida de biodiversidad" s_RESET_ALL);
         firtsTime = 0;
     }
-    imgTextPrincipal(2, 2, f_RED);
+    imgTextPrincipal(62, 2, f_LBLUE);
 
-    gotoxy(2,2);
-    userInput();
+    printf(f_LRED);
+    gotoxy(58, 18); printf("1. Iniciar");
+    gotoxy(58, 19); printf("0. Salir");
+    gotoxy(77, 18); printf("->");
+    printf(s_RESET_ALL);
+
+    cuadrado(80, 18, 40, 2, ' ');
+    userInput(80,18);
+    
     if(input == '1'){
         page = 1;
     }
 }
 
 void menu_login(){
-    gotoxy(19,30);
-    userInput();
+    userInput(58,25);
     if(input != '0'){
         page = 1;
     }
 }
 
 void menu_makeDonation(){
-    gotoxy(19,30);
-    userInput();
+    userInput(58,25);
     if(input != '0'){
         page = 1;
     }
 }
 
 void menu_myDonations(){
-    gotoxy(19,30);
-    userInput();
+    userInput(58,25);
     if(input != '0'){
         page = 1;
     }
 }
 
 void menu_listDonations(){
-    gotoxy(19,30);
-    userInput();
+    userInput(58,25);
     if(input != '0'){
         page = 1;
     }
@@ -123,8 +129,13 @@ int main (){
 
     int select = 0;
     ocultarCursor();
-
-    startAnimation();
+    borrarPantalla();
+    printf(f_GREEN);
+    recuadro(0, 0, 120, 36);
+    gotoxy(1,1); printf("Daniel Carreno | Jose Pereira | Juan Roma");
+    printf(s_RESET_ALL);
+    imgArbolFondoMain(2, 13, f_LGREEN);
+    //startAnimation();
     while (1)
     {   
 
