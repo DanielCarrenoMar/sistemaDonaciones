@@ -9,7 +9,7 @@
 #include "./library/txtHandler.h"
 #include "./library/colorama.h"
 #include "./library/graficos.h"
-#include "./library/screens.h"
+#include "./library/imgAscii.h"
 
 // Fuente https://patorjk.com/software/taag/#p=display&f=Big&t=Garritas%0A
 // Paleta de colores
@@ -17,8 +17,8 @@
 // Secundarios f_BLUE f_LBLUE #0000AC #5354FC
 // Principal f_GREEN #00AB00
 
-char input;
-int page = 1;
+char inputMenu;
+int pageIndex = 1;
 
 void wait(int time){
     #ifdef _WIN32
@@ -28,7 +28,7 @@ void wait(int time){
     #endif
 }
 
-void globalLayer(){
+void layer_global(){
     printf(f_GREEN);
     recuadro(0, 0, 120, 36);
     gotoxy(1,1); printf("Daniel Carreno | Jose Pereira | Juan Salazar");
@@ -42,7 +42,7 @@ void userInputMenu(int x, int y){
 
     fgets(num, 10, stdin);
     if (num[0] >= '0' && num[0] <= '9'){
-        input = num[0];
+        inputMenu = num[0];
     }
     printf(s_RESET_ALL);
 }
@@ -55,7 +55,6 @@ void userInputStr(int x, int y, char* buffer){
     gotoxy(x, y); printf("  ");
     printf(s_RESET_ALL);
 }
-
 
 void startAnimation(){
     imgBuho3(33, 17, f_LBLUE);
@@ -83,7 +82,7 @@ void transition(){
     }
 }
 
-void menu_main(){
+void layer_main(){
     static int firtsTime = 1;
     if (firtsTime){
         imgArbolFondoMain(2, 13, f_LGREEN);
@@ -109,17 +108,17 @@ void menu_main(){
     cuadrado(80, 18, 40, 2, ' ');
     userInputMenu(80,18);
     
-    if(input == '1'){
+    if(inputMenu == '1'){
         transition();
-        page = 1;
+        pageIndex = 1;
     }
 }
 
-void menu_login(User_t* actUser){
+void layer_login(User_t* actualUser){
     static int firtsTime = 1;
     if (firtsTime){
         borrarPantalla();
-        globalLayer();
+        layer_global();
         firtsTime = 0;
         printf(f_LRED);
         gotoxy(55, 11); printf("1. Nombre");
@@ -146,39 +145,39 @@ void menu_login(User_t* actUser){
     
     char nombre[20];
     char cedula[20];
-    if(input == '1'){
+    if(inputMenu == '1'){
         printf(f_LRED);
         gotoxy(41, 13); printf("->");
         printf(f_LBLUE);
         gotoxy(43, 13); fgets(nombre, 20, stdin);
         gotoxy(41, 13); printf("  ");
         printf(s_RESET_ALL);
-        input = 'n';
+        inputMenu = 'n';
     }
-    if(input == '2'){
+    if(inputMenu == '2'){
         printf(f_LRED);
         gotoxy(41, 19); printf("->");
         printf(f_LBLUE);
         gotoxy(43, 19); fgets(cedula, 20, stdin);
         gotoxy(41, 19); printf("  ");
         printf(s_RESET_ALL);
-        input = 'n';
+        inputMenu = 'n';
     }
-    if(input == '3'){
+    if(inputMenu == '3'){
         transition();
-        page = 2;
+        pageIndex = 2;
     }
-    if(input == '4'){
+    if(inputMenu == '4'){
         transition();
-        page = 3;
+        pageIndex = 3;
     }
 }
 
-void menu_register(User_t* actUser){
+void layer_register(User_t* actualUser){
     static int firtsTime = 1;
     if (firtsTime){
         borrarPantalla();
-        globalLayer();
+        layer_global();
 
         printf(f_LRED);
         gotoxy(14, 11); printf("1. Nombre");
@@ -208,40 +207,40 @@ void menu_register(User_t* actUser){
     userInputMenu(55,29);
     cuadrado(52, 29, 40, 2, ' ');
     
-    if(input == '1'){
-        userInputStr(14,13, actUser->nombre);
-        input = 'n';
+    if(inputMenu == '1'){
+        userInputStr(14,13, actualUser->nombre);
+        inputMenu = 'n';
     }
-    if(input == '2'){
-        userInputStr(14,19, actUser->cedula);
-        input = 'n';
+    if(inputMenu == '2'){
+        userInputStr(14,19, actualUser->cedula);
+        inputMenu = 'n';
     }
-    if(input == '3'){
-        userInputStr(69,13, actUser->telefono);
-        input = 'n';
+    if(inputMenu == '3'){
+        userInputStr(69,13, actualUser->telefono);
+        inputMenu = 'n';
     }
-    if(input == '4'){
-        userInputStr(69,19, actUser->direccion);
-        input = 'n';
+    if(inputMenu == '4'){
+        userInputStr(69,19, actualUser->direccion);
+        inputMenu = 'n';
     }
-    if(input == '5'){
+    if(inputMenu == '5'){
         transition();
-        page = 1;
+        pageIndex = 1;
     }
-    if(input == '6'){
-        if(strlen(actUser->nombre) != 0 && strlen(actUser->cedula) != 0 && strlen(actUser->telefono) != 0 && strlen(actUser->direccion) != 0){
+    if(inputMenu == '6'){
+        if(strlen(actualUser->nombre) != 0 && strlen(actualUser->cedula) != 0 && strlen(actualUser->telefono) != 0 && strlen(actualUser->direccion) != 0){
             transition();
-            saveUser(actUser, "./data/USERS.txt");
-            page = 3;
+            saveUser(actualUser, "./data/USERS.txt");
+            pageIndex = 3;
         }
     }
 }
 
-void menu_options(){
+void layer_options(){
         static int firtsTime = 1;
     if (firtsTime){
         borrarPantalla();
-        globalLayer();
+        layer_global();
         firtsTime = 0;
     }
     imgTextGarritas(62, 2, f_LBLUE);
@@ -255,16 +254,16 @@ void menu_options(){
     cuadrado(80, 18, 40, 2, ' ');
     userInputMenu(80,18);
     
-    if(input == '1'){
-        page = 2;
+    if(inputMenu == '1'){
+        pageIndex = 2;
     }
 }
 
-void menu_makeDonation(){
+void layer_makeDonation(){
         static int firtsTime = 1;
     if (firtsTime){
         borrarPantalla();
-        globalLayer();
+        layer_global();
         firtsTime = 0;
     }
     imgTextGarritas(62, 2, f_LBLUE);
@@ -278,16 +277,16 @@ void menu_makeDonation(){
     cuadrado(80, 18, 40, 2, ' ');
     userInputMenu(80,18);
     
-    if(input == '1'){
-        page = 2;
+    if(inputMenu == '1'){
+        pageIndex = 2;
     }
 }
 
-void menu_myDonations(){
+void layer_myDonations(){
         static int firtsTime = 1;
     if (firtsTime){
         borrarPantalla();
-        globalLayer();
+        layer_global();
         firtsTime = 0;
     }
     imgTextGarritas(62, 2, f_LBLUE);
@@ -301,16 +300,16 @@ void menu_myDonations(){
     cuadrado(80, 18, 40, 2, ' ');
     userInputMenu(80,18);
     
-    if(input == '1'){
-        page = 2;
+    if(inputMenu == '1'){
+        pageIndex = 2;
     }
 }
 
-void menu_listDonations(){
+void layer_listDonations(){
         static int firtsTime = 1;
     if (firtsTime){
         borrarPantalla();
-        globalLayer();
+        layer_global();
         firtsTime = 0;
     }
     imgTextGarritas(62, 2, f_LBLUE);
@@ -324,8 +323,8 @@ void menu_listDonations(){
     cuadrado(80, 18, 40, 2, ' ');
     userInputMenu(80,18);
     
-    if(input == '1'){
-        page = 2;
+    if(inputMenu == '1'){
+        pageIndex = 2;
     }
 }
 
@@ -334,10 +333,12 @@ int main (){
 
     makeTXT("./data/DONATIONS.txt");
     makeTXT("./data/USERS.txt");
+
     int numDonationsList = countLines("./data/DONATIONS.txt");
     int numUsersList = countLines("./data/USERS.txt");
     Donation_t** DonationList = (Donation_t**)malloc(numDonationsList * sizeof(Donation_t*));
     User_t** UsersList = (User_t**)malloc(numUsersList * sizeof(User_t*));
+
     if (numDonationsList != 0 || numUsersList != 0){
         cargarDonations(DonationList, "./data/DONATIONS.txt");
         cargarUsers(UsersList, "./data/USERS.txt");
@@ -346,35 +347,35 @@ int main (){
         verUsers(UsersList);
     }
 
-    User_t* actUser = (User_t*)malloc(sizeof(User_t));
-    strcpy(actUser->nombre, "");
-    strcpy(actUser->cedula, "");
-    strcpy(actUser->telefono, "");
-    strcpy(actUser->direccion, "");
+    User_t* actualUser = (User_t*)malloc(sizeof(User_t));
+    strcpy(actualUser->nombre, "");
+    strcpy(actualUser->cedula, "");
+    strcpy(actualUser->telefono, "");
+    strcpy(actualUser->direccion, "");
 
     ocultarCursor();
     borrarPantalla();
-    globalLayer();
+    layer_global();
 
     imgArbolFondoMain(2, 13, f_LGREEN);
     startAnimation();
     while (1)
     {   
 
-        if (page == 0) menu_main();
-        if (page == 1) menu_login(actUser);
-        if (page == 2) menu_register(actUser);
-        if (page == 3) menu_options();
-        if (page == 4) menu_makeDonation();
-        if (page == 5) menu_myDonations();
-        if (page == 6) menu_listDonations();
+        if (pageIndex == 0) layer_main();
+        if (pageIndex == 1) layer_login(actualUser);
+        if (pageIndex == 2) layer_register(actualUser);
+        if (pageIndex == 3) layer_options();
+        if (pageIndex == 4) layer_makeDonation();
+        if (pageIndex == 5) layer_myDonations();
+        if (pageIndex == 6) layer_listDonations();
 
-        if (input == '0'){
+        if (inputMenu == '0'){
             break;
         }
     }
 
-    free(actUser);
+    free(actualUser);
     freeDonation(DonationList);
     freeUsers(UsersList);
     printf(s_RESET_ALL);

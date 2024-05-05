@@ -4,6 +4,6 @@
 void imgArbolBuho1(int x, int y,char* color);
 void imgArbolBuho2(int x, int y,char* color);
 
-#include "screens.c"
+#include "imgAscii.c"
 
 #endif

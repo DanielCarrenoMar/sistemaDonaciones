@@ -18,7 +18,7 @@ typedef struct User
     char direccion[30];
 }User_t;
 
-typedef struct ActDonation
+typedef struct actDonation
 {
     int fecha;
     char tipo[20];
