@@ -15,6 +15,6 @@ void verUsers(User_t** users);
 void freeDonation(Donation_t** users);
 void freeUsers(User_t** users);
 
-#include "txtHandler.c"
+#include "./code/txtHandler.c"
 
 #endif

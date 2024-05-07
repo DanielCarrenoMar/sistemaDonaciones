@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "structs.h"
+#include "../structs.h"
 
 void makeTXT(char* file_name){
     FILE *file;
@@ -27,6 +27,37 @@ int countLines(char* file_name){
     if (count > 0) count++;
     return count;
 }
+
+void findCedula(User_t* buffer, char *file_name){
+    FILE *file;
+    char line[1028];
+
+    if ((file = fopen(file_name, "r"))) {
+        int auxiliar=0;
+        
+        while (fgets(line, sizeof(line), file)) {
+            char* userToken = strtok(line, " ");
+
+            do{ 
+                if (auxiliar == 1){
+
+                }
+                auxiliar+=1;
+
+            }
+
+            while (userToken = strtok(NULL, " "));
+                
+
+        }
+        fclose(file);
+    }else {
+        printf("El archivo no existe.\n");
+    }
+    printf("XD\n");
+
+}
+    
 
 void saveUser(User_t* user, char* file_name){
     FILE *file;
@@ -61,16 +92,12 @@ void cargarDonations(Donation_t** users, char* file_name){
             do{ 
                 if (count == 0){
                     strcpy((*users)->cedula, userToken);
-                    printf("Cedula: %s\n", (*users)->cedula);
                 }else if (count == 1){
                     strcpy((*users)->fecha, userToken);
-                    printf("Fecha: %s\n", (*users)->fecha);
                 }else if (count == 2){
                     strcpy((*users)->tipo, userToken);
-                    printf("Tipo: %s\n", (*users)->tipo);
                 }else if (count == 3){
                     strcpy((*users)->valor, userToken);
-                    printf("Valor: %s\n", (*users)->valor);
                 }
                 count++;
             }
@@ -93,22 +120,17 @@ void cargarUsers(User_t** users, char* file_name){
             if (*users == NULL) return;
 
             count = 0;
-            printf("%s",line);
             char* userToken = strtok(line, " ");
 
             do{ 
                 if (count == 0){
                     strcpy((*users)->nombre, userToken);
-                    printf("Cedula: %s\n", (*users)->nombre);
                 }else if (count == 1){
                     strcpy((*users)->cedula, userToken);
-                    printf("Fecha: %s\n", (*users)->cedula);
                 }else if (count == 2){
                     strcpy((*users)->telefono, userToken);
-                    printf("Tipo: %s\n", (*users)->telefono);
                 }else if (count == 3){
                     strcpy((*users)->direccion, userToken);
-                    printf("Valor: %s\n", (*users)->direccion);
                 }
                 count++;
             }

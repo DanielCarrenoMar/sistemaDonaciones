@@ -1,5 +1,5 @@
-#include "graficos.h"
-#include "colorama.h"
+#include "../graficos.h"
+#include "../colorama.h"
 
 void imgTextGarritas(int x, int y, char* color){
     int asciiImage[6][40] = {

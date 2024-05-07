@@ -19,5 +19,5 @@ void desactivarmax();
 void circunferencia(int x, int y, int xr, int yr, char sprite);
 #endif
 
-#include "graficos.c"
+#include "./code/graficos.c"
 #endif
