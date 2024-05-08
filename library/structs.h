@@ -18,13 +18,10 @@ typedef struct User
     char direccion[30];
 }User_t;
 
-typedef struct actDonation
+typedef struct nodeDonation
 {
-    int fecha;
-    char tipo[20];
-    char descriccion[100];
-    int valor; 
-    struct ActDonation* next;
-}ActDonation_t;
+    Donation_t donation;
+    struct nodeDonation* next;
+}nodeDonation_t;
 
 #endif

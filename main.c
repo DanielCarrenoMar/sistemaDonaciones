@@ -10,6 +10,7 @@
 #include "./library/colorama.h"
 #include "./library/graficos.h"
 #include "./library/imgAscii.h"
+#include "./library/linkedDonations.h"
 
 // Fuente https://patorjk.com/software/taag/#p=display&f=Big&t=Garritas%0A
 // Paleta de colores
@@ -24,7 +25,9 @@ void wait(int time){
     #ifdef _WIN32
         Sleep(time);
     #else
-        sleep(time/1000);
+        char buffer[50];
+        sprintf(buffer, "sleep %f", time/1000.0);
+        system(buffer);
     #endif
 }
 
@@ -327,7 +330,7 @@ int main (){
     User_t** UsersList = (User_t**)malloc(numUsersList * sizeof(User_t*));
 
     if (numDonationsList != 0 || numUsersList != 0){
-        cargarDonations(DonationList, "./data/DONATIONS.txt");
+        cargarDonations(DonationList, "./data/DONATIONS.txt"); // Convertir a lista enlazada
         cargarUsers(UsersList, "./data/USERS.txt");
 
         verDonations(DonationList);
@@ -340,6 +343,25 @@ int main (){
     strcpy(actualUser->telefono, "");
     strcpy(actualUser->direccion, "");
 
+    // PRUEBA DE LISTAS ENLAZADAS
+
+    nodeDonation_t* headActualDonations = malloc(sizeof(nodeDonation_t));
+    Donation_t dona = {"nombre1","2","3","4"};
+    addNodeDonationStart(headActualDonations, dona);
+    Donation_t dona2 = {"nombre2","2","3","4"};
+    addNodeDonationStart(headActualDonations, dona2);
+    Donation_t dona3 = {"nombre3","2","3","4"};
+    addNodeDonationStart(headActualDonations, dona3);
+
+    Donation_t dona4 = {"Alrevez4","2","3","4"};
+    addNodeDonationEnd(headActualDonations, dona4);
+    
+    printNodesDonations(headActualDonations);
+
+    freeLinkedDonations(&headActualDonations);
+    free(headActualDonations);
+
+    /*
     ocultarCursor();
     borrarPantalla();
     layer_global();
@@ -362,11 +384,11 @@ int main (){
         }
     }
 
+    printf(s_RESET_ALL);
+    mostrarCursor();
+    borrarPantalla();*/
     free(actualUser);
     freeDonation(DonationList);
     freeUsers(UsersList);
-    printf(s_RESET_ALL);
-    mostrarCursor();
-    borrarPantalla();
     return 0;
 }

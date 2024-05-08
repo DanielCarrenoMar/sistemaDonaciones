@@ -14,6 +14,13 @@ int crossL = 180; // ┤
 int vLine = 124; // │
 int hLine = 61; // ─
 
+void ocultarCursor(){
+    printf("\e[?25l");
+}
+void mostrarCursor() {
+    printf("\e[?25h");
+}
+
 #ifdef _WIN32
 #include <conio.h>
 #include <windows.h>
@@ -29,13 +36,6 @@ void gotoxy(int x, int y){
     dwPos.X = x;
     dwPos.Y = y;
     SetConsoleCursorPosition(hcon, dwPos);
-}
-void ocultarCursor(){
-    printf("\e[?25l");
-}
-
-void mostrarCursor() {
-    printf("\e[?25h");
 }
 void setConsoleColor(char bg, char fg){
     char cmd[30];
