@@ -345,16 +345,23 @@ int main (){
 
     // PRUEBA DE LISTAS ENLAZADAS
 
-    nodeDonation_t* headActualDonations = malloc(sizeof(nodeDonation_t));
-    Donation_t dona = {"nombre1","2","3","4"};
-    addNodeDonationStart(headActualDonations, dona);
-    Donation_t dona2 = {"nombre2","2","3","4"};
-    addNodeDonationStart(headActualDonations, dona2);
-    Donation_t dona3 = {"nombre3","2","3","4"};
-    addNodeDonationStart(headActualDonations, dona3);
+    nodeDonation_t* headActualDonations = (nodeDonation_t*)malloc(sizeof(nodeDonation_t));
+    headActualDonations->next = NULL;
 
-    Donation_t dona4 = {"Alrevez4","2","3","4"};
-    addNodeDonationEnd(headActualDonations, dona4);
+    char cedula[30] = "nombre1";
+    char fecha[20] = "fecha";
+    char tipo[20] = "tipo";
+    char descriccion[100] = "descri";
+    char valor[20] = "valor";
+
+    addNodeDonationStart(headActualDonations, cedula, fecha, tipo, descriccion, valor);
+    strcpy(cedula, "nombre2");
+    addNodeDonationStart(headActualDonations, cedula, fecha, tipo, descriccion, valor);
+    strcpy(cedula, "nombre3");
+    addNodeDonationStart(headActualDonations, cedula, fecha, tipo, descriccion, valor);
+
+    strcpy(cedula, "nombre4");
+    //addNodeDonationEnd(headActualDonations, cedula, fecha, tipo, descriccion, valor);
     
     printNodesDonations(headActualDonations);
 
