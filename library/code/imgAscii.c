@@ -11,19 +11,18 @@ void imgTextGarritas(int x, int y, char* color){
 {32,32,92,95,95,95,95,95,124,92,95,95,44,95,124,95,124,32,32,124,95,124,32,32,124,95,124,92,95,95,92,95,95,44,95,124,95,95,95,47,},
     };
 
+    printf("%s",color);
     for (int i = 0; i < 6; i++) {
         gotoxy(x, y);
-        printf("%s",color);
         for (int j = 0; j < 40; j++) {
             if (asciiImage[i][j] != 0)
             printf("%c", asciiImage[i][j]);
         }
         y++;
-        printf(s_RESET_ALL);
-        printf("\n");
     }
+    printf(s_RESET_ALL);
 }
-void imgTextRegister(int x, int y, char* color){
+void imgTextRegistro(int x, int y, char* color){
     int asciiImage[8][38] = {
         {32,95,95,95,95,95,32,32,32,32,32,32,32,32,32,32,32,32,95,32,32,32,32,32,95,32,32,32,32,32,32,32,32,32,32,32,32,32,},
 {124,32,32,95,95,32,92,32,32,32,32,32,32,32,32,32,32,40,95,41,32,32,32,124,32,124,32,32,32,32,32,32,32,32,32,32,32,32,},
@@ -35,19 +34,18 @@ void imgTextRegister(int x, int y, char* color){
 {32,32,32,32,32,32,32,32,32,32,32,32,124,95,95,95,47,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,},
     };
 
+    printf("%s",color);
     for (int i = 0; i < 8; i++) {
         gotoxy(x, y);
-        printf("%s",color);
         for (int j = 0; j < 38; j++) {
             if (asciiImage[i][j] != 0)
             printf("%c", asciiImage[i][j]);
         }
         y++;
-        printf(s_RESET_ALL);
-        printf("\n");
     }
+    printf(s_RESET_ALL);
 }
-void imgTextLogin(int x, int y, char* color){
+void imgTextInicio(int x, int y, char* color){
     int asciiImage[8][28] = {
         {32,32,95,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,},
 {32,124,32,124,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,40,95,41,32,32,32,32,32,32,},
@@ -59,20 +57,19 @@ void imgTextLogin(int x, int y, char* color){
 {32,32,32,32,32,32,32,32,32,32,32,32,32,32,124,95,95,95,47,32,32,32,32,32,32,32,32,32,},
     };
 
+    printf("%s",color);
     for (int i = 0; i < 8; i++) {
         gotoxy(x, y);
-        printf("%s",color);
         for (int j = 0; j < 28; j++) {
             if (asciiImage[i][j] != 0)
             printf("%c", asciiImage[i][j]);
         }
         y++;
-        printf(s_RESET_ALL);
-        printf("\n");
     }
+    printf(s_RESET_ALL);
 }
 
-void imgGato1(int x, int y, char* color){
+void imgCat1(int x, int y, char* color){
     int asciiImage[4][8] = {
         {92,32,32,32,32,47,92,32,},
 {32,41,32,32,40,32,39,41,},
@@ -80,19 +77,18 @@ void imgGato1(int x, int y, char* color){
 {32,92,40,95,95,41,124,32,},
     };
 
+    printf("%s",color);
     for (int i = 0; i < 4; i++) {
         gotoxy(x, y);
-        printf("%s",color);
         for (int j = 0; j < 8; j++) {
             if (asciiImage[i][j] != 0)
             printf("%c", asciiImage[i][j]);
         }
         y++;
-        printf(s_RESET_ALL);
-        printf("\n");
     }
+    printf(s_RESET_ALL);
 }
-void imgGato2(int x, int y, char* color){
+void imgCat2(int x, int y, char* color){
     int asciiImage[4][8] = {
         {32,124,32,32,32,47,92,32,},
 {32,124,32,32,40,32,39,41,},
@@ -100,19 +96,18 @@ void imgGato2(int x, int y, char* color){
 {32,92,40,95,95,41,124,32,},
     };
 
+    printf("%s",color);
     for (int i = 0; i < 4; i++) {
         gotoxy(x, y);
-        printf("%s",color);
         for (int j = 0; j < 8; j++) {
             if (asciiImage[i][j] != 0)
             printf("%c", asciiImage[i][j]);
         }
         y++;
-        printf(s_RESET_ALL);
-        printf("\n");
     }
+    printf(s_RESET_ALL);
 }
-void imgGato3(int x, int y, char* color){
+void imgCat3(int x, int y, char* color){
     int asciiImage[4][8] = {
         {32,47,32,32,32,47,92,32,},
 {40,32,32,32,40,32,39,41,},
@@ -120,19 +115,19 @@ void imgGato3(int x, int y, char* color){
 {32,92,40,95,95,41,124,32,},
     };
 
+    printf("%s",color);
     for (int i = 0; i < 4; i++) {
         gotoxy(x, y);
-        printf("%s",color);
         for (int j = 0; j < 8; j++) {
             if (asciiImage[i][j] != 0)
             printf("%c", asciiImage[i][j]);
         }
         y++;
-        printf(s_RESET_ALL);
-        printf("\n");
     }
+    printf(s_RESET_ALL);
 }
-void imgPerro1(int x, int y, char* color){
+
+void imgDog1(int x, int y, char* color){
     int asciiImage[4][9] = {
         {32,32,46,32,32,32,32,32,32,},
 {32,46,46,94,95,95,95,95,47,},
@@ -140,19 +135,18 @@ void imgPerro1(int x, int y, char* color){
 {32,32,124,124,32,32,124,124,32,},
     };
 
+    printf("%s",color);
     for (int i = 0; i < 4; i++) {
         gotoxy(x, y);
-        printf("%s",color);
         for (int j = 0; j < 9; j++) {
             if (asciiImage[i][j] != 0)
             printf("%c", asciiImage[i][j]);
         }
         y++;
-        printf(s_RESET_ALL);
-        printf("\n");
     }
+    printf(s_RESET_ALL);
 }
-void imgPerro2(int x, int y, char* color){
+void imgDog2(int x, int y, char* color){
     int asciiImage[4][9] = {
         {32,32,46,32,32,32,32,32,32,},
 {32,46,46,94,95,95,95,95,47,},
@@ -160,19 +154,18 @@ void imgPerro2(int x, int y, char* color){
 {32,32,124,60,32,32,124,60,32,},
     };
 
+    printf("%s",color);
     for (int i = 0; i < 4; i++) {
         gotoxy(x, y);
-        printf("%s",color);
         for (int j = 0; j < 9; j++) {
             if (asciiImage[i][j] != 0)
             printf("%c", asciiImage[i][j]);
         }
         y++;
-        printf(s_RESET_ALL);
-        printf("\n");
     }
+    printf(s_RESET_ALL);
 }
-void imgPerro3(int x, int y, char* color){
+void imgDog3(int x, int y, char* color){
     int asciiImage[4][9] = {
         {32,32,46,32,32,32,32,32,32,},
 {32,46,46,94,95,95,95,95,47,},
@@ -180,20 +173,19 @@ void imgPerro3(int x, int y, char* color){
 {32,32,60,124,32,32,60,124,32,},
     };
 
+    printf("%s",color);
     for (int i = 0; i < 4; i++) {
         gotoxy(x, y);
-        printf("%s",color);
         for (int j = 0; j < 9; j++) {
             if (asciiImage[i][j] != 0)
             printf("%c", asciiImage[i][j]);
         }
         y++;
-        printf(s_RESET_ALL);
-        printf("\n");
     }
+    printf(s_RESET_ALL);
 }
 
-void imgBuho1(int x, int y, char* color){
+void imgOwl1(int x, int y, char* color){
     int asciiImage[4][7] = {
         {32,47,92,32,47,92,32,},
 {40,40,111,118,111,41,41,},
@@ -201,19 +193,18 @@ void imgBuho1(int x, int y, char* color){
 {32,32,86,86,86,32,32,},
     };
 
+    printf("%s",color);
     for (int i = 0; i < 4; i++) {
         gotoxy(x, y);
-        printf("%s",color);
         for (int j = 0; j < 7; j++) {
             if (asciiImage[i][j] != 0)
             printf("%c", asciiImage[i][j]);
         }
         y++;
-        printf(s_RESET_ALL);
-        printf("\n");
     }
+    printf(s_RESET_ALL);
 }
-void imgBuho2(int x, int y, char* color){
+void imgOwl2(int x, int y, char* color){
     int asciiImage[4][10] = {
         {32,47,92,32,47,92,32,32,32,32,},
 {40,40,45,118,45,41,41,32,32,32,},
@@ -221,19 +212,18 @@ void imgBuho2(int x, int y, char* color){
 {32,32,86,86,86,32,32,32,32,32,},
     };
 
+    printf("%s",color);
     for (int i = 0; i < 4; i++) {
         gotoxy(x, y);
-        printf("%s",color);
         for (int j = 0; j < 10; j++) {
             if (asciiImage[i][j] != 0)
             printf("%c", asciiImage[i][j]);
         }
         y++;
-        printf(s_RESET_ALL);
-        printf("\n");
     }
+    printf(s_RESET_ALL);
 }
-void imgBuho3(int x, int y, char* color){
+void imgOwl3(int x, int y, char* color){
     int asciiImage[4][10] = {
         {32,47,92,32,47,92,32,122,122,90,},
 {40,40,45,118,45,41,41,32,32,32,},
@@ -241,20 +231,19 @@ void imgBuho3(int x, int y, char* color){
 {32,32,86,86,86,32,32,32,32,32,},
     };
 
+    printf("%s",color);
     for (int i = 0; i < 4; i++) {
         gotoxy(x, y);
-        printf("%s",color);
         for (int j = 0; j < 10; j++) {
             if (asciiImage[i][j] != 0)
             printf("%c", asciiImage[i][j]);
         }
         y++;
-        printf(s_RESET_ALL);
-        printf("\n");
     }
+    printf(s_RESET_ALL);
 }
 
-void imgArbolFondoMain(int x, int y, char* color){
+void imgTreeMain1(int x, int y, char* color){
     int asciiImage[23][118] = {
         {32,47,59,45,46,95,44,45,46,95,95,95,95,32,32,32,32,32,32,32,32,44,45,45,45,45,45,46,95,95,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,},
 {40,95,58,35,58,58,95,46,58,58,58,46,32,96,45,46,95,32,32,32,47,58,44,32,47,45,46,95,44,32,96,46,95,44,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,},
@@ -282,20 +271,18 @@ void imgArbolFondoMain(int x, int y, char* color){
 
     };
 
+    printf("%s",color);
     for (int i = 0; i < 23; i++) {
         gotoxy(x, y);
-        printf("%s",color);
         for (int j = 0; j < 118; j++) {
             if (asciiImage[i][j] != 0)
             printf("%c", asciiImage[i][j]);
         }
         y++;
-        printf(s_RESET_ALL);
-        printf("\n");
     }
+    printf(s_RESET_ALL);
 }
-
-void imgArbolFondo2(int x, int y,char* color){
+void imgTreeMain2(int x, int y,char* color){
     int asciiImage[23][118] = {
         {32,47,59,45,46,95,44,45,46,95,95,95,95,32,32,32,32,32,32,32,32,44,45,45,45,45,45,46,95,95,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,},
 {40,95,58,35,58,58,95,46,58,58,58,46,32,96,45,46,95,32,32,32,47,58,44,32,47,45,46,95,44,32,96,46,95,44,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,},
@@ -322,15 +309,14 @@ void imgArbolFondo2(int x, int y,char* color){
 {126,126,126,126,126,126,126,126,126,126,126,126,126,92,92,87,126,126,126,126,126,126,126,126,126,126,126,126,92,124,47,126,126,32,126,126,126,126,126,126,126,126,126,126,126,126,126,126,126,126,126,126,126,126,126,126,126,92,92,87,126,126,126,126,126,126,126,126,126,126,126,126,92,124,47,126,126,32,126,126,126,126,126,126,126,126,126,126,126,126,126,126,126,126,126,126,126,126,126,126,126,92,92,87,126,126,126,126,126,126,126,126,126,126,126,126,92,124,},
     };
 
+    printf("%s",color);
     for (int i = 0; i < 23; i++) {
         gotoxy(x, y);
-        printf("%s",color);
         for (int j = 0; j < 118; j++) {
             if (asciiImage[i][j] != 0)
             printf("%c", asciiImage[i][j]);
         }
         y++;
-        printf(s_RESET_ALL);
-        printf("\n");
     }
+    printf(s_RESET_ALL);
 }

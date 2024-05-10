@@ -61,19 +61,19 @@ void userInputStr(int x, int y, char* buffer){
 }
 
 void startAnimation(){
-    imgBuho3(33, 17, f_LBLUE);
-    imgPerro3(109, 30, f_LBLUE);
-    imgGato2(39, 30, f_LBLUE);
+    imgOwl3(33, 17, f_LBLUE);
+    imgDog3(109, 30, f_LBLUE);
+    imgCat2(39, 30, f_LBLUE);
     wait(500);
 
-    imgBuho2(33, 17, f_LBLUE);
-    imgPerro2(109, 30, f_LBLUE);
-    imgGato3(39, 30, f_LBLUE);
+    imgOwl2(33, 17, f_LBLUE);
+    imgDog2(109, 30, f_LBLUE);
+    imgCat3(39, 30, f_LBLUE);
     wait(500);
 
-    imgBuho3(33, 17, f_LBLUE);
-    imgPerro3(109, 30, f_LBLUE);
-    imgGato2(39, 30, f_LBLUE);
+    imgOwl3(33, 17, f_LBLUE);
+    imgDog3(109, 30, f_LBLUE);
+    imgCat2(39, 30, f_LBLUE);
     wait(500);
 
 }
@@ -89,10 +89,10 @@ void transition(){
 void layer_main(){
     static int firtsTime = 1;
     if (firtsTime){
-        imgArbolFondoMain(2, 13, f_LGREEN);
-        imgBuho1(33, 17, f_LBLUE);
-        imgPerro1(109, 30, f_LBLUE);
-        imgGato1(39, 30, f_LBLUE);
+        imgTreeMain1(2, 13, f_LGREEN);
+        imgOwl1(33, 17, f_LBLUE);
+        imgDog1(109, 30, f_LBLUE);
+        imgCat1(39, 30, f_LBLUE);
         printf(f_LBLUE);
         gotoxy(58,10); printf("Apoya nuestra causa de proteger, restaurar y promover");
         gotoxy(58,11); printf("el uso sostenible de los ecosistemas terrestres, gestionar");
@@ -131,7 +131,7 @@ void layer_login(User_t* actualUser){
         printf(f_LGREEN);
         gotoxy(53, 25); printf("~");
         gotoxy(66, 25); printf("~");
-        imgTextLogin(45, 2, f_LBLUE);
+        imgTextInicio(45, 2, f_LBLUE);
         firtsTime = 0;
     }
 
@@ -182,7 +182,7 @@ void layer_register(User_t* actualUser){
         printf(f_LGREEN);
         gotoxy(53, 25); printf("~");
         gotoxy(66, 25); printf("~");
-        imgTextRegister(40, 2, f_LBLUE);
+        imgTextRegistro(40, 2, f_LBLUE);
         firtsTime = 0;
     }
     printf(f_LGREEN);
@@ -324,17 +324,18 @@ int main (){
     makeTXT("./data/DONATIONS.txt");
     makeTXT("./data/USERS.txt");
 
-    int numDonationsList = countLines("./data/DONATIONS.txt");
     int numUsersList = countLines("./data/USERS.txt");
-    Donation_t** DonationList = (Donation_t**)malloc(numDonationsList * sizeof(Donation_t*));
+    int numDonationsList = countLines("./data/DONATIONS.txt");
     User_t** UsersList = (User_t**)malloc(numUsersList * sizeof(User_t*));
+    nodeDonation_t* headDonations = (nodeDonation_t*)malloc(sizeof(nodeDonation_t));
+    headDonations->next = NULL;
 
-    if (numDonationsList != 0 || numUsersList != 0){
-        cargarDonations(DonationList, "./data/DONATIONS.txt"); // Convertir a lista enlazada
-        cargarUsers(UsersList, "./data/USERS.txt");
-
-        verDonations(DonationList);
+    if (numUsersList != 0){
+        loadUsers(UsersList, "./data/USERS.txt");
         verUsers(UsersList);
+    }
+    if (numDonationsList != 0){
+        loadDonations(headDonations, "./data/DONATIONS.txt");
     }
 
     User_t* actualUser = (User_t*)malloc(sizeof(User_t));
@@ -342,38 +343,13 @@ int main (){
     strcpy(actualUser->cedula, "");
     strcpy(actualUser->telefono, "");
     strcpy(actualUser->direccion, "");
-
-    // PRUEBA DE LISTAS ENLAZADAS
-
-    nodeDonation_t* headActualDonations = (nodeDonation_t*)malloc(sizeof(nodeDonation_t));
-    headActualDonations->next = NULL;
-
-    char cedula[30] = "nombre1";
-    char fecha[20] = "fecha";
-    char tipo[20] = "tipo";
-    char descriccion[100] = "descri";
-    char valor[20] = "valor";
-
-    addNodeDonationStart(headActualDonations, cedula, fecha, tipo, descriccion, valor);
-    strcpy(cedula, "nombre2");
-    addNodeDonationStart(headActualDonations, cedula, fecha, tipo, descriccion, valor);
-    strcpy(cedula, "nombre3");
-    addNodeDonationStart(headActualDonations, cedula, fecha, tipo, descriccion, valor);
-
-    strcpy(cedula, "nombre4");
-    //addNodeDonationEnd(headActualDonations, cedula, fecha, tipo, descriccion, valor);
     
-    printNodesDonations(headActualDonations);
-
-    freeLinkedDonations(&headActualDonations);
-    free(headActualDonations);
-
     /*
     ocultarCursor();
     borrarPantalla();
     layer_global();
 
-    imgArbolFondoMain(2, 13, f_LGREEN);
+    imgTreeMain1(2, 13, f_LGREEN);
     startAnimation();
     while (1)
     {   
@@ -389,13 +365,14 @@ int main (){
         if (inputMenu == '0'){
             break;
         }
-    }
+    }*/
 
     printf(s_RESET_ALL);
     mostrarCursor();
-    borrarPantalla();*/
+    borrarPantalla();
+    saveDonation(headDonations, "./data/DONATIONS.txt");
     free(actualUser);
-    freeDonation(DonationList);
+    freeLinkedDonations(&headDonations);
     freeUsers(UsersList);
     return 0;
 }

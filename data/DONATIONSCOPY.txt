@@ -1,4 +1,4 @@
-cedulaD 010520240651 dinero 500
-cedulaD 010520240651 dinero 200
-cedulaJ 020520240651 dinero 200
-cedulaJ 020520240651 dinero 500
+cedulaD 010520240651 dinero 500 DescriccionWaza
+cedulaD 010520240651 dinero 200 DescriccionWaza
+cedulaJ 020520240651 dinero 200 DescriccionWaza
+cedulaJ 020520240651 dinero 500 DescriccionWaza

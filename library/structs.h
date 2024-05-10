@@ -6,8 +6,8 @@ typedef struct Donation
     char cedula[30];
     char fecha[20];
     char tipo[20];
-    char descriccion[100];
     char valor[20]; 
+    char descriccion[100];
 }Donation_t;
 
 typedef struct User

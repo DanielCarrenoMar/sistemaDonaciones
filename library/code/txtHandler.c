@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../structs.h"
+#include "../linkedDonations.h"
 
 void makeTXT(char* file_name){
     FILE *file;
@@ -58,7 +59,6 @@ void findCedula(User_t* buffer, char *file_name){
 
 }
     
-
 void saveUser(User_t* user, char* file_name){
     FILE *file;
     user->nombre[strlen(user->nombre)-1] = '\0';
@@ -72,44 +72,60 @@ void saveUser(User_t* user, char* file_name){
         printf("El archivo no existe.\n");
     }
 }
-void saveDonation(){
-
-}
-void cargarDonations(Donation_t** users, char* file_name){
+void saveDonation(nodeDonation_t* head, char* file_name){
     FILE *file;
-    char line[1028];
-    int count = 0;
-
-    if ((file = fopen(file_name, "r"))) {
-        while (fgets(line, sizeof(line), file)) {
-            *users = (Donation_t*)malloc(sizeof(Donation_t));
-            if (*users == NULL) return;
-
-            count = 0;
-            printf("%s",line);
-            char* userToken = strtok(line, " ");
-
-            do{ 
-                if (count == 0){
-                    strcpy((*users)->cedula, userToken);
-                }else if (count == 1){
-                    strcpy((*users)->fecha, userToken);
-                }else if (count == 2){
-                    strcpy((*users)->tipo, userToken);
-                }else if (count == 3){
-                    strcpy((*users)->valor, userToken);
-                }
-                count++;
-            }
-            while (userToken = strtok(NULL, " "));
-            *users++;
+    if (file = fopen(file_name, "w")) {
+        head = head->next;
+        while (head){
+            fprintf(file, "%s %s %s %s %s\n", head->donation.cedula, head->donation.fecha, head->donation.tipo, head->donation.valor, head->donation.descriccion);
+            head = head->next;
         }
         fclose(file);
     }else {
         printf("El archivo no existe.\n");
     }
 }
-void cargarUsers(User_t** users, char* file_name){
+
+void loadDonations(nodeDonation_t* head, char* file_name){
+    FILE *file;
+    char line[255];
+    int count = 0;
+
+    if ((file = fopen(file_name, "r"))) {
+        while (fgets(line, sizeof(line), file)) {
+            char cedula[30];
+            char fecha[20];
+            char tipo[20];
+            char valor[20]; 
+            char descriccion[100];
+
+            count = 0;
+            char* userToken = strtok(line, " ");
+
+            do{ 
+                if (count == 0){
+                    strcpy(cedula, userToken);
+                }else if (count == 1){
+                    strcpy(fecha, userToken);
+                }else if (count == 2){
+                    strcpy(tipo, userToken);
+                }else if (count == 3){
+                    strcpy(valor, userToken);
+                }else if (count == 4){
+                    strcpy(descriccion, userToken);
+                    descriccion[strcspn(descriccion, "\n")] = 0;
+                }
+                count++;
+            }
+            while (userToken = strtok(NULL, " "));
+            addNodeDonationEnd(head, cedula, fecha, tipo, valor, descriccion);
+        }
+        fclose(file);
+    }else {
+        printf("El archivo no existe.\n");
+    }
+}
+void loadUsers(User_t** users, char* file_name){
     FILE *file;
     char line[1028];
     int count = 0;
@@ -143,23 +159,6 @@ void cargarUsers(User_t** users, char* file_name){
     }
 }
 
-void verDonations(Donation_t** users){
-    if(*users == NULL){
-        printf("No hay donaciones\n");
-        return;
-    }
-    printf("-----\n");
-    while (*users != NULL){
-        printf("Cedula: %s\n", (*users)->cedula);
-        printf("DONACION\n");
-        printf("Fecha: %s\n", (*users)->fecha);
-        printf("tipo: %s\n", (*users)->tipo);
-        printf("valor: %s\n", (*users)->valor);
-        printf("-----\n");
-        users++;
-    }
-}
-
 void verUsers(User_t** users){
     if(*users == NULL){
         printf("No hay usuarios\n");
@@ -174,13 +173,6 @@ void verUsers(User_t** users){
         printf("-----\n");
         users++;
     }
-}
-void freeDonation(Donation_t** users){
-    while (*users != NULL)
-    {
-        free(*users);
-    }
-    free(users);
 }
 void freeUsers(User_t** users){
     while (*users != NULL)
