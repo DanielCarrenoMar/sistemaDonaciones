@@ -12,7 +12,8 @@
 #include "./library/imgAscii.h"
 #include "./library/linkedDonations.h"
 
-// Fuente https://patorjk.com/software/taag/#p=display&f=Big&t=Garritas%0A
+// Fuente Grande https://patorjk.com/software/taag/#p=display&f=Big&t=Garritas%0A
+// Fuente Pequeña https://patorjk.com/software/taag/#p=display&f=Small&t=Inicio%0A
 // Paleta de colores
 // Resalte f_RED #AB0000
 // Secundarios f_BLUE f_LBLUE #0000AC #5354FC
@@ -104,8 +105,8 @@ void layer_main(){
     imgTextGarritas(62, 2, f_LBLUE);
 
     printf(f_LRED);
-    gotoxy(58, 18); printf("1. Iniciar");
-    gotoxy(58, 19); printf("0. Salir");
+    gotoxy(58, 18); printf(f_LRED); printf("1."); printf(f_LBLUE); printf(" Iniciar");
+    gotoxy(58, 19); printf(f_LRED); printf("0."); printf(f_LBLUE); printf(" Salir");
     printf(s_RESET_ALL);
 
     userInputMenu(80,18);
@@ -124,14 +125,11 @@ void layer_login(User_t* actualUser){
         layer_global();
         
         gotoxy(55, 11); printf(f_LRED); printf("1."); printf(f_LBLUE); printf(" Nombre");
-        gotoxy(55, 17); printf(f_LRED); printf("2. Cedula");
-        gotoxy(55, 23); printf("3. Registarse");
-        gotoxy(55, 25); printf("4. INICIAR");
-        gotoxy(55, 27); printf("0. Salir");
-        printf(f_LGREEN);
-        gotoxy(53, 25); printf("~");
-        gotoxy(66, 25); printf("~");
-        imgTextInicio(45, 2, f_LBLUE);
+        gotoxy(55, 17); printf(f_LRED); printf("2."); printf(f_LBLUE); printf(" Cedula");
+        gotoxy(55, 23); printf(f_LRED); printf("3."); printf(f_LBLUE); printf(" Registarse");
+        gotoxy(55, 25); printf(f_LRED); printf("4."); printf(f_LRED); printf(" INICIAR");
+        gotoxy(55, 27); printf(f_LRED); printf("0."); printf(f_LBLUE); printf(" Salir");
+        imgTextInicio(46, 2, f_LBLUE);
         firtsTime = 0;
     }
 
@@ -172,17 +170,14 @@ void layer_register(User_t* actualUser){
         layer_global();
 
         printf(f_LRED);
-        gotoxy(14, 11); printf("1. Nombre");
-        gotoxy(14, 17); printf("2. Cedula");
-        gotoxy(69, 11); printf("3. Telefono");
-        gotoxy(69, 17); printf("4. Direccion");
-        gotoxy(55, 23); printf("5. Login");
-        gotoxy(55, 25); printf("6. INICIAR");
-        gotoxy(55, 27); printf("0. Salir");
-        printf(f_LGREEN);
-        gotoxy(53, 25); printf("~");
-        gotoxy(66, 25); printf("~");
-        imgTextRegistro(40, 2, f_LBLUE);
+        gotoxy(14, 11); printf(f_LRED); printf("1."); printf(f_LBLUE); printf(" Nombre");
+        gotoxy(14, 17); printf(f_LRED); printf("2."); printf(f_LBLUE); printf(" Cedula");
+        gotoxy(69, 11); printf(f_LRED); printf("3."); printf(f_LBLUE); printf(" Telefono");
+        gotoxy(69, 17); printf(f_LRED); printf("4."); printf(f_LBLUE); printf(" Direccion");
+        gotoxy(55, 23); printf(f_LRED); printf("5."); printf(f_LBLUE); printf(" Login");
+        gotoxy(55, 25); printf(f_LRED); printf("6."); printf(f_LRED); printf(" INICIAR");
+        gotoxy(55, 27); printf(f_LRED); printf("0."); printf(f_LBLUE); printf(" Salir");
+        imgTextRegistro(41, 2, f_LBLUE);
         firtsTime = 0;
     }
     printf(f_LGREEN);
@@ -231,21 +226,27 @@ void layer_options(){
     if (firtsTime){
         borrarPantalla();
         layer_global();
+        printf(f_LRED);
+        gotoxy(41, 12); printf("1.");
+        gotoxy(41, 17); printf("2.");
+        gotoxy(41, 22); printf("3.");
+        gotoxy(41, 27); printf("0. Salir");
+        imgTextDonacion(45,10, f_LBLUE);
+        imgTextVerDonaciones(46,15, f_LBLUE);
+        imgTextMisDonaciones(47,20, f_LBLUE);
+        imgTextGarritas(62, 2, f_LBLUE);
+        imgBear(99, 24, f_LGREEN);
         firtsTime = 0;
     }
-    imgTextGarritas(62, 2, f_LBLUE);
-
-    printf(f_LRED);
-    gotoxy(58, 18); printf("1. Hacer Donacion");
-    gotoxy(58, 19); printf("0. Salir");
-    gotoxy(77, 18); printf("->");
-    printf(s_RESET_ALL);
-
-    userInputMenu(55,29);
-    cuadrado(52, 29, 40, 2, ' ');
+    userInputMenu(41,32);
+    cuadrado(37, 32, 40, 2, ' ');
     
     if(inputMenu == '1'){
-        pageIndex = 2;
+        //pageIndex = 2;
+    }else if(inputMenu == '2'){
+        
+    }else if(inputMenu == '3'){
+        
     }
 }
 
@@ -344,13 +345,12 @@ int main (){
     strcpy(actualUser->telefono, "");
     strcpy(actualUser->direccion, "");
     
-    /*
     ocultarCursor();
     borrarPantalla();
     layer_global();
 
     imgTreeMain1(2, 13, f_LGREEN);
-    startAnimation();
+    //startAnimation();
     while (1)
     {   
 
@@ -359,13 +359,13 @@ int main (){
         if (pageIndex == 2) layer_register(actualUser);
         if (pageIndex == 3) layer_options();
         if (pageIndex == 4) layer_makeDonation();
-        if (pageIndex == 5) layer_myDonations();
-        if (pageIndex == 6) layer_listDonations();
+        if (pageIndex == 5) layer_listDonations();
+        if (pageIndex == 6) layer_myDonations();
 
         if (inputMenu == '0'){
             break;
         }
-    }*/
+    }
 
     printf(s_RESET_ALL);
     mostrarCursor();
