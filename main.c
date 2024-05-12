@@ -20,7 +20,7 @@
 // Principal f_GREEN #00AB00
 
 char inputMenu;
-int pageIndex = 0;
+int pageIndex = 7;
 
 void wait(int time){
     #ifdef _WIN32
@@ -158,8 +158,8 @@ void layer_login(User_t* actualUser){
     }
     if(inputMenu == '4'){
         transition();
-        pageIndex = 3;
         firtsTime = 1;
+        pageIndex = 3;
     }
 }
 
@@ -248,12 +248,15 @@ void layer_options(){
     
     if(inputMenu == '1'){
         transition();
+        firtsTime = 1;
         pageIndex = 4;
     }else if(inputMenu == '2'){
         transition();
+        firtsTime = 1;
         pageIndex = 6;
     }else if(inputMenu == '3'){
         transition();
+        firtsTime = 1;
         pageIndex = 7;
     }
 }
@@ -304,26 +307,66 @@ void layer_thanksDonation(){
     }
 }
 
-void layer_myDonations(){
+void layer_myDonations(User_t user, nodeDonation_t* headDonations){
         static int firtsTime = 1;
     if (firtsTime){
         borrarPantalla();
         layer_global();
+        int percent = 0;
+        int count = 0;
+
+        headDonations = headDonations->next;
+        while (headDonations){
+            if (strcmp(headDonations->donation.cedula, user.cedula) == 0){
+                if (percent <= 4) {
+                    imgCard(79, 5 + 6*percent, f_LGREEN);
+                    printf(f_LBLUE);
+                    gotoxy(80, 6 + 6*percent); printf("%s", headDonations->donation.tipo);
+                    printf(f_LGREEN);
+                    gotoxy(87, 7 + 6*percent); printf("%s", headDonations->donation.valor);
+                    gotoxy(88, 8 + 6*percent); printf("%s", headDonations->donation.cedula);
+                    gotoxy(87, 9 + 6*percent); printf("%s", headDonations->donation.fecha);
+                    printf(f_LRED);
+                    gotoxy(76, 8 + 6*percent); printf("%d.", percent+1);
+                }
+                percent++;
+            }
+            count++;
+            headDonations = headDonations->next;
+        }
+        percent = (percent * 100) / count;
+
         imgTextMisDonaciones(55,1, f_LBLUE);
+        printf(f_LBLUE);
+        gotoxy(22, 6); printf("USUARIO");
+        gotoxy(20, 13); printf("Estadisticas");
+        gotoxy(37, 15); printf("%d%%", percent);
+        printf(f_LGREEN);
+        gotoxy(12, 8); printf("- %s", user.nombre);
+        gotoxy(28, 8); printf("- %s", user.cedula);
+        gotoxy(12, 10); printf("- %s", user.telefono);
+        gotoxy(28, 10); printf("- %s", user.direccion);
+        gotoxy(12, 15); printf("Porcentaje de donaciones");
+        printf(f_LRED);
+        gotoxy(47, 14); printf(f_LRED); printf("6."); printf(f_LBLUE); printf(" Regresar");
+        gotoxy(47, 16); printf(f_LRED); printf("0."); printf(f_LBLUE); printf(" Salir");
+
+        printf(f_LGREEN);
+        graficaPastel(25, 25, 16, 8, '*', f_LBLUE, percent);
         firtsTime = 0;
     }
 
-    printf(f_LRED);
-    gotoxy(58, 18); printf("1. Iniciar");
-    gotoxy(58, 19); printf("0. Salir");
-    gotoxy(77, 18); printf("->");
-    printf(s_RESET_ALL);
-
-    cuadrado(80, 18, 40, 2, ' ');
-    userInputMenu(80,18);
+    userInputMenu(50,12);
+    cuadrado(50, 12, 29, 2, ' ');
     
     if(inputMenu == '1'){
-        pageIndex = 2;
+        transition();
+        firtsTime = 1;
+        pageIndex = 8;
+    }else if (inputMenu == '6'){
+        transition();
+        firtsTime = 1;
+        pageIndex = 3;
     }
 }
 
@@ -387,17 +430,17 @@ int main (){
 
     if (numUsersList != 0){
         loadUsers(UsersList, "./data/USERS.txt");
-        verUsers(UsersList);
+        //verUsers(UsersList);
     }
     if (numDonationsList != 0){
         loadDonations(headDonations, "./data/DONATIONS.txt");
     }
 
     User_t* actualUser = (User_t*)malloc(sizeof(User_t));
-    strcpy(actualUser->nombre, "");
-    strcpy(actualUser->cedula, "");
-    strcpy(actualUser->telefono, "");
-    strcpy(actualUser->direccion, "");
+    strcpy(actualUser->nombre, "Daniel");
+    strcpy(actualUser->cedula, "cedulaD");
+    strcpy(actualUser->telefono, "telefonoD");
+    strcpy(actualUser->direccion, "direccionD");
 
     need_t needList[5] = {
         {'a', "Reforestacion", "Reforestacion de arboles nativos", 100},
@@ -424,7 +467,7 @@ int main (){
         if (pageIndex == 4) layer_makeDonation();
         if (pageIndex == 5) layer_thanksDonation();
         if (pageIndex == 6) layer_listDonations();
-        if (pageIndex == 7) layer_myDonations();
+        if (pageIndex == 7) layer_myDonations(*actualUser, headDonations);
         if (pageIndex == 8) layer_infoDonation();
 
         if (inputMenu == '0'){
