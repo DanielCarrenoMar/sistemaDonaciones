@@ -3,7 +3,7 @@
 #include "stdio.h"
 #include "string.h"
 
-nodeDonation_t* createNodeDonation(char* cedula, char* fecha, char* tipo, char* valor, char* descriccion){
+nodeDonation_t* createNodeDonation(char* cedula, char* fecha, char* tipo, char* valor, char* descriccion, char destino){
     nodeDonation_t* newNode = malloc(sizeof(nodeDonation_t));
     if(!newNode){
         printf("Error al asignar memoria\n");
@@ -14,21 +14,22 @@ nodeDonation_t* createNodeDonation(char* cedula, char* fecha, char* tipo, char* 
     strncpy(newNode->donation.tipo, tipo, 20);
     strncpy(newNode->donation.valor, valor, 20);
     strncpy(newNode->donation.descriccion, descriccion, 100);
+    newNode->donation.destino = destino;
     newNode->next = NULL;
     return newNode;
 }
 
-void addNodeDonationStart(nodeDonation_t* head, char* cedula, char* fecha, char* tipo, char* valor, char* descriccion){
+void addNodeDonationStart(nodeDonation_t* head, char* cedula, char* fecha, char* tipo, char* valor, char* descriccion, char destino){
     if(!head) return;
-    nodeDonation_t* newNode = createNodeDonation(cedula, fecha, tipo, valor, descriccion);
+    nodeDonation_t* newNode = createNodeDonation(cedula, fecha, tipo, valor, descriccion, destino);
 
     newNode->next = head->next;
     head->next = newNode;
 }
 
-void addNodeDonationEnd(nodeDonation_t* head, char* cedula, char* fecha, char* tipo, char* valor, char* descriccion){
+void addNodeDonationEnd(nodeDonation_t* head, char* cedula, char* fecha, char* tipo, char* valor, char* descriccion, char destino){
     if(!head) return;
-    nodeDonation_t* newNode = createNodeDonation(cedula, fecha, tipo, valor, descriccion);
+    nodeDonation_t* newNode = createNodeDonation(cedula, fecha, tipo, valor, descriccion, destino);
     if (head->next == NULL){
         head->next = newNode;
     } else {
@@ -48,6 +49,7 @@ void printNodesDonations(nodeDonation_t* head){
         printf("%s\n", head->donation.tipo);
         printf("Valor: %s\n", head->donation.valor);
         printf("Descrip: %s\n", head->donation.descriccion);
+        printf("Destino: %c\n", head->donation.destino);
         printf("\n");
         head = head->next;
     }

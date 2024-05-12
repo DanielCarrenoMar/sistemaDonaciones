@@ -77,7 +77,7 @@ void saveDonation(nodeDonation_t* head, char* file_name){
     if (file = fopen(file_name, "w")) {
         head = head->next;
         while (head){
-            fprintf(file, "%s %s %s %s %s\n", head->donation.cedula, head->donation.fecha, head->donation.tipo, head->donation.valor, head->donation.descriccion);
+            fprintf(file, "%s %s %s %s %s %c\n", head->donation.cedula, head->donation.fecha, head->donation.tipo, head->donation.valor, head->donation.descriccion, head->donation.destino);
             head = head->next;
         }
         fclose(file);
@@ -98,6 +98,7 @@ void loadDonations(nodeDonation_t* head, char* file_name){
             char tipo[20];
             char valor[20]; 
             char descriccion[100];
+            char destino;
 
             count = 0;
             char* userToken = strtok(line, " ");
@@ -113,12 +114,13 @@ void loadDonations(nodeDonation_t* head, char* file_name){
                     strcpy(valor, userToken);
                 }else if (count == 4){
                     strcpy(descriccion, userToken);
-                    descriccion[strcspn(descriccion, "\n")] = 0;
+                }else if (count == 5){
+                    destino = userToken[0];
                 }
                 count++;
             }
             while (userToken = strtok(NULL, " "));
-            addNodeDonationEnd(head, cedula, fecha, tipo, valor, descriccion);
+            addNodeDonationEnd(head, cedula, fecha, tipo, valor, descriccion, destino);
         }
         fclose(file);
     }else {

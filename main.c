@@ -226,6 +226,9 @@ void layer_options(){
     if (firtsTime){
         borrarPantalla();
         layer_global();
+        imgLine(35, 33, f_LGREEN);
+        imgLine(56, 33, f_LGREEN);
+        imgLine(77, 33, f_LGREEN);
         printf(f_LRED);
         gotoxy(41, 12); printf("1.");
         gotoxy(41, 17); printf("2.");
@@ -236,21 +239,49 @@ void layer_options(){
         imgTextMisDonaciones(47,20, f_LBLUE);
         imgTextGarritas(62, 2, f_LBLUE);
         imgBear(99, 24, f_LGREEN);
+        imgCave(1, 17, f_LGREEN);
         firtsTime = 0;
     }
+
     userInputMenu(41,32);
     cuadrado(37, 32, 40, 2, ' ');
     
     if(inputMenu == '1'){
-        //pageIndex = 2;
+        transition();
+        pageIndex = 4;
     }else if(inputMenu == '2'){
-        
+        transition();
+        pageIndex = 6;
     }else if(inputMenu == '3'){
-        
+        transition();
+        pageIndex = 7;
     }
 }
 
 void layer_makeDonation(){
+        static int firtsTime = 1;
+    if (firtsTime){
+        borrarPantalla();
+        layer_global();
+        imgTextDonacion(54,1, f_LBLUE);
+        firtsTime = 0;
+    }
+
+    printf(f_LRED);
+    gotoxy(58, 18); printf("1. Iniciar");
+    gotoxy(58, 19); printf("0. Salir");
+    gotoxy(77, 18); printf("->");
+    printf(s_RESET_ALL);
+
+    cuadrado(80, 18, 40, 2, ' ');
+    userInputMenu(80,18);
+    
+    if(inputMenu == '1'){
+        pageIndex = 2;
+    }
+}
+
+void layer_thanksDonation(){
         static int firtsTime = 1;
     if (firtsTime){
         borrarPantalla();
@@ -278,6 +309,29 @@ void layer_myDonations(){
     if (firtsTime){
         borrarPantalla();
         layer_global();
+        imgTextMisDonaciones(55,1, f_LBLUE);
+        firtsTime = 0;
+    }
+
+    printf(f_LRED);
+    gotoxy(58, 18); printf("1. Iniciar");
+    gotoxy(58, 19); printf("0. Salir");
+    gotoxy(77, 18); printf("->");
+    printf(s_RESET_ALL);
+
+    cuadrado(80, 18, 40, 2, ' ');
+    userInputMenu(80,18);
+    
+    if(inputMenu == '1'){
+        pageIndex = 2;
+    }
+}
+
+void layer_listDonations(){
+        static int firtsTime = 1;
+    if (firtsTime){
+        borrarPantalla();
+        layer_global();
         firtsTime = 0;
     }
     imgTextGarritas(62, 2, f_LBLUE);
@@ -296,7 +350,7 @@ void layer_myDonations(){
     }
 }
 
-void layer_listDonations(){
+void layer_infoDonation(){
         static int firtsTime = 1;
     if (firtsTime){
         borrarPantalla();
@@ -344,6 +398,15 @@ int main (){
     strcpy(actualUser->cedula, "");
     strcpy(actualUser->telefono, "");
     strcpy(actualUser->direccion, "");
+
+    need_t needList[5] = {
+        {'a', "Reforestacion", "Reforestacion de arboles nativos", 100},
+        {'b', "Proteccion", "Proteccion de animales en peligro de extincion", 100},
+        {'c', "Juguetes", "Juguetes para los animales", 10},
+        {'d', "Comida de animales", "Comprar comida para cada animal", 150},
+        {'e', "Casas para perro", "Comprar casas para los perros", 100}
+    };
+
     
     ocultarCursor();
     borrarPantalla();
@@ -359,8 +422,10 @@ int main (){
         if (pageIndex == 2) layer_register(actualUser);
         if (pageIndex == 3) layer_options();
         if (pageIndex == 4) layer_makeDonation();
-        if (pageIndex == 5) layer_listDonations();
-        if (pageIndex == 6) layer_myDonations();
+        if (pageIndex == 5) layer_thanksDonation();
+        if (pageIndex == 6) layer_listDonations();
+        if (pageIndex == 7) layer_myDonations();
+        if (pageIndex == 8) layer_infoDonation();
 
         if (inputMenu == '0'){
             break;

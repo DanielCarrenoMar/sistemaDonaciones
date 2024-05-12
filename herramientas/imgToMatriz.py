@@ -1,6 +1,6 @@
 import pyperclip
 
-def asciiC(c):
+def asciiC(c, code=True):
     codigo = {
         ' ': 32,
         '!': 33,
@@ -227,29 +227,69 @@ def asciiC(c):
         'nbsp': 255
     }
 
-    for key, value in codigo.items():
-        if c == key:
-            return value
-    
-    return 32
+    if code:
+        for key, value in codigo.items():
+            if c == key:
+                return value
+        
+        return 32
+    else:
+        for key, value in codigo.items():
+            if c == value:
+                return key
 
-text = ""
+        return " "
 
-with open("./herramientas/image.txt", "r", encoding='utf-8') as f:
-    image = f.readlines()
+def imgToMatriz():
+    text = ""
+    with open("./herramientas/image.txt", "r", encoding='utf-8') as f:
+        image = f.readlines()
 
-    width = max(len(image[i]) for i in range(len(image)))-1
-    print("height: ", len(image))
-    print("width: ", width)
+        width = max(len(image[i]) for i in range(len(image)))-1
+        print("height: ", len(image))
+        print("width: ", width)
 
-    for line in image:
-        line = line.replace('\n', '')
-        text += "{"
-        for index, c in enumerate(line):
-            text += f"{asciiC(c)},"
-        for i in range(width - len(line)):
-            text += '32,'
-        text += "},"
-        text += "\n"
+        for line in image:
+            line = line.replace('\n', '')
+            text += "{"
+            for c in line:
+                text += f"{asciiC(c)},"
+            for i in range(width - len(line)):
+                text += '32,'
+            text += "},"
+            text += "\n"
 
-pyperclip.copy(text)
+    return text
+
+def matrizToImg():
+    text = ""
+    with open("./herramientas/image.txt", "r", encoding='utf-8') as f:
+        image = f.readlines()
+
+        for line in image:
+            line = line[1:-4].split(",")
+            for c in line:
+                text += asciiC(int(c), False)
+            text += "\n"
+
+    return text
+
+def imgToprintC():
+    text = ""
+    with open("./herramientas/image.txt", "r", encoding='utf-8') as f:
+        image = f.readlines()
+
+        for index, line in enumerate(image):
+            line = line.replace('\n', '')
+            text += f'gotoxy(x,y+{index}); printf("'
+            for c in line:
+                text += c
+            text += '");'
+            text += "\n"
+
+    return text
+
+print("Copiado al portapapeles")
+#pyperclip.copy(matrizToImg())
+#pyperclip.copy(imgToprintC())
+pyperclip.copy(imgToMatriz())
