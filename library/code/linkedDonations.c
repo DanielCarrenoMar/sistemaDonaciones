@@ -3,6 +3,19 @@
 #include "stdio.h"
 #include "string.h"
 
+nodeDonation_t* findIndextDonations(nodeDonation_t* head, int index){
+    head = head->next;
+    int i = 0;
+    while (head){
+        if (i == index){
+            return head;
+        }
+        head = head->next;
+        i++;
+    }
+    return NULL;
+}
+
 nodeDonation_t* createNodeDonation(char* cedula, char* fecha, char* tipo, char* valor, char* descriccion, char destino){
     nodeDonation_t* newNode = malloc(sizeof(nodeDonation_t));
     if(!newNode){

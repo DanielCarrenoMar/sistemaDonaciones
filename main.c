@@ -20,7 +20,27 @@
 // Principal f_GREEN #00AB00
 
 char inputMenu;
-int pageIndex = 7;
+int lastPageIndex = 0;
+int pageIndex = 8;
+int cardIndex = 1;
+
+User_t* findUser(User_t** UsersList, char* cedula){
+    for (int i = 0; UsersList[i] != NULL; i++){
+        if (strcmp(UsersList[i]->cedula, cedula) == 0){
+            return UsersList[i];
+        }
+    }
+    return NULL;
+}
+
+need_t* findNeed(need_t* needList, char id){
+    for (int i = 0; i < 5; i++){
+        if (needList[i].id == id){
+            return &needList[i];
+        }
+    }
+    return NULL;
+}
 
 void wait(int time){
     #ifdef _WIN32
@@ -261,26 +281,48 @@ void layer_options(){
     }
 }
 
-void layer_makeDonation(){
-        static int firtsTime = 1;
+void layer_makeDonation(nodeDonation_t* headDonations, need_t* needList){
+    static int firtsTime = 1;
+    int suma = 0;
     if (firtsTime){
         borrarPantalla();
         layer_global();
         imgTextDonacion(54,1, f_LBLUE);
+        
+        while (headDonations){
+            for (int i = 0; i < 5; i++){
+                if (headDonations->donation.destino == needList[i].id){
+                    needList[i].goal -= atoi(headDonations->donation.valor);
+                    if (needList[i].goal < 0){
+                        needList[i].goal = 0;
+                    }
+                }
+            }
+            headDonations = headDonations->next;
+        }
+
+        for (int i = 0; i < 5; i++){
+            gotoxy(4, 10+3*i); printf("Destino: %s", needList[i].name);
+            if (needList[i].goal != 0) printf(f_LBLUE);
+            gotoxy(4, 11+3*i); printf("Faltante: %d", needList[i].goal);
+            printf(s_RESET_ALL);
+        }
+        
+
+        printf(f_LRED);
+        gotoxy(58, 18); printf("1. Regresar");
+        gotoxy(58, 19); printf("0. Salir");
+        printf(s_RESET_ALL);
         firtsTime = 0;
     }
-
-    printf(f_LRED);
-    gotoxy(58, 18); printf("1. Iniciar");
-    gotoxy(58, 19); printf("0. Salir");
-    gotoxy(77, 18); printf("->");
-    printf(s_RESET_ALL);
 
     cuadrado(80, 18, 40, 2, ' ');
     userInputMenu(80,18);
     
     if(inputMenu == '1'){
-        pageIndex = 2;
+        transition();
+        firtsTime = 1;
+        pageIndex = 3;
     }
 }
 
@@ -323,7 +365,9 @@ void layer_myDonations(User_t user, nodeDonation_t* headDonations){
                     printf(f_LBLUE);
                     gotoxy(80, 6 + 6*percent); printf("%s", headDonations->donation.tipo);
                     printf(f_LGREEN);
-                    gotoxy(87, 7 + 6*percent); printf("%s", headDonations->donation.valor);
+                    gotoxy(87, 7 + 6*percent);
+                    if (headDonations->donation.valor[0] != '0') printf("%s", headDonations->donation.valor);
+                    else printf("No Medible");
                     gotoxy(88, 8 + 6*percent); printf("%s", headDonations->donation.cedula);
                     gotoxy(87, 9 + 6*percent); printf("%s", headDonations->donation.fecha);
                     printf(f_LRED);
@@ -362,7 +406,33 @@ void layer_myDonations(User_t user, nodeDonation_t* headDonations){
     if(inputMenu == '1'){
         transition();
         firtsTime = 1;
+        cardIndex = 0;
         pageIndex = 8;
+        lastPageIndex = 7;
+    }else if (inputMenu == '2'){
+        transition();
+        firtsTime = 1;
+        cardIndex = 1;
+        pageIndex = 8;
+        lastPageIndex = 7;
+    }else if (inputMenu == '3'){
+        transition();
+        firtsTime = 1;
+        cardIndex = 2;
+        pageIndex = 8;
+        lastPageIndex = 7;
+    }else if (inputMenu == '4'){
+        transition();
+        firtsTime = 1;
+        cardIndex = 3;
+        pageIndex = 8;
+        lastPageIndex = 7;
+    }else if (inputMenu == '5'){
+        transition();
+        firtsTime = 1;
+        cardIndex = 4;
+        pageIndex = 8;
+        lastPageIndex = 7;
     }else if (inputMenu == '6'){
         transition();
         firtsTime = 1;
@@ -393,26 +463,47 @@ void layer_listDonations(){
     }
 }
 
-void layer_infoDonation(){
-        static int firtsTime = 1;
+void layer_infoDonation(nodeDonation_t* headDonations, User_t** UsersList, need_t* needList){
+    static int firtsTime = 1;
+    nodeDonation_t* donation = findIndextDonations(headDonations, cardIndex);
+    User_t* user = findUser(UsersList, donation->donation.cedula);
+    need_t* need = findNeed(needList, donation->donation.destino);
+    findIndextDonations(headDonations, cardIndex);
     if (firtsTime){
         borrarPantalla();
         layer_global();
+        gotoxy(3,4); printf("Cedula: %s", donation->donation.cedula);
+        gotoxy(3,5); printf("Fecha: %s", donation->donation.fecha);
+        gotoxy(3,6); printf("Tipo: %s", donation->donation.tipo);
+        gotoxy(3,7); printf("Valor: %s", donation->donation.valor);
+        gotoxy(3,8); printf("Descripcion: %s", donation->donation.descriccion);
+
+        if (need != NULL){
+            gotoxy(3,10); printf("Nombre: %s", need->name);
+            gotoxy(3,11); printf("Objetivo: %d", need->goal);
+            gotoxy(3,12); printf("Descripccion: %s", need->description);
+        }
+
+        gotoxy(53,4); printf("Nombre: %s", user->nombre);
+        gotoxy(53,5); printf("Cedula: %s", user->cedula);
+        gotoxy(53,6); printf("Direccion: %s", user->direccion);
+        gotoxy(53,7); printf("Telefono: %s", user->telefono);
+
+        printf(f_LRED);
+        gotoxy(58, 18); printf("1. Regresar");
+        gotoxy(58, 19); printf("0. Salir");
+        gotoxy(77, 18); printf("->");
+        printf(s_RESET_ALL);
         firtsTime = 0;
     }
-    imgTextGarritas(62, 2, f_LBLUE);
-
-    printf(f_LRED);
-    gotoxy(58, 18); printf("1. Iniciar");
-    gotoxy(58, 19); printf("0. Salir");
-    gotoxy(77, 18); printf("->");
-    printf(s_RESET_ALL);
 
     cuadrado(80, 18, 40, 2, ' ');
     userInputMenu(80,18);
     
     if(inputMenu == '1'){
-        pageIndex = 2;
+        transition();
+        firtsTime = 1;
+        pageIndex = lastPageIndex;
     }
 }
 
@@ -443,14 +534,13 @@ int main (){
     strcpy(actualUser->direccion, "direccionD");
 
     need_t needList[5] = {
-        {'a', "Reforestacion", "Reforestacion de arboles nativos", 100},
-        {'b', "Proteccion", "Proteccion de animales en peligro de extincion", 100},
+        {'a', "Reforestacion", "Reforestacion de arboles nativos", 1000},
+        {'b', "Proteccion", "Proteccion de animales en peligro de extincion", 1000},
         {'c', "Juguetes", "Juguetes para los animales", 10},
         {'d', "Comida de animales", "Comprar comida para cada animal", 150},
         {'e', "Casas para perro", "Comprar casas para los perros", 100}
     };
-
-    
+ 
     ocultarCursor();
     borrarPantalla();
     layer_global();
@@ -464,11 +554,11 @@ int main (){
         if (pageIndex == 1) layer_login(actualUser);
         if (pageIndex == 2) layer_register(actualUser);
         if (pageIndex == 3) layer_options();
-        if (pageIndex == 4) layer_makeDonation();
+        if (pageIndex == 4) layer_makeDonation(headDonations, needList);
         if (pageIndex == 5) layer_thanksDonation();
         if (pageIndex == 6) layer_listDonations();
         if (pageIndex == 7) layer_myDonations(*actualUser, headDonations);
-        if (pageIndex == 8) layer_infoDonation();
+        if (pageIndex == 8) layer_infoDonation(headDonations, UsersList, needList);
 
         if (inputMenu == '0'){
             break;

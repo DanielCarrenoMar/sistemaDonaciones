@@ -1,7 +1,7 @@
-cedulaD 010520240651 Monetaria 500 DescriccionWaza a
-cedulaD 010520240651 Monetaria 200 DescriccionWaza a
-cedulaD 010520240651 Monetaria 700 DescriccionWaza a
-cedulaD 010520240651 Monetaria 700 DescriccionWaza a
-cedulaD 010520240651 Monetaria 700 DescriccionWaza a
-cedulaJ 020520240651 Monetaria 200 DescriccionWaza b
-cedulaJ 020520240651 Monetaria 500 DescriccionWaza b
+cedulaD 01/05/2024 Monetaria 500 DescriccionWaza a
+cedulaD 02/05/2024 Voluntariado 0 DescriccionWaza 0
+cedulaD 01/05/2024 Voluntariado 0 DescriccionWaza 0
+cedulaD 01/05/2024 Monetaria 700 DescriccionWaza a
+cedulaD 03/05/2024 Material 7 DescriccionWaza c
+cedulaJ 02/05/2024 Monetaria 200 DescriccionWaza b
+cedulaJ 04/05/2024 Monetaria 500 DescriccionWaza b
