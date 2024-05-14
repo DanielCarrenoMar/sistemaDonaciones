@@ -13,10 +13,10 @@ typedef struct Donation
 
 typedef struct User
 {
-    char nombre[20];
-    char cedula[30];
-    char telefono[30];
-    char direccion[30];
+    char nombre[40];
+    char cedula[40];
+    char telefono[40];
+    char direccion[40];
 }User_t;
 
 typedef struct nodeDonation

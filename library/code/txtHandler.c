@@ -55,7 +55,6 @@ void findCedula(User_t* buffer, char *file_name){
     }else {
         printf("El archivo no existe.\n");
     }
-    printf("XD\n");
 
 }
     

@@ -21,8 +21,8 @@
 
 char inputMenu;
 int lastPageIndex = 0;
-int pageIndex = 8;
-int cardIndex = 1;
+int pageIndex = 2;
+int cardIndex = 0;
 
 User_t* findUser(User_t** UsersList, char* cedula){
     for (int i = 0; UsersList[i] != NULL; i++){
@@ -76,7 +76,7 @@ void userInputStr(int x, int y, char* buffer){
     printf(f_LRED);
     gotoxy(x, y); printf("->");
     printf(f_LBLUE);
-    gotoxy(x+2, y); fgets(buffer, 20, stdin);
+    gotoxy(x+2, y); fgets(buffer, 40, stdin);
     gotoxy(x, y); printf("  ");
     printf(s_RESET_ALL);
 }
@@ -108,8 +108,8 @@ void transition(){
 }
 
 void layer_main(){
-    static int firtsTime = 1;
-    if (firtsTime){
+    static int firstTime = 1;
+    if (firstTime){
         imgTreeMain1(2, 13, f_LGREEN);
         imgOwl1(33, 17, f_LBLUE);
         imgDog1(109, 30, f_LBLUE);
@@ -120,7 +120,7 @@ void layer_main(){
         gotoxy(58,12); printf("los bosques de manera sostenible, luchar contra");
         gotoxy(58,13); printf("la desertificacion, detener e invertir la degradacion");
         gotoxy(58,14); printf("de las tierras y la perdida de biodiversidad" s_RESET_ALL);
-        firtsTime = 0;
+        firstTime = 0;
     }
     imgTextGarritas(62, 2, f_LBLUE);
 
@@ -139,8 +139,8 @@ void layer_main(){
 }
 
 void layer_login(User_t* actualUser){
-    static int firtsTime = 1;
-    if (firtsTime){
+    static int firstTime = 1;
+    if (firstTime){
         borrarPantalla();
         layer_global();
         
@@ -150,7 +150,7 @@ void layer_login(User_t* actualUser){
         gotoxy(55, 25); printf(f_LRED); printf("4."); printf(f_LRED); printf(" INICIAR");
         gotoxy(55, 27); printf(f_LRED); printf("0."); printf(f_LBLUE); printf(" Salir");
         imgTextInicio(46, 2, f_LBLUE);
-        firtsTime = 0;
+        firstTime = 0;
     }
 
     printf(f_LGREEN);
@@ -164,28 +164,30 @@ void layer_login(User_t* actualUser){
     char nombre[20];
     char cedula[20];
     if(inputMenu == '1'){
+        cuadrado(41, 13, 39, 2, ' ');
         userInputStr(41,13, nombre);
         inputMenu = 'n';
     }
     if(inputMenu == '2'){
+        cuadrado(41, 19, 39, 2, ' ');
         userInputStr(41,19, cedula);
         inputMenu = 'n';
     }
     if(inputMenu == '3'){
         transition();
         pageIndex = 2;
-        firtsTime = 1;
+        firstTime = 1;
     }
     if(inputMenu == '4'){
         transition();
-        firtsTime = 1;
+        firstTime = 1;
         pageIndex = 3;
     }
 }
 
 void layer_register(User_t* actualUser){
-    static int firtsTime = 1;
-    if (firtsTime){
+    static int firstTime = 1;
+    if (firstTime){
         borrarPantalla();
         layer_global();
 
@@ -198,7 +200,7 @@ void layer_register(User_t* actualUser){
         gotoxy(55, 25); printf(f_LRED); printf("6."); printf(f_LRED); printf(" INICIAR");
         gotoxy(55, 27); printf(f_LRED); printf("0."); printf(f_LBLUE); printf(" Salir");
         imgTextRegistro(41, 2, f_LBLUE);
-        firtsTime = 0;
+        firstTime = 0;
     }
     printf(f_LGREEN);
     recuadro(13, 12, 40, 3);
@@ -211,39 +213,43 @@ void layer_register(User_t* actualUser){
     cuadrado(52, 29, 40, 2, ' ');
     
     if(inputMenu == '1'){
+        cuadrado(14, 13, 39, 2, ' ');
         userInputStr(14,13, actualUser->nombre);
         inputMenu = 'n';
     }
     if(inputMenu == '2'){
+        cuadrado(14, 19, 39, 2, ' ');
         userInputStr(14,19, actualUser->cedula);
         inputMenu = 'n';
     }
     if(inputMenu == '3'){
+        cuadrado(69, 13, 39, 2, ' ');
         userInputStr(69,13, actualUser->telefono);
         inputMenu = 'n';
     }
     if(inputMenu == '4'){
+        cuadrado(69, 19, 39, 2, ' ');
         userInputStr(69,19, actualUser->direccion);
         inputMenu = 'n';
     }
     if(inputMenu == '5'){
         transition();
         pageIndex = 1;
-        firtsTime = 1;
+        firstTime = 1;
     }
     if(inputMenu == '6'){
         if(strlen(actualUser->nombre) != 0 && strlen(actualUser->cedula) != 0 && strlen(actualUser->telefono) != 0 && strlen(actualUser->direccion) != 0){
             transition();
             saveUser(actualUser, "./data/USERS.txt");
             pageIndex = 3;
-            firtsTime = 1;
+            firstTime = 1;
         }
     }
 }
 
 void layer_options(){
-    static int firtsTime = 1;
-    if (firtsTime){
+    static int firstTime = 1;
+    if (firstTime){
         borrarPantalla();
         layer_global();
         imgLine(35, 33, f_LGREEN);
@@ -260,7 +266,7 @@ void layer_options(){
         imgTextGarritas(62, 2, f_LBLUE);
         imgBear(99, 24, f_LGREEN);
         imgCave(1, 17, f_LGREEN);
-        firtsTime = 0;
+        firstTime = 0;
     }
 
     userInputMenu(41,32);
@@ -268,23 +274,23 @@ void layer_options(){
     
     if(inputMenu == '1'){
         transition();
-        firtsTime = 1;
+        firstTime = 1;
         pageIndex = 4;
     }else if(inputMenu == '2'){
         transition();
-        firtsTime = 1;
+        firstTime = 1;
         pageIndex = 6;
     }else if(inputMenu == '3'){
         transition();
-        firtsTime = 1;
+        firstTime = 1;
         pageIndex = 7;
     }
 }
 
 void layer_makeDonation(nodeDonation_t* headDonations, need_t* needList){
-    static int firtsTime = 1;
+    static int firstTime = 1;
     int suma = 0;
-    if (firtsTime){
+    if (firstTime){
         borrarPantalla();
         layer_global();
         imgTextDonacion(54,1, f_LBLUE);
@@ -313,7 +319,7 @@ void layer_makeDonation(nodeDonation_t* headDonations, need_t* needList){
         gotoxy(58, 18); printf("1. Regresar");
         gotoxy(58, 19); printf("0. Salir");
         printf(s_RESET_ALL);
-        firtsTime = 0;
+        firstTime = 0;
     }
 
     cuadrado(80, 18, 40, 2, ' ');
@@ -321,17 +327,17 @@ void layer_makeDonation(nodeDonation_t* headDonations, need_t* needList){
     
     if(inputMenu == '1'){
         transition();
-        firtsTime = 1;
+        firstTime = 1;
         pageIndex = 3;
     }
 }
 
 void layer_thanksDonation(){
-        static int firtsTime = 1;
-    if (firtsTime){
+        static int firstTime = 1;
+    if (firstTime){
         borrarPantalla();
         layer_global();
-        firtsTime = 0;
+        firstTime = 0;
     }
     imgTextGarritas(62, 2, f_LBLUE);
 
@@ -350,8 +356,8 @@ void layer_thanksDonation(){
 }
 
 void layer_myDonations(User_t user, nodeDonation_t* headDonations){
-        static int firtsTime = 1;
-    if (firtsTime){
+        static int firstTime = 1;
+    if (firstTime){
         borrarPantalla();
         layer_global();
         int percent = 0;
@@ -397,7 +403,7 @@ void layer_myDonations(User_t user, nodeDonation_t* headDonations){
 
         printf(f_LGREEN);
         graficaPastel(25, 25, 16, 8, '*', f_LBLUE, percent);
-        firtsTime = 0;
+        firstTime = 0;
     }
 
     userInputMenu(50,12);
@@ -405,47 +411,47 @@ void layer_myDonations(User_t user, nodeDonation_t* headDonations){
     
     if(inputMenu == '1'){
         transition();
-        firtsTime = 1;
+        firstTime = 1;
         cardIndex = 0;
         pageIndex = 8;
         lastPageIndex = 7;
     }else if (inputMenu == '2'){
         transition();
-        firtsTime = 1;
+        firstTime = 1;
         cardIndex = 1;
         pageIndex = 8;
         lastPageIndex = 7;
     }else if (inputMenu == '3'){
         transition();
-        firtsTime = 1;
+        firstTime = 1;
         cardIndex = 2;
         pageIndex = 8;
         lastPageIndex = 7;
     }else if (inputMenu == '4'){
         transition();
-        firtsTime = 1;
+        firstTime = 1;
         cardIndex = 3;
         pageIndex = 8;
         lastPageIndex = 7;
     }else if (inputMenu == '5'){
         transition();
-        firtsTime = 1;
+        firstTime = 1;
         cardIndex = 4;
         pageIndex = 8;
         lastPageIndex = 7;
     }else if (inputMenu == '6'){
         transition();
-        firtsTime = 1;
+        firstTime = 1;
         pageIndex = 3;
     }
 }
 
 void layer_listDonations(){
-        static int firtsTime = 1;
-    if (firtsTime){
+        static int firstTime = 1;
+    if (firstTime){
         borrarPantalla();
         layer_global();
-        firtsTime = 0;
+        firstTime = 0;
     }
     imgTextGarritas(62, 2, f_LBLUE);
 
@@ -464,12 +470,12 @@ void layer_listDonations(){
 }
 
 void layer_infoDonation(nodeDonation_t* headDonations, User_t** UsersList, need_t* needList){
-    static int firtsTime = 1;
+    static int firstTime = 1;
     nodeDonation_t* donation = findIndextDonations(headDonations, cardIndex);
     User_t* user = findUser(UsersList, donation->donation.cedula);
     need_t* need = findNeed(needList, donation->donation.destino);
     findIndextDonations(headDonations, cardIndex);
-    if (firtsTime){
+    if (firstTime){
         borrarPantalla();
         layer_global();
         gotoxy(3,4); printf("Cedula: %s", donation->donation.cedula);
@@ -494,7 +500,7 @@ void layer_infoDonation(nodeDonation_t* headDonations, User_t** UsersList, need_
         gotoxy(58, 19); printf("0. Salir");
         gotoxy(77, 18); printf("->");
         printf(s_RESET_ALL);
-        firtsTime = 0;
+        firstTime = 0;
     }
 
     cuadrado(80, 18, 40, 2, ' ');
@@ -502,10 +508,26 @@ void layer_infoDonation(nodeDonation_t* headDonations, User_t** UsersList, need_
     
     if(inputMenu == '1'){
         transition();
-        firtsTime = 1;
+        firstTime = 1;
         pageIndex = lastPageIndex;
     }
 }
+/*
+void loginCheck(User_t **UsersList, char cedula){
+    //Revisa si estan en el txt de users(Con algo similar a userlist)
+    for (int i = 0; UsersList[i] != NULL; i++){
+        if (strcmp(UsersList[i]->cedula, cedula) == 0){
+            return UsersList[i];
+        }
+        return NULL;
+        //Si no estan en login llevarlos a registro
+        if (strcmp(UsersList[i]->cedula, cedula) == 1){
+            return layer_register(User_t **actualUser);
+        }
+    }
+    //Guardar los datos de registro en el txt de users.txt
+
+}*/
 
 int main (){
     just_fix_windows_console();
