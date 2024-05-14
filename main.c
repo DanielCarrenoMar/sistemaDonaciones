@@ -24,6 +24,23 @@ int lastPageIndex = 0;
 int pageIndex = 2;
 int cardIndex = 0;
 
+/*
+void loginCheck(User_t **UsersList, char cedula){
+    //Revisa si estan en el txt de users(Con algo similar a userlist)
+    for (int i = 0; UsersList[i] != NULL; i++){
+        if (strcmp(UsersList[i]->cedula, cedula) == 0){
+            return UsersList[i];
+        }
+        return NULL;
+        //Si no estan en login llevarlos a registro
+        if (strcmp(UsersList[i]->cedula, cedula) == 1){
+            return layer_register(User_t **actualUser);
+        }
+    }
+    //Guardar los datos de registro en el txt de users.txt
+
+}*/
+
 User_t* findUser(User_t** UsersList, char* cedula){
     for (int i = 0; UsersList[i] != NULL; i++){
         if (strcmp(UsersList[i]->cedula, cedula) == 0){
@@ -512,22 +529,6 @@ void layer_infoDonation(nodeDonation_t* headDonations, User_t** UsersList, need_
         pageIndex = lastPageIndex;
     }
 }
-/*
-void loginCheck(User_t **UsersList, char cedula){
-    //Revisa si estan en el txt de users(Con algo similar a userlist)
-    for (int i = 0; UsersList[i] != NULL; i++){
-        if (strcmp(UsersList[i]->cedula, cedula) == 0){
-            return UsersList[i];
-        }
-        return NULL;
-        //Si no estan en login llevarlos a registro
-        if (strcmp(UsersList[i]->cedula, cedula) == 1){
-            return layer_register(User_t **actualUser);
-        }
-    }
-    //Guardar los datos de registro en el txt de users.txt
-
-}*/
 
 int main (){
     just_fix_windows_console();
