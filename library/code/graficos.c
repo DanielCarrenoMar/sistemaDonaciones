@@ -21,6 +21,30 @@ void ocultarCursor(){
 void mostrarCursor() {
     printf("\e[?25h");
 }
+/*
+    Dibuja un circulo vacio en la pantalla
+*/
+void circunferencia(int x, int y, int xr, int yr, char sprite){
+    for (int i = 1; i < 360; i++){
+        float rad = i * 3.1416 / 180;
+        gotoxy(x + xr * cos(rad), y + yr * sin(rad));
+        printf("%c", sprite);
+    }
+}
+
+void graficaPastel(int x, int y, int xr, int yr, char sprite, char* color, int percent){
+    for (int i = 1; i < 360; i++){
+        float rad = i * 3.1416 / 180;
+        gotoxy(x + xr * cos(rad), y + yr * sin(rad));
+        printf("%c", sprite);
+    }
+    printf(color);
+    for (int i = 89; i < 91+360/(100.0/percent); i++){
+        float rad = i * 3.1416 / 180;
+        line(x, y, x + xr * cos(rad), y + yr * sin(rad), sprite);
+    }
+    printf(s_RESET_ALL);
+}
 
 #ifdef _WIN32
 #include <conio.h>
@@ -51,30 +75,6 @@ void setConsoleDim(int x, int y){
 void desactivarmax() {
     HWND consoleWindow = GetConsoleWindow();
     SetWindowLong(consoleWindow, GWL_STYLE, GetWindowLong(consoleWindow, GWL_STYLE) & ~WS_MAXIMIZEBOX & ~WS_SIZEBOX);
-}
-/*
-    Dibuja un circulo vacio en la pantalla
-*/
-void circunferencia(int x, int y, int xr, int yr, char sprite){
-    for (int i = 1; i < 360; i++){
-        float rad = i * 3.1416 / 180;
-        gotoxy(x + xr * cos(rad), y + yr * sin(rad));
-        printf("%c", sprite);
-    }
-}
-
-void graficaPastel(int x, int y, int xr, int yr, char sprite, char* color, int percent){
-    for (int i = 1; i < 360; i++){
-        float rad = i * 3.1416 / 180;
-        gotoxy(x + xr * cos(rad), y + yr * sin(rad));
-        printf("%c", sprite);
-    }
-    printf(color);
-    for (int i = 89; i < 91+360/(100.0/percent); i++){
-        float rad = i * 3.1416 / 180;
-        line(x, y, x + xr * cos(rad), y + yr * sin(rad), sprite);
-    }
-    printf(s_RESET_ALL);
 }
 
 #else
