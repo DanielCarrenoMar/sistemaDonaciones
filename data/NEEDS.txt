@@ -1,7 +1,10 @@
 ¿Donde iran destinadas las donaciones?
 * Un destino por linea
-* formato Titulo Descripcion Monto/Obejetivo (separado por espacios).
-Ejemplo: Reforestacion Reforestacion de arboles nativos 1000
+* formato Titulo Descripcion Monto/Obejetivo (separado por |).
+Ejemplo: Reforestacion|Reforestacion de arboles nativos|1000
 ----------------------------------------------
-Reforestacion Reforestacion de arboles nativos 1000
-Proteccion Proteccion de animales en peligro de extincion 1000
+Reforestacion|Reforestacion de arboles nativos|1000
+Proteccion|Proteccion de animales en peligro de extincion|1000
+Juguetes|Juguetes para los animales|10
+Comida de animales|Comprar comida para cada animal|150
+Casas para perro|Comprar casas para los perros|100

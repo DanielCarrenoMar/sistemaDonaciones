@@ -101,7 +101,7 @@ void saveDonation(NodeDonation* head, char* file_name){
     if (file = fopen(file_name, "w")) {
         head = head->next;
         while (head){
-            fprintf(file, "%s %s %s %s %s %c\n", head->donation.cedula, head->donation.fecha, head->donation.tipo, head->donation.valor, head->donation.descriccion, head->donation.destino);
+            fprintf(file, "%s %s %s %s %s %d\n", head->donation.cedula, head->donation.fecha, head->donation.tipo, head->donation.valor, head->donation.descriccion, head->donation.destino);
             head = head->next;
         }
         fclose(file);
@@ -122,7 +122,7 @@ void loadDonations(NodeDonation* head, char* file_name){
             char tipo[20];
             char valor[20]; 
             char descriccion[100];
-            char destino;
+            int destino;
 
             count = 0;
             char* userToken = strtok(line, " ");
@@ -139,7 +139,7 @@ void loadDonations(NodeDonation* head, char* file_name){
                 }else if (count == 4){
                     strcpy(descriccion, userToken);
                 }else if (count == 5){
-                    destino = userToken[0];
+                    destino = atoi(userToken);
                 }
                 count++;
             }
@@ -178,6 +178,39 @@ void loadUsers(User** users, char* file_name){
             }
             while (userToken = strtok(NULL, " "));
             *users++;
+        }
+        fclose(file);
+    }else {
+        printf("El archivo no existe.\n");
+    }
+}
+void loadNeeds(Need* needs, char* file_name, int start){
+    FILE *file;
+    char line[1028];
+    int count = 0;
+
+    if ((file = fopen(file_name, "r"))) {
+        while (fgets(line, sizeof(line), file)) {
+            count = 0;
+            char* userToken = strtok(line, "|");
+
+            if (start != 0) {
+                start--;
+                continue;
+            }
+
+            do{ 
+                if (count == 0){
+                    strcpy(needs->name, userToken);
+                }else if (count == 1){
+                    strcpy(needs->description, userToken);
+                }else if (count == 2){
+                    needs->goal = atoi(userToken);
+                }
+                count++;
+            }
+            while (userToken = strtok(NULL, "|"));
+            needs++;
         }
         fclose(file);
     }else {

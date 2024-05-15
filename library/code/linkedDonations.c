@@ -3,6 +3,16 @@
 #include "stdio.h"
 #include "string.h"
 
+int countTotalValorDonations(NodeDonation* head, int destino){
+    head = head->next;
+    int total = 0;
+    while (head){
+        if (destino == head->donation.destino) total += atoi(head->donation.valor);
+        head = head->next;
+    }
+    return total;
+}
+
 NodeDonation* findIndextDonations(NodeDonation* head, int index){
     head = head->next;
     int i = 0;

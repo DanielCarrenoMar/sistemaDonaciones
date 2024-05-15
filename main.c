@@ -21,7 +21,7 @@
 
 char inputMenu;
 int lastPageIndex = 0;
-int pageIndex = 7;
+int pageIndex = 0;
 int cardIndex = 0;
 
 /*
@@ -45,15 +45,6 @@ User* findUser(User** UsersList, char* cedula){
     for (int i = 0; UsersList[i] != NULL; i++){
         if (strcmp(UsersList[i]->cedula, cedula) == 0){
             return UsersList[i];
-        }
-    }
-    return NULL;
-}
-
-Need* findNeed(Need* needList, char id){
-    for (int i = 0; i < 5; i++){
-        if (needList[i].id == id){
-            return &needList[i];
         }
     }
     return NULL;
@@ -304,33 +295,20 @@ void layer_options(){
     }
 }
 
-void layer_makeDonation(NodeDonation* headDonations, Need* needList){
+void layer_makeDonation(NodeDonation* headDonations, Need* needList, int numNeedsList){
     static int firstTime = 1;
     int suma = 0;
     if (firstTime){
         borrarPantalla();
         layer_global();
         imgTextDonacion(54,1, f_LBLUE);
-        
-        while (headDonations){
-            for (int i = 0; i < 5; i++){
-                if (headDonations->donation.destino == needList[i].id){
-                    needList[i].goal -= atoi(headDonations->donation.valor);
-                    if (needList[i].goal < 0){
-                        needList[i].goal = 0;
-                    }
-                }
-            }
-            headDonations = headDonations->next;
-        }
 
-        for (int i = 0; i < 5; i++){
-            gotoxy(4, 10+3*i); printf("Destino: %s", needList[i].name);
+        for (int i = 0; i < numNeedsList; i++){
+            gotoxy(4, 10+3*i); printf("%d. ", i); printf("Destino: %s", needList[i].name);
             if (needList[i].goal != 0) printf(f_LBLUE);
-            gotoxy(4, 11+3*i); printf("Faltante: %d", needList[i].goal);
+            gotoxy(4, 11+3*i); printf("Faltante: %d", needList[i].goal - countTotalValorDonations(headDonations, i));
             printf(s_RESET_ALL);
-        }
-        
+        } 
 
         printf(f_LRED);
         gotoxy(58, 18); printf("1. Regresar");
@@ -407,7 +385,7 @@ void layer_myDonations(User user, NodeDonation* headDonations){
             printf(f_LBLUE);
             gotoxy(37, 15); printf("%d%%", percent);
             printf(f_LGREEN);
-            graficaPastel(25, 25, 16, 8, '.', f_LBLUE, percent);
+            graficaPastel(25, 25, 16, 8, '*', f_LBLUE, percent);
         }else{
             printf(f_LBLUE);
             gotoxy(37, 15); printf("XX%%");
@@ -498,7 +476,6 @@ void layer_infoDonation(NodeDonation* headDonations, User** UsersList, Need* nee
     static int firstTime = 1;
     NodeDonation* donation = findIndextDonations(headDonations, cardIndex);
     User* user = findUser(UsersList, donation->donation.cedula);
-    Need* need = findNeed(needList, donation->donation.destino);
     findIndextDonations(headDonations, cardIndex);
     if (firstTime){
         borrarPantalla();
@@ -509,10 +486,11 @@ void layer_infoDonation(NodeDonation* headDonations, User** UsersList, Need* nee
         gotoxy(3,7); printf("Valor: %s", donation->donation.valor);
         gotoxy(3,8); printf("Descripcion: %s", donation->donation.descriccion);
 
-        if (need != NULL){
-            gotoxy(3,10); printf("Nombre: %s", need->name);
-            gotoxy(3,11); printf("Objetivo: %d", need->goal);
-            gotoxy(3,12); printf("Descripccion: %s", need->description);
+        if (donation->donation.destino != -1){
+            Need need = needList[donation->donation.destino];
+            gotoxy(3,10); printf("Nombre: %s", need.name);
+            gotoxy(3,11); printf("Objetivo: %d", need.goal);
+            gotoxy(3,12); printf("Descripccion: %s", need.description);
         }
 
         gotoxy(53,4); printf("Nombre: %s", user->nombre);
@@ -549,11 +527,14 @@ int main (){
     User** UsersList = (User**)malloc(numUsersList * sizeof(User*));
     NodeDonation* headDonations = (NodeDonation*)malloc(sizeof(NodeDonation));
     headDonations->next = NULL;
-    Need* NeedsList = (Need*)malloc(numNeedsList*sizeof(Need));
+    Need* needsList = (Need*)malloc(numNeedsList*sizeof(Need));
 
     if (numUsersList != 0){
         loadUsers(UsersList, "./data/USERS.txt");
         //verUsers(UsersList);
+    }
+    if (numNeedsList != 0){
+        loadNeeds(needsList, "./data/NEEDS.txt", 5);
     }
     loadDonations(headDonations, "./data/DONATIONS.txt");
 
@@ -563,20 +544,12 @@ int main (){
     strcpy(actualUser->telefono, "telefonoD");
     strcpy(actualUser->direccion, "direccionD");
 
-    Need needList[5] = {
-        {'a', "Reforestacion", "Reforestacion de arboles nativos", 1000},
-        {'b', "Proteccion", "Proteccion de animales en peligro de extincion", 1000},
-        {'c', "Juguetes", "Juguetes para los animales", 10},
-        {'d', "Comida de animales", "Comprar comida para cada animal", 150},
-        {'e', "Casas para perro", "Comprar casas para los perros", 100}
-    };
-    /*
     ocultarCursor();
     borrarPantalla();
     layer_global();
 
     imgTreeMain1(2, 13, f_LGREEN);
-    //startAnimation();
+    startAnimation();
     while (1)
     {   
 
@@ -584,11 +557,11 @@ int main (){
         if (pageIndex == 1) layer_login(actualUser);
         if (pageIndex == 2) layer_register(actualUser);
         if (pageIndex == 3) layer_options();
-        if (pageIndex == 4) layer_makeDonation(headDonations, needList);
+        if (pageIndex == 4) layer_makeDonation(headDonations, needsList, numNeedsList);
         if (pageIndex == 5) layer_thanksDonation();
         if (pageIndex == 6) layer_listDonations();
         if (pageIndex == 7) layer_myDonations(*actualUser, headDonations);
-        if (pageIndex == 8) layer_infoDonation(headDonations, UsersList, needList);
+        if (pageIndex == 8) layer_infoDonation(headDonations, UsersList, needsList);
 
         if (inputMenu == '0'){
             break;
@@ -597,10 +570,10 @@ int main (){
 
     printf(s_RESET_ALL);
     mostrarCursor();
-    borrarPantalla();*/
+    borrarPantalla();
     saveDonation(headDonations, "./data/DONATIONS.txt");
     free(actualUser);
-    free(NeedsList);
+    free(needsList);
     freeLinkedDonations(&headDonations);
     freeUsers(UsersList);
     return 0;
