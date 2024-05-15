@@ -12,6 +12,7 @@
 #include "./library/imgAscii.h"
 #include "./library/linkedDonations.h"
 
+// Para correr el programa en linux se debe añadir "-lm" sin comillas al final
 // Fuente Grande https://patorjk.com/software/taag/#p=display&f=Big&t=Garritas%0A
 // Fuente Pequeña https://patorjk.com/software/taag/#p=display&f=Small&t=Inicio%0A
 // Paleta de colores
