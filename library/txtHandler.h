@@ -7,10 +7,10 @@
 #include "structs.h"
 
 int countUsers();
-void loadDonations(nodeDonation_t* head, char* file_name);
-void loadUsers(User_t** users, char* file_name);
-void verUsers(User_t** users);
-void freeUsers(User_t** users);
+void loadDonations(NodeDonation* head, char* file_name);
+void loadUsers(User** users, char* file_name);
+void verUsers(User** users);
+void freeUsers(User** users);
 
 #include "./code/txtHandler.c"
 

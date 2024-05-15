@@ -3,7 +3,7 @@
 #include "stdio.h"
 #include "string.h"
 
-nodeDonation_t* findIndextDonations(nodeDonation_t* head, int index){
+NodeDonation* findIndextDonations(NodeDonation* head, int index){
     head = head->next;
     int i = 0;
     while (head){
@@ -16,8 +16,8 @@ nodeDonation_t* findIndextDonations(nodeDonation_t* head, int index){
     return NULL;
 }
 
-nodeDonation_t* createNodeDonation(char* cedula, char* fecha, char* tipo, char* valor, char* descriccion, char destino){
-    nodeDonation_t* newNode = malloc(sizeof(nodeDonation_t));
+NodeDonation* createNodeDonation(char* cedula, char* fecha, char* tipo, char* valor, char* descriccion, char destino){
+    NodeDonation* newNode = malloc(sizeof(NodeDonation));
     if(!newNode){
         printf("Error al asignar memoria\n");
         return NULL;
@@ -32,17 +32,17 @@ nodeDonation_t* createNodeDonation(char* cedula, char* fecha, char* tipo, char* 
     return newNode;
 }
 
-void addNodeDonationStart(nodeDonation_t* head, char* cedula, char* fecha, char* tipo, char* valor, char* descriccion, char destino){
+void addNodeDonationStart(NodeDonation* head, char* cedula, char* fecha, char* tipo, char* valor, char* descriccion, char destino){
     if(!head) return;
-    nodeDonation_t* newNode = createNodeDonation(cedula, fecha, tipo, valor, descriccion, destino);
+    NodeDonation* newNode = createNodeDonation(cedula, fecha, tipo, valor, descriccion, destino);
 
     newNode->next = head->next;
     head->next = newNode;
 }
 
-void addNodeDonationEnd(nodeDonation_t* head, char* cedula, char* fecha, char* tipo, char* valor, char* descriccion, char destino){
+void addNodeDonationEnd(NodeDonation* head, char* cedula, char* fecha, char* tipo, char* valor, char* descriccion, char destino){
     if(!head) return;
-    nodeDonation_t* newNode = createNodeDonation(cedula, fecha, tipo, valor, descriccion, destino);
+    NodeDonation* newNode = createNodeDonation(cedula, fecha, tipo, valor, descriccion, destino);
     if (head->next == NULL){
         head->next = newNode;
     } else {
@@ -53,7 +53,7 @@ void addNodeDonationEnd(nodeDonation_t* head, char* cedula, char* fecha, char* t
     }
 }
 
-void printNodesDonations(nodeDonation_t* head){
+void printNodesDonations(NodeDonation* head){
     head = head->next;
     while (head){
         printf("-------------------\n");
@@ -68,8 +68,8 @@ void printNodesDonations(nodeDonation_t* head){
     }
 }
 
-void freeLinkedDonations(nodeDonation_t** head){
-    nodeDonation_t* temp;
+void freeLinkedDonations(NodeDonation** head){
+    NodeDonation* temp;
     while (*head != NULL){
         temp = *head;
         *head = (*head)->next;

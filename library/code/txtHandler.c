@@ -14,13 +14,16 @@ void makeTXT(char* file_name){
     }
 }
 
-int countLines(char* file_name){
+int countLines(char* file_name, int start){
     FILE *file;
     char c;
     int count = 0;
     if (file = fopen(file_name, "r")) {
         while ((c = fgetc(file)) != EOF)
-            if (c == '\n') count++;
+            if (c == '\n'){
+                if (start == 0) count++;
+                else start--;
+            }
     }else {
         printf("El archivo no existe.\n");
         return 0;
@@ -29,7 +32,7 @@ int countLines(char* file_name){
     return count;
 }
 
-void findCedula(User_t* buffer, char *file_name){
+void findCedula(User* buffer, char *file_name){
     FILE *file;
     char line[1028];
 
@@ -57,13 +60,35 @@ void findCedula(User_t* buffer, char *file_name){
     }
 
 }
-    
-void saveUser(User_t* user, char* file_name){
+
+/*
+    Borra los espacios a la derecha y a la izquierda, quita saltos de linea y 
+    convierte los espacios intermedios en "_"
+    En un string.
+*/
+void formatingText( char* str){
+    str[strcspn(str, "\n")] = 0;
+
+    int end = strlen(str) - 1;
+    while (end >= 0 && str[end] == ' ') {
+        str[end--] = 0;
+    }
+
+    int start = strspn(str, " \t");
+    memmove(str, str + start, strlen(str) - start + 1);
+
+    for (int i = 0; str[i]; i++) {
+        if (str[i] == ' ') {
+            str[i] = '_';
+        }
+    }
+} 
+void saveUser(User* user, char* file_name){
     FILE *file;
-    user->nombre[strlen(user->nombre)-1] = '\0';
-    user->cedula[strlen(user->cedula)-1] = '\0';
-    user->telefono[strlen(user->telefono)-1] = '\0';
-    user->direccion[strlen(user->direccion)-1] = '\0';
+    formatingText(user->nombre);
+    formatingText(user->cedula);
+    formatingText(user->telefono);
+    formatingText(user->direccion);
     if (file = fopen(file_name, "a")) {
         fprintf(file, "%s %s %s %s\n", user->nombre, user->cedula, user->telefono, user->direccion);
         fclose(file);
@@ -71,7 +96,7 @@ void saveUser(User_t* user, char* file_name){
         printf("El archivo no existe.\n");
     }
 }
-void saveDonation(nodeDonation_t* head, char* file_name){
+void saveDonation(NodeDonation* head, char* file_name){
     FILE *file;
     if (file = fopen(file_name, "w")) {
         head = head->next;
@@ -85,7 +110,7 @@ void saveDonation(nodeDonation_t* head, char* file_name){
     }
 }
 
-void loadDonations(nodeDonation_t* head, char* file_name){
+void loadDonations(NodeDonation* head, char* file_name){
     FILE *file;
     char line[255];
     int count = 0;
@@ -101,7 +126,7 @@ void loadDonations(nodeDonation_t* head, char* file_name){
 
             count = 0;
             char* userToken = strtok(line, " ");
-
+            if (userToken == NULL) return;
             do{ 
                 if (count == 0){
                     strcpy(cedula, userToken);
@@ -126,14 +151,14 @@ void loadDonations(nodeDonation_t* head, char* file_name){
         printf("El archivo no existe.\n");
     }
 }
-void loadUsers(User_t** users, char* file_name){
+void loadUsers(User** users, char* file_name){
     FILE *file;
     char line[1028];
     int count = 0;
 
     if ((file = fopen(file_name, "r"))) {
         while (fgets(line, sizeof(line), file)) {
-            *users = (User_t*)malloc(sizeof(User_t));
+            *users = (User*)malloc(sizeof(User));
             if (*users == NULL) return;
 
             count = 0;
@@ -160,7 +185,7 @@ void loadUsers(User_t** users, char* file_name){
     }
 }
 
-void verUsers(User_t** users){
+void verUsers(User** users){
     if(*users == NULL){
         printf("No hay usuarios\n");
         return;
@@ -175,10 +200,10 @@ void verUsers(User_t** users){
         users++;
     }
 }
-void freeUsers(User_t** users){
-    while (*users != NULL)
-    {
+void freeUsers(User** users){
+    while (*users != NULL){
         free(*users);
+        *users++;
     }
     free(users);
 }

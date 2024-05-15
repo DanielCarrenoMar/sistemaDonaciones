@@ -1,0 +1,7 @@
+¿Donde iran destinadas las donaciones?
+* Un destino por linea
+* formato Titulo Descripcion Monto/Obejetivo (separado por espacios).
+Ejemplo: Reforestacion Reforestacion de arboles nativos 1000
+----------------------------------------------
+Reforestacion Reforestacion de arboles nativos 1000
+Proteccion Proteccion de animales en peligro de extincion 1000

@@ -17,13 +17,13 @@ typedef struct User
     char cedula[40];
     char telefono[40];
     char direccion[40];
-}User_t;
+}User;
 
 typedef struct nodeDonation
 {
     Donation_t donation;
     struct nodeDonation* next;
-}nodeDonation_t;
+}NodeDonation;
 
 typedef struct need
 {
@@ -31,6 +31,6 @@ typedef struct need
     char name[20];
     char description[100];
     int goal;
-}need_t;
+}Need;
 
 #endif
