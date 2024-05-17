@@ -25,23 +25,6 @@ int lastPageIndex = 0;
 int pageIndex = 0;
 int cardIndex = 0;
 
-/*
-void loginCheck(User **UsersList, char cedula){
-    //Revisa si estan en el txt de users(Con algo similar a userlist)
-    for (int i = 0; UsersList[i] != NULL; i++){
-        if (strcmp(UsersList[i]->cedula, cedula) == 0){
-            return UsersList[i];
-        }
-        return NULL;
-        //Si no estan en login llevarlos a registro
-        if (strcmp(UsersList[i]->cedula, cedula) == 1){
-            return layer_register(User **actualUser);
-        }
-    }
-    //Guardar los datos de registro en el txt de users.txt
-
-}*/
-
 User* findUser(User** UsersList, char* cedula){
     for (int i = 0; UsersList[i] != NULL; i++){
         if (strcmp(UsersList[i]->cedula, cedula) == 0){
@@ -49,6 +32,26 @@ User* findUser(User** UsersList, char* cedula){
         }
     }
     return NULL;
+}
+
+void loginCheck(User **UsersList, char* cedula){
+    findUser(UsersList, cedula);
+    User* user = findUser(UsersList, cedula);
+    if (user != NULL) {
+        gotoxy(55, 29); printf(f_LBLUE); printf("Bienvenido, %s \n", user->nombre);
+    } else {
+        gotoxy(55, 29); printf(f_LBLUE); printf("Usuario no encontrado\n");
+    }
+}
+
+void registerDatacheck(User **UsersList,char* cedula){
+    findUser(UsersList, cedula);
+    User* user = findUser(UsersList, cedula);
+    if (user != NULL) {
+        gotoxy(55, 29); printf(f_LBLUE); printf("Usuario ya registrado\n");
+    } else {
+        gotoxy(55, 29); printf(f_LBLUE); printf("Usuario registrado\n");
+    }
 }
 
 void wait(int time){
