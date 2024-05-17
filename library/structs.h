@@ -3,7 +3,7 @@
 
 typedef struct Donation
 {
-    char cedula[30];
+    char cedula[40];
     char fecha[20];
     char tipo[20];
     char valor[20]; 
@@ -27,7 +27,7 @@ typedef struct nodeDonation
 
 typedef struct need
 {
-    char name[20];
+    char name[40];
     char description[100];
     int goal;
 }Need;

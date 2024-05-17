@@ -79,6 +79,7 @@ void userInputMenu(int x, int y){
         inputMenu = num[0];
     }
     printf(s_RESET_ALL);
+    fseek(stdin, 0, SEEK_END);
 }
 
 void userInputStr(int x, int y, char* buffer){
@@ -88,6 +89,7 @@ void userInputStr(int x, int y, char* buffer){
     gotoxy(x+2, y); fgets(buffer, 40, stdin);
     gotoxy(x, y); printf("  ");
     printf(s_RESET_ALL);
+    fseek(stdin, 0, SEEK_END);
 }
 
 void startAnimation(){
