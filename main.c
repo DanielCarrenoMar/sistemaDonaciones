@@ -22,7 +22,7 @@
 
 char inputMenu;
 int lastPageIndex = 0;
-int pageIndex = 0;
+int pageIndex = 7;
 int cardIndex = 0;
 
 /*
@@ -111,6 +111,7 @@ void startAnimation(){
 }
 
 void transition(){
+    inputMenu = 'n';
     for (int i = 0; i<=18; i++){
         cuadrado(0, i, 121, 1, ' ');
         cuadrado(0, 36-i, 121, 1, ' ');
@@ -159,7 +160,7 @@ void layer_login(User* actualUser){
         gotoxy(55, 17); printf(f_LRED); printf("2."); printf(f_LBLUE); printf(" Cedula");
         gotoxy(55, 23); printf(f_LRED); printf("3."); printf(f_LBLUE); printf(" Registarse");
         gotoxy(55, 25); printf(f_LRED); printf("4."); printf(f_LRED); printf(" INICIAR");
-        gotoxy(55, 27); printf(f_LRED); printf("0."); printf(f_LBLUE); printf(" Salir");
+        gotoxy(55, 27); printf(f_LRED); printf("0."); printf(f_LBLUE); printf(" Salir del programa");
         imgTextInicio(46, 2, f_LBLUE);
         firstTime = 0;
     }
@@ -174,6 +175,7 @@ void layer_login(User* actualUser){
     
     char nombre[20];
     char cedula[20];
+
     if(inputMenu == '1'){
         cuadrado(41, 13, 39, 2, ' ');
         userInputStr(41,13, nombre);
@@ -209,7 +211,7 @@ void layer_register(User* actualUser){
         gotoxy(69, 17); printf(f_LRED); printf("4."); printf(f_LBLUE); printf(" Direccion");
         gotoxy(55, 23); printf(f_LRED); printf("5."); printf(f_LBLUE); printf(" Login");
         gotoxy(55, 25); printf(f_LRED); printf("6."); printf(f_LRED); printf(" INICIAR");
-        gotoxy(55, 27); printf(f_LRED); printf("0."); printf(f_LBLUE); printf(" Salir");
+        gotoxy(55, 27); printf(f_LRED); printf("0."); printf(f_LBLUE); printf(" Salir del programa");
         imgTextRegistro(41, 2, f_LBLUE);
         firstTime = 0;
     }
@@ -270,7 +272,7 @@ void layer_options(){
         gotoxy(41, 12); printf("1.");
         gotoxy(41, 17); printf("2.");
         gotoxy(41, 22); printf("3.");
-        gotoxy(41, 27); printf("0. Salir");
+        gotoxy(41, 27); printf("0. "); printf(f_LBLUE); printf(" Salir del programa");
         imgTextDonacion(45,10, f_LBLUE);
         imgTextVerDonaciones(46,15, f_LBLUE);
         imgTextMisDonaciones(47,20, f_LBLUE);
@@ -300,22 +302,32 @@ void layer_options(){
 
 void layer_makeDonation(NodeDonation* headDonations, Need* needList, int numNeedsList){
     static int firstTime = 1;
-    int suma = 0;
     if (firstTime){
         borrarPantalla();
         layer_global();
         imgTextDonacion(54,1, f_LBLUE);
 
+        int* totalNeeds = (int*)malloc(numNeedsList*sizeof(int));
+        for (int i = 0; i < numNeedsList; i++){
+            totalNeeds[i] = 0;
+        }
+        headDonations = headDonations->next;
+        while (headDonations){
+            if (headDonations->donation.destino != -1) totalNeeds[headDonations->donation.destino] += atoi(headDonations->donation.valor);
+            headDonations = headDonations->next;
+        }
         for (int i = 0; i < numNeedsList; i++){
             gotoxy(4, 10+3*i); printf("%d. ", i); printf("Destino: %s", needList[i].name);
-            if (needList[i].goal != 0) printf(f_LBLUE);
-            gotoxy(4, 11+3*i); printf("Faltante: %d", needList[i].goal - countTotalValorDonations(headDonations, i));
+            if (totalNeeds[i] < needList[i].goal) printf(f_LBLUE);
+            else printf(f_LGREEN);
+            gotoxy(4, 11+3*i); printf("%d / %d", totalNeeds[i], needList[i].goal);
             printf(s_RESET_ALL);
-        } 
+        }
+        free(totalNeeds);
 
         printf(f_LRED);
         gotoxy(58, 18); printf("1. Regresar");
-        gotoxy(58, 19); printf("0. Salir");
+        gotoxy(58, 19); printf("0. Salir del programa");
         printf(s_RESET_ALL);
         firstTime = 0;
     }
@@ -341,7 +353,7 @@ void layer_thanksDonation(){
 
     printf(f_LRED);
     gotoxy(58, 18); printf("1. Iniciar");
-    gotoxy(58, 19); printf("0. Salir");
+    gotoxy(58, 19); printf("0. Salir del programa");
     gotoxy(77, 18); printf("->");
     printf(s_RESET_ALL);
 
@@ -388,11 +400,11 @@ void layer_myDonations(User user, NodeDonation* headDonations){
             printf(f_LBLUE);
             gotoxy(37, 15); printf("%d%%", percent);
             printf(f_LGREEN);
-            graficaPastel(25, 25, 16, 8, '*', f_LBLUE, percent);
+            graficaPastel(25, 25, 16, 8, '*',f_LBLUE, f_LGREEN, percent);
         }else{
             printf(f_LBLUE);
             gotoxy(37, 15); printf("XX%%");
-            graficaPastel(25, 25, 16, 8, '.', f_LBLUE, 0);
+            graficaPastel(25, 25, 16, 8, '.', f_LBLUE, f_LGREEN, 0);
         }
         
         imgTextMisDonaciones(55,1, f_LBLUE);
@@ -463,7 +475,7 @@ void layer_listDonations(){
 
     printf(f_LRED);
     gotoxy(58, 18); printf("1. Iniciar");
-    gotoxy(58, 19); printf("0. Salir");
+    gotoxy(58, 19); printf("0. Salir del programa");
     gotoxy(77, 18); printf("->");
     printf(s_RESET_ALL);
 
@@ -471,7 +483,7 @@ void layer_listDonations(){
     userInputMenu(80,18);
     
     if(inputMenu == '1'){
-        pageIndex = 2;
+        pageIndex = 3;
     }
 }
 
@@ -504,7 +516,6 @@ void layer_infoDonation(NodeDonation* headDonations, User** UsersList, Need* nee
         printf(f_LRED);
         gotoxy(58, 18); printf("1. Regresar");
         gotoxy(58, 19); printf("0. Salir");
-        gotoxy(77, 18); printf("->");
         printf(s_RESET_ALL);
         firstTime = 0;
     }
@@ -552,7 +563,7 @@ int main (){
     layer_global();
 
     imgTreeMain1(2, 13, f_LGREEN);
-    startAnimation();
+    //startAnimation();
     while (1)
     {   
 
