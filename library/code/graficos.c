@@ -32,17 +32,26 @@ void circunferencia(int x, int y, int xr, int yr, char sprite){
     }
 }
 
-void graficaPastel(int x, int y, int xr, int yr, char sprite, char* color, int percent){
+void graficaPastel(int x, int y, int xr, int yr, char sprite, char* color1, char* color2, int percent){
+    printf(color1);
+    for (int i = 89; i < 91+360/(100.0/percent); i++){
+        float rad = i * 3.1416 / 180;
+        for (int r = 0; r <= xr/2; r++) {
+            gotoxy(x + (r*2) * cos(rad), y + r * sin(rad));
+            printf("%c", sprite);
+        }
+    }
+    printf(color2);
     for (int i = 1; i < 360; i++){
         float rad = i * 3.1416 / 180;
         gotoxy(x + xr * cos(rad), y + yr * sin(rad));
         printf("%c", sprite);
     }
-    printf(color);
+    /*
     for (int i = 89; i < 91+360/(100.0/percent); i++){
         float rad = i * 3.1416 / 180;
         line(x, y, x + xr * cos(rad), y + yr * sin(rad), sprite);
-    }
+    }*/
     printf(s_RESET_ALL);
 }
 
