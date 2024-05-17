@@ -1,10 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#ifndef _WIN32
-#include <unistd.h>
-#endif
+#include <time.h>
 
 #include "./library/txtHandler.h"
 #include "./library/colorama.h"
@@ -22,7 +19,7 @@
 
 char inputMenu;
 int lastPageIndex = 0;
-int pageIndex = 7;
+int pageIndex = 3;
 int cardIndex = 0;
 
 /*
@@ -55,9 +52,18 @@ void wait(int time){
     #ifdef _WIN32
         Sleep(time);
     #else
+        struct timespec ts;
+        ts.tv_sec = 0;
+        ts.tv_nsec = time * 1000000L;
+
+        if(nanosleep(&ts , NULL) < 0 ) {   
+            printf("Error de nanosleep\n");
+        }   
+    /*
         char buffer[50];
         sprintf(buffer, "sleep %f", time/1000.0);
         system(buffer);
+    */
     #endif
 }
 
@@ -96,6 +102,7 @@ void startAnimation(){
     imgOwl3(33, 17, f_LBLUE);
     imgDog3(109, 30, f_LBLUE);
     imgCat2(39, 30, f_LBLUE);
+
     wait(500);
 
     imgOwl2(33, 17, f_LBLUE);
@@ -283,8 +290,7 @@ void layer_options(){
     }
 
     userInputMenu(41,32);
-    cuadrado(37, 32, 40, 1, ' ');
-    
+    cuadrado(37, 32, 64, 1, ' ');
     if(inputMenu == '1'){
         transition();
         firstTime = 1;
@@ -563,7 +569,7 @@ int main (){
     layer_global();
 
     imgTreeMain1(2, 13, f_LGREEN);
-    //startAnimation();
+    startAnimation();
     while (1)
     {   
 
