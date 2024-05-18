@@ -19,7 +19,7 @@
 
 char inputMenu;
 int lastPageIndex = 0;
-int pageIndex = 0;
+int pageIndex = 4;
 int cardIndex = 0;
 
 void actualTime(char* buffer){
@@ -327,21 +327,24 @@ void layer_makeDonation(NodeDonation* headDonations, Need* needList, int numNeed
         layer_global();
         imgTextDonacion(54,1, f_LBLUE);
 
+        printf(f_LGREEN);
+        gotoxy(73, 7); printf("Tipo de donacion");
+        recuadro(51, 8, 20, 3);recuadro(72, 8, 20, 3); recuadro(93, 8, 20, 3);
+        gotoxy(57, 10); printf("Monetaria"); gotoxy(79, 10); printf("Material"); gotoxy(98, 10); printf("Voluntariado");
+
         int* totalNeeds = (int*)malloc(numNeedsList*sizeof(int));
         for (int i = 0; i < numNeedsList; i++){
             totalNeeds[i] = 0;
         }
-        headDonations = headDonations->next;
-        while (headDonations){
-            if (headDonations->donation.destino != -1) totalNeeds[headDonations->donation.destino] += atoi(headDonations->donation.valor);
+        while (headDonations->next){
             headDonations = headDonations->next;
+            if (headDonations->donation.destino != -1) totalNeeds[headDonations->donation.destino] += atoi(headDonations->donation.valor);
         }
         for (int i = 0; i < numNeedsList; i++){
-            gotoxy(4, 3+3*i); printf("%d. ", i); printf("Destino: %s", needList[i].name);
+            printf(f_LGREEN);
+            gotoxy(7, 3+3*i); printf("- %s", needList[i].name);
             if (totalNeeds[i] < needList[i].goal) printf(f_LBLUE);
-            else printf(f_LGREEN);
-            gotoxy(4, 4+3*i); printf("%d / %d", totalNeeds[i], needList[i].goal);
-            printf(s_RESET_ALL);
+            gotoxy(7, 4+3*i); printf("%d / %d", totalNeeds[i], needList[i].goal);
         }
         free(totalNeeds);
 
@@ -408,7 +411,7 @@ void layer_myDonations(User user, NodeDonation* headDonations){
                         gotoxy(88, 8 + 6*percent); printf("%s", headDonations->donation.cedula);
                         gotoxy(87, 9 + 6*percent); printf("%s", headDonations->donation.fecha);
                         printf(f_LRED);
-                        gotoxy(76, 8 + 6*percent); printf("%d.", percent+1);
+                        gotoxy(76, 8 + 6*percent); printf("%d.", percent+2);
                     }
                     percent++;
                 }
@@ -439,7 +442,7 @@ void layer_myDonations(User user, NodeDonation* headDonations){
         gotoxy(28, 10); printf("- %s", user.direccion);
         gotoxy(12, 15); printf("Porcentaje de donaciones");
         printf(f_LRED);
-        gotoxy(47, 14); printf(f_LRED); printf("6."); printf(f_LBLUE); printf(" Regresar");
+        gotoxy(47, 14); printf(f_LRED); printf("1."); printf(f_LBLUE); printf(" Regresar");
         gotoxy(47, 16); printf(f_LRED); printf("0."); printf(f_LBLUE); printf(" Salir");
         firstTime = 0;
     }
@@ -447,40 +450,40 @@ void layer_myDonations(User user, NodeDonation* headDonations){
     userInputMenu(50,12);
     cuadrado(50, 12, 29, 2, ' ');
     
-    if(inputMenu == '1'){
+    if (inputMenu == '1'){
+        transition();
+        firstTime = 1;
+        pageIndex = 3;
+    }else if(inputMenu == '2'){
         transition();
         firstTime = 1;
         cardIndex = 0;
         pageIndex = 8;
         lastPageIndex = 7;
-    }else if (inputMenu == '2'){
+    }else if (inputMenu == '3'){
         transition();
         firstTime = 1;
         cardIndex = 1;
         pageIndex = 8;
         lastPageIndex = 7;
-    }else if (inputMenu == '3'){
+    }else if (inputMenu == '4'){
         transition();
         firstTime = 1;
         cardIndex = 2;
         pageIndex = 8;
         lastPageIndex = 7;
-    }else if (inputMenu == '4'){
+    }else if (inputMenu == '5'){
         transition();
         firstTime = 1;
         cardIndex = 3;
         pageIndex = 8;
         lastPageIndex = 7;
-    }else if (inputMenu == '5'){
+    }else if (inputMenu == '6'){
         transition();
         firstTime = 1;
         cardIndex = 4;
         pageIndex = 8;
         lastPageIndex = 7;
-    }else if (inputMenu == '6'){
-        transition();
-        firstTime = 1;
-        pageIndex = 3;
     }
 }
 
@@ -588,7 +591,7 @@ int main (){
     layer_global();
 
     imgTreeMain1(2, 13, f_LGREEN);
-    startAnimation();
+    //startAnimation();
     while (1)
     {   
 
