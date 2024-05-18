@@ -1,6 +1,6 @@
 ¿Donde iran destinadas las donaciones?
 * Un destino por linea
-* formato Titulo Descripcion Monto/Obejetivo (separado por |).
+* formato Titulo|Descripcion|Monto/Objetivo (separado por |).
 Ejemplo: Reforestacion|Reforestacion de arboles nativos|1000
 ----------------------------------------------
 Reforestacion|Reforestacion de arboles nativos|1000
