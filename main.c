@@ -19,7 +19,7 @@
 
 char inputMenu;
 int lastPageIndex = 0;
-int pageIndex = 3;
+int pageIndex = 4;
 int cardIndex = 0;
 
 User* findUser(User** UsersList, char* cedula){ // No puedes recorrer un array con NULL
@@ -328,10 +328,10 @@ void layer_makeDonation(NodeDonation* headDonations, Need* needList, int numNeed
             headDonations = headDonations->next;
         }
         for (int i = 0; i < numNeedsList; i++){
-            gotoxy(4, 10+3*i); printf("%d. ", i); printf("Destino: %s", needList[i].name);
+            gotoxy(4, 3+3*i); printf("%d. ", i); printf("Destino: %s", needList[i].name);
             if (totalNeeds[i] < needList[i].goal) printf(f_LBLUE);
             else printf(f_LGREEN);
-            gotoxy(4, 11+3*i); printf("%d / %d", totalNeeds[i], needList[i].goal);
+            gotoxy(4, 4+3*i); printf("%d / %d", totalNeeds[i], needList[i].goal);
             printf(s_RESET_ALL);
         }
         free(totalNeeds);
@@ -574,7 +574,7 @@ int main (){
     layer_global();
 
     imgTreeMain1(2, 13, f_LGREEN);
-    startAnimation();
+    //startAnimation();
     while (1)
     {   
 
