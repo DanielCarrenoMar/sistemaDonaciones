@@ -22,7 +22,7 @@ int lastPageIndex = 0;
 int pageIndex = 3;
 int cardIndex = 0;
 
-User* findUser(User** UsersList, char* cedula){
+User* findUser(User** UsersList, char* cedula){ // No puedes recorrer un array con NULL
     for (int i = 0; UsersList[i] != NULL; i++){
         if (strcmp(UsersList[i]->cedula, cedula) == 0){
             return UsersList[i];
@@ -31,7 +31,9 @@ User* findUser(User** UsersList, char* cedula){
     return NULL;
 }
 
-void loginCheck(User **UsersList, char* cedula){
+void loginCheck(User **UsersList, char* cedula){ 
+    // en vez de hacer una funcion login seria mejor hacer una 
+    // funcion par encontrar un usuario que coincida nombre y cedula y ahi devolverlo
     findUser(UsersList, cedula);
     User* user = findUser(UsersList, cedula);
     if (user != NULL) {
