@@ -19,8 +19,17 @@
 
 char inputMenu;
 int lastPageIndex = 0;
-int pageIndex = 4;
+int pageIndex = 0;
 int cardIndex = 0;
+
+void actualTime(char* buffer){
+    time_t fechactual;
+    time(&fechactual);
+    int dia=localtime(&fechactual)->tm_mday;
+    int mes=localtime(&fechactual)->tm_mon + 1;
+    int año=localtime(&fechactual)->tm_year + 1900;
+    sprintf(buffer, "%02d/%02d/%d", dia, mes, año);
+}
 
 User* findUser(User** UsersList, char* cedula){ // No puedes recorrer un array con NULL
     for (int i = 0; UsersList[i] != NULL; i++){
@@ -568,13 +577,18 @@ int main (){
     strcpy(actualUser->cedula, "cedulaD");
     strcpy(actualUser->telefono, "telefonoD");
     strcpy(actualUser->direccion, "direccionD");
+    
+    char buffer[20];
 
+    actualTime(buffer);
+    printf("%s\n", buffer);
+    
     ocultarCursor();
     borrarPantalla();
     layer_global();
 
     imgTreeMain1(2, 13, f_LGREEN);
-    //startAnimation();
+    startAnimation();
     while (1)
     {   
 
