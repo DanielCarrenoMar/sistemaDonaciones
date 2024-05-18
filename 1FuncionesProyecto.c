@@ -32,7 +32,7 @@ Datos pedirdatos(){
     printf("\nDesea poner descripcion? 1:si  2:no");
     scanf("%d", &parametro);
     if (parametro==1){
-        printf("\nDescripcion:  (Opcional)");
+        printf("\nDescripcion:");
         scanf("%s", entrada.descripcion);
     }else{
         strcpy(entrada.descripcion, "Sin descripcion");
