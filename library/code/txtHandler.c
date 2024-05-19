@@ -193,11 +193,11 @@ void loadNeeds(Need* needs, char* file_name, int start){
         while (fgets(line, sizeof(line), file)) {
             count = 0;
             char* userToken = strtok(line, "|");
-
             if (start != 0) {
                 start--;
                 continue;
             }
+            if(userToken == NULL) exit(0);
 
             do{ 
                 if (count == 0){

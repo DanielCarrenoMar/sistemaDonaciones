@@ -3,8 +3,8 @@
 #include <math.h>
 #include "../colorama.h"
 
-int upL = 124; // ┌
-int upR = 124; // ┐
+int upL = 32; // ┌
+int upR = 32; // ┐
 int downR = 124; // ┘
 int downL = 124; // └
 int cross = 197; // ┼
@@ -13,7 +13,7 @@ int crossU = 193; // ┴
 int crossR = 195; // ├
 int crossL = 180; // ┤
 int vLine = 124; // │
-int hLine = 61; // ─
+int hLine = 95; // ─
 
 void ocultarCursor(){
     printf("\e[?25l");
