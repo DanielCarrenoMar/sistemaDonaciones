@@ -22,22 +22,8 @@ int lastPageIndex = 0;
 int pageIndex = 1;
 int cardIndex = 0;
 
-/*
-void loginCheck(User **UsersList, char* cedula){ 
-    // en vez de hacer una funcion login seria mejor hacer una 
-    // funcion par encontrar un usuario que coincida nombre y cedula y ahi devolverlo
-    findUserID(UsersList, cedula);
-    User* user = findUserID(UsersList, cedula);
-    if (user != NULL) {
-        gotoxy(55, 29); printf(f_LBLUE); printf("Bienvenido, %s \n", user->nombre);
-    } else {
-        gotoxy(55, 29); printf(f_LBLUE); printf("Usuario no encontrado\n");
-    }
-}
-*/
-
 User* findUserID(User** UsersList, int numUsersList, char* cedula){
-    for (int i = 0; i < numUsersList; i++){
+    for (int i = 0; i < numUsersList-1; i++){
         if (strcmp(UsersList[i]->cedula, cedula) == 0){
             return UsersList[i];
         }
@@ -45,7 +31,7 @@ User* findUserID(User** UsersList, int numUsersList, char* cedula){
     return NULL;
 }
 User* findUserName(User** UsersList, int numUsersList, char* name){
-    for (int i = 0; i < numUsersList; i++){
+    for (int i = 0; i < numUsersList-1; i++){
         if (strcmp(UsersList[i]->nombre, name) == 0){
             return UsersList[i];
         }
@@ -88,6 +74,7 @@ void userInputStr(int x, int y, char* buffer){
     gotoxy(x, y); printf("->");
     printf(f_LBLUE);
     gotoxy(x+2, y); fgets(buffer, 40, stdin);
+    buffer[strcspn(buffer, "\n")] = '\0';
     gotoxy(x, y); printf("  ");
     printf(s_RESET_ALL);
     fseek(stdin, 0, SEEK_END);
@@ -192,15 +179,34 @@ void layer_login(User* actualUser, User** UsersList,int numUsersList){
         transition();
         pageIndex = 2;
         firstTime = 1;
+        cedula[0] = '\0';
+        nombre[0] = '\0';
     }
     if(inputMenu == '4'){
-        gotoxy(55, 29); printf(f_LBLUE); printf("Bienvenido, %s \n", findUserID(UsersList, numUsersList, "dasd")->cedula); // si se ingresa algo ramdon explota
-        if (strlen(nombre) != 1 && strlen(cedula) != 1){
-        //transition();
-        //firstTime = 1;
-        //pageIndex = 3;
-        gotoxy(55, 29); printf(f_LBLUE); printf("Bienvenido, %s \n", nombre);//findUserID(UsersList, numUsersList, cedula)->cedula);
-        gotoxy(55, 30); printf(f_LBLUE); printf("Bienvenido, %s \n", cedula);//findUserName(UsersList, numUsersList, nombre)->nombre);
+        if (strlen(nombre) > 1 && strlen(cedula) > 1){
+            User* userId = findUserID(UsersList, numUsersList, cedula);
+            User* userName = findUserName(UsersList, numUsersList, nombre);
+            if((!userId || !userName) || userId != userName){
+                printf(f_LRED);
+                cuadrado(41, 19, 39, 2, ' ');
+                cuadrado(41, 13, 39, 2, ' ');
+                gotoxy(57, 29); printf("*Nombre o cedula no existen");
+                cedula[0] = '\0';
+                nombre[0] = '\0';
+                printf(s_RESET_ALL);
+            }else if (userId == userName){
+                strcpy(actualUser->nombre, userId->nombre);
+                strcpy(actualUser->cedula, userId->cedula);
+                strcpy(actualUser->telefono, userId->telefono);
+                strcpy(actualUser->direccion, userId->direccion);
+                transition();
+                firstTime = 1;
+                pageIndex = 3;
+            }
+        }else{
+            printf(f_LRED);
+            gotoxy(57, 29); printf("*Ingrese un nombre y cedula");
+            printf(s_RESET_ALL);
         }
     }
 }
@@ -256,13 +262,21 @@ void layer_register(User* actualUser){
         transition();
         pageIndex = 1;
         firstTime = 1;
+        actualUser->nombre[0] = '\0';
+        actualUser->cedula[0] = '\0';
+        actualUser->telefono[0] = '\0';
+        actualUser->direccion[0] = '\0';
     }
     if(inputMenu == '6'){
-        if(strlen(actualUser->nombre) != 0 && strlen(actualUser->cedula) != 0 && strlen(actualUser->telefono) != 0 && strlen(actualUser->direccion) != 0){
+        if (strlen(actualUser->nombre) > 1 && strlen(actualUser->cedula) > 1 && strlen(actualUser->telefono) > 1 && strlen(actualUser->direccion) > 1){
             transition();
             saveUser(actualUser, "./data/USERS.txt");
             pageIndex = 3;
             firstTime = 1;
+        }else{
+            printf(f_LRED);
+            gotoxy(57, 29); printf("*Ingrese todos los datos");
+            printf(s_RESET_ALL);
         }
     }
 }
@@ -376,11 +390,11 @@ void layer_thanksDonation(){
 
 void layer_myDonations(User user, NodeDonation* headDonations){
         static int firstTime = 1;
+        int percent = 0;
     if (firstTime){
         borrarPantalla();
         layer_global();
         if (headDonations->next){
-            int percent = 0;
             int count = 0;
 
             headDonations = headDonations->next;
@@ -407,12 +421,14 @@ void layer_myDonations(User user, NodeDonation* headDonations){
             percent = (percent * 100) / count;
 
             printf(f_LBLUE);
+            if (percent == 0){gotoxy(73, 6); printf("No hay donaciones");}
             gotoxy(37, 15); printf("%d%%", percent);
             printf(f_LGREEN);
             graficaPastel(25, 25, 16, 8, '*',f_LBLUE, f_LGREEN, percent);
-        }else{
+        }else {
             printf(f_LBLUE);
             gotoxy(37, 15); printf("XX%%");
+            gotoxy(73, 6); printf("No hay donaciones");
             graficaPastel(25, 25, 16, 8, '.', f_LBLUE, f_LGREEN, 0);
         }
         
@@ -562,10 +578,10 @@ int main (){
     loadDonations(headDonations, "./data/DONATIONS.txt");
 
     User* actualUser = (User*)malloc(sizeof(User));
-    strcpy(actualUser->nombre, "Daniel");
+    /*strcpy(actualUser->nombre, "Daniel");
     strcpy(actualUser->cedula, "cedulaD");
     strcpy(actualUser->telefono, "telefonoD");
-    strcpy(actualUser->direccion, "direccionD");
+    strcpy(actualUser->direccion, "direccionD");*/
     
     char buffer[20];
 
