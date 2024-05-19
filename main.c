@@ -19,8 +19,39 @@
 
 char inputMenu;
 int lastPageIndex = 0;
-int pageIndex = 4;
+int pageIndex = 1;
 int cardIndex = 0;
+
+/*
+void loginCheck(User **UsersList, char* cedula){ 
+    // en vez de hacer una funcion login seria mejor hacer una 
+    // funcion par encontrar un usuario que coincida nombre y cedula y ahi devolverlo
+    findUserID(UsersList, cedula);
+    User* user = findUserID(UsersList, cedula);
+    if (user != NULL) {
+        gotoxy(55, 29); printf(f_LBLUE); printf("Bienvenido, %s \n", user->nombre);
+    } else {
+        gotoxy(55, 29); printf(f_LBLUE); printf("Usuario no encontrado\n");
+    }
+}
+*/
+
+User* findUserID(User** UsersList, int numUsersList, char* cedula){
+    for (int i = 0; i < numUsersList; i++){
+        if (strcmp(UsersList[i]->cedula, cedula) == 0){
+            return UsersList[i];
+        }
+    }
+    return NULL;
+}
+User* findUserName(User** UsersList, int numUsersList, char* name){
+    for (int i = 0; i < numUsersList; i++){
+        if (strcmp(UsersList[i]->nombre, name) == 0){
+            return UsersList[i];
+        }
+    }
+    return NULL;
+}
 
 void actualTime(char* buffer){
     time_t fechactual;
@@ -29,56 +60,6 @@ void actualTime(char* buffer){
     int mes=localtime(&fechactual)->tm_mon + 1;
     int año=localtime(&fechactual)->tm_year + 1900;
     sprintf(buffer, "%02d/%02d/%d", dia, mes, año);
-}
-
-User* findUser(User** UsersList, char* cedula){ // No puedes recorrer un array con NULL
-    for (int i = 0; UsersList[i] != NULL; i++){
-        if (strcmp(UsersList[i]->cedula, cedula) == 0){
-            return UsersList[i];
-        }
-    }
-    return NULL;
-}
-
-void loginCheck(User **UsersList, char* cedula){ 
-    // en vez de hacer una funcion login seria mejor hacer una 
-    // funcion par encontrar un usuario que coincida nombre y cedula y ahi devolverlo
-    findUser(UsersList, cedula);
-    User* user = findUser(UsersList, cedula);
-    if (user != NULL) {
-        gotoxy(55, 29); printf(f_LBLUE); printf("Bienvenido, %s \n", user->nombre);
-    } else {
-        gotoxy(55, 29); printf(f_LBLUE); printf("Usuario no encontrado\n");
-    }
-}
-
-void registerDatacheck(User **UsersList,char* cedula){
-    findUser(UsersList, cedula);
-    User* user = findUser(UsersList, cedula);
-    if (user != NULL) {
-        gotoxy(55, 29); printf(f_LBLUE); printf("Usuario ya registrado\n");
-    } else {
-        gotoxy(55, 29); printf(f_LBLUE); printf("Usuario registrado\n");
-    }
-}
-
-void wait(int time){
-    #ifdef _WIN32
-        Sleep(time);
-    #else
-        struct timespec ts;
-        ts.tv_sec = 0;
-        ts.tv_nsec = time * 1000000L;
-
-        if(nanosleep(&ts , NULL) < 0 ) {   
-            printf("Error de nanosleep\n");
-        }   
-    /*
-        char buffer[50];
-        sprintf(buffer, "sleep %f", time/1000.0);
-        system(buffer);
-    */
-    #endif
 }
 
 void layer_global(){
@@ -171,7 +152,7 @@ void layer_main(){
     }
 }
 
-void layer_login(User* actualUser){
+void layer_login(User* actualUser, User** UsersList,int numUsersList){
     static int firstTime = 1;
     if (firstTime){
         borrarPantalla();
@@ -195,7 +176,7 @@ void layer_login(User* actualUser){
     cuadrado(52, 29, 40, 2, ' ');
     
     char nombre[20];
-    char cedula[20];
+    char cedula[40];
 
     if(inputMenu == '1'){
         cuadrado(41, 13, 39, 2, ' ');
@@ -213,9 +194,14 @@ void layer_login(User* actualUser){
         firstTime = 1;
     }
     if(inputMenu == '4'){
-        transition();
-        firstTime = 1;
-        pageIndex = 3;
+        gotoxy(55, 29); printf(f_LBLUE); printf("Bienvenido, %s \n", findUserID(UsersList, numUsersList, "dasd")->cedula); // si se ingresa algo ramdon explota
+        if (strlen(nombre) != 1 && strlen(cedula) != 1){
+        //transition();
+        //firstTime = 1;
+        //pageIndex = 3;
+        gotoxy(55, 29); printf(f_LBLUE); printf("Bienvenido, %s \n", nombre);//findUserID(UsersList, numUsersList, cedula)->cedula);
+        gotoxy(55, 30); printf(f_LBLUE); printf("Bienvenido, %s \n", cedula);//findUserName(UsersList, numUsersList, nombre)->nombre);
+        }
     }
 }
 
@@ -510,10 +496,10 @@ void layer_listDonations(){
     }
 }
 
-void layer_infoDonation(NodeDonation* headDonations, User** UsersList, Need* needList){
+void layer_infoDonation(NodeDonation* headDonations, User** UsersList,int numUsersList, Need* needList){
     static int firstTime = 1;
     NodeDonation* donation = findIndextDonations(headDonations, cardIndex);
-    User* user = findUser(UsersList, donation->donation.cedula);
+    User* user = findUserID(UsersList, numUsersList, donation->donation.cedula);
     findIndextDonations(headDonations, cardIndex);
     if (firstTime){
         borrarPantalla();
@@ -596,14 +582,14 @@ int main (){
     {   
 
         if (pageIndex == 0) layer_main();
-        if (pageIndex == 1) layer_login(actualUser);
+        if (pageIndex == 1) layer_login(actualUser, UsersList, numUsersList);
         if (pageIndex == 2) layer_register(actualUser);
         if (pageIndex == 3) layer_options();
         if (pageIndex == 4) layer_makeDonation(headDonations, needsList, numNeedsList);
         if (pageIndex == 5) layer_thanksDonation();
         if (pageIndex == 6) layer_listDonations();
         if (pageIndex == 7) layer_myDonations(*actualUser, headDonations);
-        if (pageIndex == 8) layer_infoDonation(headDonations, UsersList, needsList);
+        if (pageIndex == 8) layer_infoDonation(headDonations, UsersList, numUsersList, needsList);
 
         if (inputMenu == '0'){
             break;
