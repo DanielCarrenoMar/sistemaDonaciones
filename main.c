@@ -322,6 +322,11 @@ void layer_options(){
 
 void layer_makeDonation(NodeDonation* headDonations, Need* needList, int numNeedsList){
     static int firstTime = 1;
+    int typeOption;
+    char type[20];
+    char value[20]; 
+    char descrition[100];
+
     if (firstTime){
         borrarPantalla();
         layer_global();
@@ -403,7 +408,10 @@ void layer_myDonations(User user, NodeDonation* headDonations){
                     if (percent <= 4) {
                         imgCard(79, 5 + 6*percent, f_LGREEN);
                         printf(f_LBLUE);
-                        gotoxy(80, 6 + 6*percent); printf("%s", headDonations->donation.tipo);
+                        gotoxy(80, 6 + 6*percent);
+                        if (headDonations->donation.tipo == 0) printf("Monetaria");
+                        else if (headDonations->donation.tipo == 1) printf("Material");
+                        else if (headDonations->donation.tipo == 2) printf("Voluntariado");
                         printf(f_LGREEN);
                         gotoxy(87, 7 + 6*percent);
                         if (headDonations->donation.valor[0] != '0') printf("%s", headDonations->donation.valor);
@@ -522,7 +530,10 @@ void layer_infoDonation(NodeDonation* headDonations, User** UsersList,int numUse
         layer_global();
         gotoxy(3,4); printf("Cedula: %s", donation->donation.cedula);
         gotoxy(3,5); printf("Fecha: %s", donation->donation.fecha);
-        gotoxy(3,6); printf("Tipo: %s", donation->donation.tipo);
+        gotoxy(3,6); printf("Tipo: ");
+        if (donation->donation.tipo == 0) printf("Monetaria");
+        else if (donation->donation.tipo == 1) printf("Material");
+        else if (donation->donation.tipo == 2) printf("Voluntariado");
         gotoxy(3,7); printf("Valor: %s", donation->donation.valor);
         gotoxy(3,8); printf("Descripcion: %s", donation->donation.descriccion);
 

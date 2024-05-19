@@ -16,23 +16,23 @@ NodeDonation* findIndextDonations(NodeDonation* head, int index){
     return NULL;
 }
 
-NodeDonation* createNodeDonation(char* cedula, char* fecha, char* tipo, char* valor, char* descriccion, char destino){
+NodeDonation* createNodeDonation(char* cedula, char* fecha, int tipo, char* valor, char* descriccion, int destino){
     NodeDonation* newNode = malloc(sizeof(NodeDonation));
     if(!newNode){
         printf("Error al asignar memoria\n");
         return NULL;
     }
-    strncpy(newNode->donation.cedula, cedula, 30);
-    strncpy(newNode->donation.fecha, fecha, 20);
-    strncpy(newNode->donation.tipo, tipo, 20);
-    strncpy(newNode->donation.valor, valor, 20);
-    strncpy(newNode->donation.descriccion, descriccion, 100);
+    strcpy(newNode->donation.cedula, cedula);
+    strcpy(newNode->donation.fecha, fecha);
+    newNode->donation.tipo = tipo;
+    strcpy(newNode->donation.valor, valor);
+    strcpy(newNode->donation.descriccion, descriccion);
     newNode->donation.destino = destino;
     newNode->next = NULL;
     return newNode;
 }
 
-void addNodeDonationStart(NodeDonation* head, char* cedula, char* fecha, char* tipo, char* valor, char* descriccion, char destino){
+void addNodeDonationStart(NodeDonation* head, char* cedula, char* fecha, int tipo, char* valor, char* descriccion, int destino){
     if(!head) return;
     NodeDonation* newNode = createNodeDonation(cedula, fecha, tipo, valor, descriccion, destino);
 
@@ -40,7 +40,7 @@ void addNodeDonationStart(NodeDonation* head, char* cedula, char* fecha, char* t
     head->next = newNode;
 }
 
-void addNodeDonationEnd(NodeDonation* head, char* cedula, char* fecha, char* tipo, char* valor, char* descriccion, char destino){
+void addNodeDonationEnd(NodeDonation* head, char* cedula, char* fecha, int tipo, char* valor, char* descriccion, int destino){
     if(!head) return;
     NodeDonation* newNode = createNodeDonation(cedula, fecha, tipo, valor, descriccion, destino);
     if (head->next == NULL){
@@ -59,7 +59,9 @@ void printNodesDonations(NodeDonation* head){
         printf("-------------------\n");
         printf("%s\n", head->donation.cedula);
         printf("%s\n", head->donation.fecha);
-        printf("%s\n", head->donation.tipo);
+        if(head->donation.tipo == 0) printf("Monetaria\n");
+        else if(head->donation.tipo == 1) printf("Material\n");
+        else printf("Voluntariado\n");
         printf("Valor: %s\n", head->donation.valor);
         printf("Descrip: %s\n", head->donation.descriccion);
         printf("Destino: %c\n", head->donation.destino);
