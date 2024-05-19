@@ -19,7 +19,7 @@
 
 char inputMenu;
 int lastPageIndex = 0;
-int pageIndex = 1;
+int pageIndex = 4;
 int cardIndex = 0;
 
 User* findUserID(User** UsersList, int numUsersList, char* cedula){
@@ -322,8 +322,7 @@ void layer_options(){
 
 void layer_makeDonation(NodeDonation* headDonations, Need* needList, int numNeedsList){
     static int firstTime = 1;
-    int typeOption;
-    char type[20];
+    int type;
     char value[20]; 
     char descrition[100];
 
@@ -332,10 +331,17 @@ void layer_makeDonation(NodeDonation* headDonations, Need* needList, int numNeed
         layer_global();
         imgTextDonacion(54,1, f_LBLUE);
 
+        printf(f_LRED);
+        gotoxy(70, 7); printf("2.");
+
         printf(f_LGREEN);
         gotoxy(73, 7); printf("Tipo de donacion");
         recuadro(51, 8, 20, 3);recuadro(72, 8, 20, 3); recuadro(93, 8, 20, 3);
         gotoxy(57, 10); printf("Monetaria"); gotoxy(79, 10); printf("Material"); gotoxy(98, 10); printf("Voluntariado");
+        printf(f_LBLUE);
+        if (type == 0) recuadro(51, 8, 20, 3);
+        else if (type == 1) recuadro(72, 8, 20, 3);
+        else if (type == 2) recuadro(93, 8, 20, 3);
 
         int* totalNeeds = (int*)malloc(numNeedsList*sizeof(int));
         for (int i = 0; i < numNeedsList; i++){
@@ -367,6 +373,9 @@ void layer_makeDonation(NodeDonation* headDonations, Need* needList, int numNeed
         transition();
         firstTime = 1;
         pageIndex = 3;
+    }else if (inputMenu == '2'){
+        type = (type+1) % 3; 
+        firstTime = 1;
     }
 }
 
@@ -589,10 +598,10 @@ int main (){
     loadDonations(headDonations, "./data/DONATIONS.txt");
 
     User* actualUser = (User*)malloc(sizeof(User));
-    /*strcpy(actualUser->nombre, "Daniel");
+    strcpy(actualUser->nombre, "Daniel");
     strcpy(actualUser->cedula, "cedulaD");
     strcpy(actualUser->telefono, "telefonoD");
-    strcpy(actualUser->direccion, "direccionD");*/
+    strcpy(actualUser->direccion, "direccionD");
     
     char buffer[20];
 
