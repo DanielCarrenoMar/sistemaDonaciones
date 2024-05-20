@@ -5,7 +5,7 @@ typedef struct Donation
 {
     char cedula[40];
     char fecha[20];
-    char tipo[20];
+    int tipo;
     char valor[20]; 
     char descriccion[100];
     int destino;

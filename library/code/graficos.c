@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <time.h>
 #include "../colorama.h"
 
 int upL = 32; // ┌
@@ -14,6 +15,20 @@ int crossR = 195; // ├
 int crossL = 180; // ┤
 int vLine = 124; // │
 int hLine = 95; // ─
+
+void wait(int time){
+    #ifdef _WIN32
+        Sleep(time);
+    #else
+        struct timespec ts;
+        ts.tv_sec = 0;
+        ts.tv_nsec = time * 1000000L;
+
+        if(nanosleep(&ts , NULL) < 0 ) {   
+            printf("Error de nanosleep\n");
+        }   
+    #endif
+}
 
 void ocultarCursor(){
     printf("\e[?25l");

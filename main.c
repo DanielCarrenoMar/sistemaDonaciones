@@ -19,8 +19,25 @@
 
 char inputMenu;
 int lastPageIndex = 0;
-int pageIndex = 4;
+int pageIndex = 0;
 int cardIndex = 0;
+
+User* findUserID(User** UsersList, int numUsersList, char* cedula){
+    for (int i = 0; i < numUsersList-1; i++){
+        if (strcmp(UsersList[i]->cedula, cedula) == 0){
+            return UsersList[i];
+        }
+    }
+    return NULL;
+}
+User* findUserName(User** UsersList, int numUsersList, char* name){
+    for (int i = 0; i < numUsersList-1; i++){
+        if (strcmp(UsersList[i]->nombre, name) == 0){
+            return UsersList[i];
+        }
+    }
+    return NULL;
+}
 
 void actualTime(char* buffer){
     time_t fechactual;
@@ -29,56 +46,6 @@ void actualTime(char* buffer){
     int mes=localtime(&fechactual)->tm_mon + 1;
     int año=localtime(&fechactual)->tm_year + 1900;
     sprintf(buffer, "%02d/%02d/%d", dia, mes, año);
-}
-
-User* findUser(User** UsersList, char* cedula){ // No puedes recorrer un array con NULL
-    for (int i = 0; UsersList[i] != NULL; i++){
-        if (strcmp(UsersList[i]->cedula, cedula) == 0){
-            return UsersList[i];
-        }
-    }
-    return NULL;
-}
-
-void loginCheck(User **UsersList, char* cedula){ 
-    // en vez de hacer una funcion login seria mejor hacer una 
-    // funcion par encontrar un usuario que coincida nombre y cedula y ahi devolverlo
-    findUser(UsersList, cedula);
-    User* user = findUser(UsersList, cedula);
-    if (user != NULL) {
-        gotoxy(55, 29); printf(f_LBLUE); printf("Bienvenido, %s \n", user->nombre);
-    } else {
-        gotoxy(55, 29); printf(f_LBLUE); printf("Usuario no encontrado\n");
-    }
-}
-
-void registerDatacheck(User **UsersList,char* cedula){
-    findUser(UsersList, cedula);
-    User* user = findUser(UsersList, cedula);
-    if (user != NULL) {
-        gotoxy(55, 29); printf(f_LBLUE); printf("Usuario ya registrado\n");
-    } else {
-        gotoxy(55, 29); printf(f_LBLUE); printf("Usuario registrado\n");
-    }
-}
-
-void wait(int time){
-    #ifdef _WIN32
-        Sleep(time);
-    #else
-        struct timespec ts;
-        ts.tv_sec = 0;
-        ts.tv_nsec = time * 1000000L;
-
-        if(nanosleep(&ts , NULL) < 0 ) {   
-            printf("Error de nanosleep\n");
-        }   
-    /*
-        char buffer[50];
-        sprintf(buffer, "sleep %f", time/1000.0);
-        system(buffer);
-    */
-    #endif
 }
 
 void layer_global(){
@@ -107,6 +74,7 @@ void userInputStr(int x, int y, char* buffer){
     gotoxy(x, y); printf("->");
     printf(f_LBLUE);
     gotoxy(x+2, y); fgets(buffer, 40, stdin);
+    buffer[strcspn(buffer, "\n")] = '\0';
     gotoxy(x, y); printf("  ");
     printf(s_RESET_ALL);
     fseek(stdin, 0, SEEK_END);
@@ -171,7 +139,7 @@ void layer_main(){
     }
 }
 
-void layer_login(User* actualUser){
+void layer_login(User* actualUser, User** UsersList,int numUsersList){
     static int firstTime = 1;
     if (firstTime){
         borrarPantalla();
@@ -195,7 +163,7 @@ void layer_login(User* actualUser){
     cuadrado(52, 29, 40, 2, ' ');
     
     char nombre[20];
-    char cedula[20];
+    char cedula[40];
 
     if(inputMenu == '1'){
         cuadrado(41, 13, 39, 2, ' ');
@@ -211,11 +179,35 @@ void layer_login(User* actualUser){
         transition();
         pageIndex = 2;
         firstTime = 1;
+        cedula[0] = '\0';
+        nombre[0] = '\0';
     }
     if(inputMenu == '4'){
-        transition();
-        firstTime = 1;
-        pageIndex = 3;
+        if (strlen(nombre) > 1 && strlen(cedula) > 1){
+            User* userId = findUserID(UsersList, numUsersList, cedula);
+            User* userName = findUserName(UsersList, numUsersList, nombre);
+            if((!userId || !userName) || userId != userName){
+                printf(f_LRED);
+                cuadrado(41, 19, 39, 2, ' ');
+                cuadrado(41, 13, 39, 2, ' ');
+                gotoxy(57, 29); printf("*Nombre o cedula no existen");
+                cedula[0] = '\0';
+                nombre[0] = '\0';
+                printf(s_RESET_ALL);
+            }else if (userId == userName){
+                strcpy(actualUser->nombre, userId->nombre);
+                strcpy(actualUser->cedula, userId->cedula);
+                strcpy(actualUser->telefono, userId->telefono);
+                strcpy(actualUser->direccion, userId->direccion);
+                transition();
+                firstTime = 1;
+                pageIndex = 3;
+            }
+        }else{
+            printf(f_LRED);
+            gotoxy(57, 29); printf("*Ingrese un nombre y cedula");
+            printf(s_RESET_ALL);
+        }
     }
 }
 
@@ -270,13 +262,21 @@ void layer_register(User* actualUser){
         transition();
         pageIndex = 1;
         firstTime = 1;
+        actualUser->nombre[0] = '\0';
+        actualUser->cedula[0] = '\0';
+        actualUser->telefono[0] = '\0';
+        actualUser->direccion[0] = '\0';
     }
     if(inputMenu == '6'){
-        if(strlen(actualUser->nombre) != 0 && strlen(actualUser->cedula) != 0 && strlen(actualUser->telefono) != 0 && strlen(actualUser->direccion) != 0){
+        if (strlen(actualUser->nombre) > 1 && strlen(actualUser->cedula) > 1 && strlen(actualUser->telefono) > 1 && strlen(actualUser->direccion) > 1){
             transition();
             saveUser(actualUser, "./data/USERS.txt");
             pageIndex = 3;
             firstTime = 1;
+        }else{
+            printf(f_LRED);
+            gotoxy(57, 29); printf("*Ingrese todos los datos");
+            printf(s_RESET_ALL);
         }
     }
 }
@@ -322,15 +322,41 @@ void layer_options(){
 
 void layer_makeDonation(NodeDonation* headDonations, Need* needList, int numNeedsList){
     static int firstTime = 1;
+    static int type = 0;
+    static char value[20];
+    static char description[100];
+
     if (firstTime){
         borrarPantalla();
         layer_global();
         imgTextDonacion(54,1, f_LBLUE);
 
+        printf(f_LRED);
+        gotoxy(70, 7); printf("2.");
+
         printf(f_LGREEN);
         gotoxy(73, 7); printf("Tipo de donacion");
-        recuadro(51, 8, 20, 3);recuadro(72, 8, 20, 3); recuadro(93, 8, 20, 3);
-        gotoxy(57, 10); printf("Monetaria"); gotoxy(79, 10); printf("Material"); gotoxy(98, 10); printf("Voluntariado");
+        gotoxy(73, 13);
+        if (type == 0)  printf("  Valor Monetario");
+        else if (type == 1) printf("Cantidad de objetos");
+        if (type != 2) {
+            recuadro(71, 14, 22, 3);
+        }
+
+        if (type == 0) printf(f_LBLUE);
+        else printf(f_LGREEN);
+        recuadro(51, 8, 20, 3);
+        gotoxy(57, 10); printf("Monetaria");
+
+        if (type == 1) printf(f_LBLUE);
+        else printf(f_LGREEN);
+        recuadro(72, 8, 20, 3);
+        gotoxy(79, 10); printf("Material");
+
+        if (type == 2) printf(f_LBLUE);
+        else printf(f_LGREEN);
+        recuadro(93, 8, 20, 3);
+        gotoxy(98, 10); printf("Voluntariado");
 
         int* totalNeeds = (int*)malloc(numNeedsList*sizeof(int));
         for (int i = 0; i < numNeedsList; i++){
@@ -362,6 +388,9 @@ void layer_makeDonation(NodeDonation* headDonations, Need* needList, int numNeed
         transition();
         firstTime = 1;
         pageIndex = 3;
+    }else if (inputMenu == '2'){
+        type = (type+1) % 3; 
+        firstTime = 1;
     }
 }
 
@@ -390,11 +419,11 @@ void layer_thanksDonation(){
 
 void layer_myDonations(User user, NodeDonation* headDonations){
         static int firstTime = 1;
+        int percent = 0;
     if (firstTime){
         borrarPantalla();
         layer_global();
         if (headDonations->next){
-            int percent = 0;
             int count = 0;
 
             headDonations = headDonations->next;
@@ -403,7 +432,10 @@ void layer_myDonations(User user, NodeDonation* headDonations){
                     if (percent <= 4) {
                         imgCard(79, 5 + 6*percent, f_LGREEN);
                         printf(f_LBLUE);
-                        gotoxy(80, 6 + 6*percent); printf("%s", headDonations->donation.tipo);
+                        gotoxy(80, 6 + 6*percent);
+                        if (headDonations->donation.tipo == 0) printf("Monetaria");
+                        else if (headDonations->donation.tipo == 1) printf("Material");
+                        else if (headDonations->donation.tipo == 2) printf("Voluntariado");
                         printf(f_LGREEN);
                         gotoxy(87, 7 + 6*percent);
                         if (headDonations->donation.valor[0] != '0') printf("%s", headDonations->donation.valor);
@@ -421,12 +453,14 @@ void layer_myDonations(User user, NodeDonation* headDonations){
             percent = (percent * 100) / count;
 
             printf(f_LBLUE);
+            if (percent == 0){gotoxy(73, 6); printf("No hay donaciones");}
             gotoxy(37, 15); printf("%d%%", percent);
             printf(f_LGREEN);
             graficaPastel(25, 25, 16, 8, '*',f_LBLUE, f_LGREEN, percent);
-        }else{
+        }else {
             printf(f_LBLUE);
             gotoxy(37, 15); printf("XX%%");
+            gotoxy(73, 6); printf("No hay donaciones");
             graficaPastel(25, 25, 16, 8, '.', f_LBLUE, f_LGREEN, 0);
         }
         
@@ -510,17 +544,20 @@ void layer_listDonations(){
     }
 }
 
-void layer_infoDonation(NodeDonation* headDonations, User** UsersList, Need* needList){
+void layer_infoDonation(NodeDonation* headDonations, User** UsersList,int numUsersList, Need* needList){
     static int firstTime = 1;
     NodeDonation* donation = findIndextDonations(headDonations, cardIndex);
-    User* user = findUser(UsersList, donation->donation.cedula);
+    User* user = findUserID(UsersList, numUsersList, donation->donation.cedula);
     findIndextDonations(headDonations, cardIndex);
     if (firstTime){
         borrarPantalla();
         layer_global();
         gotoxy(3,4); printf("Cedula: %s", donation->donation.cedula);
         gotoxy(3,5); printf("Fecha: %s", donation->donation.fecha);
-        gotoxy(3,6); printf("Tipo: %s", donation->donation.tipo);
+        gotoxy(3,6); printf("Tipo: ");
+        if (donation->donation.tipo == 0) printf("Monetaria");
+        else if (donation->donation.tipo == 1) printf("Material");
+        else if (donation->donation.tipo == 2) printf("Voluntariado");
         gotoxy(3,7); printf("Valor: %s", donation->donation.valor);
         gotoxy(3,8); printf("Descripcion: %s", donation->donation.descriccion);
 
@@ -576,10 +613,10 @@ int main (){
     loadDonations(headDonations, "./data/DONATIONS.txt");
 
     User* actualUser = (User*)malloc(sizeof(User));
-    strcpy(actualUser->nombre, "Daniel");
+    /*strcpy(actualUser->nombre, "Daniel");
     strcpy(actualUser->cedula, "cedulaD");
     strcpy(actualUser->telefono, "telefonoD");
-    strcpy(actualUser->direccion, "direccionD");
+    strcpy(actualUser->direccion, "direccionD");*/
     
     char buffer[20];
 
@@ -591,19 +628,19 @@ int main (){
     layer_global();
 
     imgTreeMain1(2, 13, f_LGREEN);
-    //startAnimation();
+    startAnimation();
     while (1)
     {   
 
         if (pageIndex == 0) layer_main();
-        if (pageIndex == 1) layer_login(actualUser);
+        if (pageIndex == 1) layer_login(actualUser, UsersList, numUsersList);
         if (pageIndex == 2) layer_register(actualUser);
         if (pageIndex == 3) layer_options();
         if (pageIndex == 4) layer_makeDonation(headDonations, needsList, numNeedsList);
         if (pageIndex == 5) layer_thanksDonation();
         if (pageIndex == 6) layer_listDonations();
         if (pageIndex == 7) layer_myDonations(*actualUser, headDonations);
-        if (pageIndex == 8) layer_infoDonation(headDonations, UsersList, needsList);
+        if (pageIndex == 8) layer_infoDonation(headDonations, UsersList, numUsersList, needsList);
 
         if (inputMenu == '0'){
             break;
