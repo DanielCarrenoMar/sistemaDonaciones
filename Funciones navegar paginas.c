@@ -59,6 +59,12 @@ Indices* mostrar(Datos* head, int numdatos, Indices* indices, Datos** actual, Da
     return indices;
 }
 
+Datos* extraer(Indices* head){
+    if (head->next!=NULL)
+        head=head->next;
+    return head;
+}
+
 void paginas(Datos* head, int numdatos){
     int pregunta=1;
     int pregunta2=1;
