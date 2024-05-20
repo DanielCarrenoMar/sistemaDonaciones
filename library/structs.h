@@ -30,6 +30,7 @@ typedef struct need
     char name[40];
     char description[100];
     int goal;
+    int type;
 }Need;
 
 #endif

@@ -188,9 +188,11 @@ void loadNeeds(Need* needs, char* file_name, int start){
     FILE *file;
     char line[1028];
     int count = 0;
+    int loadLines = 0;
 
     if ((file = fopen(file_name, "r"))) {
         while (fgets(line, sizeof(line), file)) {
+            if (loadLines > 9) break;
             count = 0;
             char* userToken = strtok(line, "|");
             if (start != 0) {
@@ -206,11 +208,14 @@ void loadNeeds(Need* needs, char* file_name, int start){
                     strcpy(needs->description, userToken);
                 }else if (count == 2){
                     needs->goal = atoi(userToken);
+                }else if (count == 3){
+                    needs->type = atoi(userToken);
                 }
                 count++;
             }
             while (userToken = strtok(NULL, "|"));
             needs++;
+            loadLines++;
         }
         fclose(file);
     }else {

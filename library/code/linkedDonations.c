@@ -3,15 +3,30 @@
 #include "stdio.h"
 #include "string.h"
 
-NodeDonation* findIndextDonations(NodeDonation* head, int index){
+int realIndexUserDonation(NodeDonation* head, char* id, int index){
+    head = head->next;
+    int realIndex = 0;
+    int userIndex = 0;
+    while (head){
+        if (userIndex == index){
+            return realIndex;
+        }
+        if (strcmp(head->donation.cedula, id) == 0) userIndex++;
+        realIndex++;
+        head = head->next;
+    }
+    return -1;
+}
+
+NodeDonation* findIndexUserDonations(NodeDonation* head, int index){
     head = head->next;
     int i = 0;
     while (head){
         if (i == index){
             return head;
         }
-        head = head->next;
         i++;
+        head = head->next;
     }
     return NULL;
 }

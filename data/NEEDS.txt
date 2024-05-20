@@ -1,10 +1,11 @@
 ¿Donde iran destinadas las donaciones?
-* Un destino por linea
-* formato Titulo|Descripcion|Monto/Objetivo (separado por |).
-Ejemplo: Reforestacion|Reforestacion de arboles nativos|1000
+* Un destino por linea (Se tomaran los primeras 9)
+* formato Titulo|Descripcion|Cantidad requerida| tipo (0: monetario 1: Material 2: Voluntariado)  (separado por |).
+Ejemplo: Reforestacion|Reforestacion de arboles nativos|1000|0
 ----------------------------------------------
-Reforestacion|Reforestacion de arboles nativos|1000
-Proteccion|Proteccion de animales en peligro de extincion|1000
-Juguetes|Juguetes para los animales|10
-Comida de animales|Comprar comida para cada animal|150
-Casas para perro|Comprar casas para los perros|100
+Reforestacion|Reforestacion de arboles nativos|1000|0
+Proteccion|Proteccion de animales en peligro de extincion|1000|0
+Juguetes|Juguetes para los animales|10|1
+Comida de animales|Comprar comida para cada animal|150|0
+Casas para perro|Comprar casas para los perros|100|0
+Voluntarios|Voluntarios para ir a carupano|10|2
