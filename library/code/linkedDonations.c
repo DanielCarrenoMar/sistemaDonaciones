@@ -3,17 +3,27 @@
 #include "stdio.h"
 #include "string.h"
 
+int countDonationsUser(NodeDonation* head, char* id){
+    int count = 0;
+    while (head->next){
+        head = head->next;
+        if (strcmp(head->donation.cedula, id) == 0){
+            count++;
+        }
+    }
+    return count;
+}
+
 int realIndexUserDonation(NodeDonation* head, char* id, int index){
-    head = head->next;
     int realIndex = 0;
-    int userIndex = 0;
-    while (head){
-        if (userIndex == index){
+    while (head->next){
+        head = head->next;
+        printf("cedula %s\n", head->donation.cedula);
+        if (strcmp(head->donation.cedula, id) == 0) index--;
+        realIndex++;
+        if (index == 0){
             return realIndex;
         }
-        if (strcmp(head->donation.cedula, id) == 0) userIndex++;
-        realIndex++;
-        head = head->next;
     }
     return -1;
 }
