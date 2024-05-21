@@ -199,7 +199,7 @@ void layer_login(User* actualUser, User** UsersList,int numUsersList){
         
         gotoxy(55, 11); printf(f_LRED); printf("1."); printf(f_LBLUE); printf(" Nombre");
         gotoxy(55, 17); printf(f_LRED); printf("2."); printf(f_LBLUE); printf(" Cedula");
-        gotoxy(55, 23); printf(f_LRED); printf("3."); printf(f_LBLUE); printf(" Registarse");
+        gotoxy(55, 23); printf(f_LRED); printf("3."); printf(f_LBLUE); printf(" Registro de usuario");
         gotoxy(55, 25); printf(f_LRED); printf("4."); printf(f_LRED); printf(" INICIAR");
         gotoxy(55, 27); printf(f_LRED); printf("0."); printf(f_LBLUE); printf(" Salir del programa");
         imgTextInicio(46, 2, f_LBLUE);
@@ -220,11 +220,16 @@ void layer_login(User* actualUser, User** UsersList,int numUsersList){
     if(inputMenu == '1'){
         cuadrado(41, 13, 39, 2, ' ');
         userInputStr(41,13, nombre);
+        formatingText(nombre);
         inputMenu = 'n';
     }
     if(inputMenu == '2'){
         cuadrado(41, 19, 39, 2, ' ');
         userInputStr(41,19, cedula);
+        if (strIsNumber(cedula) == 0){
+            gotoxy(41,19); printf(f_LRED); printf("Ingresar un Numero");
+            cedula[0] = 0;
+        }
         inputMenu = 'n';
     }
     if(inputMenu == '3'){
@@ -274,7 +279,7 @@ void layer_register(User* actualUser, User** UsersList, int numUsersList){
         gotoxy(14, 17); printf(f_LRED); printf("2."); printf(f_LBLUE); printf(" Cedula");
         gotoxy(69, 11); printf(f_LRED); printf("3."); printf(f_LBLUE); printf(" Telefono");
         gotoxy(69, 17); printf(f_LRED); printf("4."); printf(f_LBLUE); printf(" Direccion");
-        gotoxy(55, 23); printf(f_LRED); printf("5."); printf(f_LBLUE); printf(" Login");
+        gotoxy(55, 23); printf(f_LRED); printf("5."); printf(f_LBLUE); printf(" Inicio de sesion");
         gotoxy(55, 25); printf(f_LRED); printf("6."); printf(f_LRED); printf(" INICIAR");
         gotoxy(55, 27); printf(f_LRED); printf("0."); printf(f_LBLUE); printf(" Salir del programa");
         imgTextRegistro(41, 2, f_LBLUE);
@@ -293,6 +298,10 @@ void layer_register(User* actualUser, User** UsersList, int numUsersList){
     if(inputMenu == '1'){
         cuadrado(14, 13, 39, 2, ' ');
         userInputStr(14,13, actualUser->nombre);
+        if (findUserName(UsersList, numUsersList, actualUser->nombre) != NULL){
+            gotoxy(14,13); printf(f_LRED); printf("Nombre ocupado");
+            actualUser->nombre[0] = 0;
+        }
         inputMenu = 'n';
     }
     if(inputMenu == '2'){
@@ -480,41 +489,52 @@ void layer_makeDonation(NodeDonation* headDonations, User actualUser, Need* need
         userInputStr(58,21, description);
         inputMenu = 'n';
     }else if (inputMenu == '5'){
+        int have = 0;
+        for (int i = 0; i < numNeedsList; i++){
+            if (needList[i].type == type && totalNeeds[i] < needList[i].goal){
+                have = 1;
+            }
+        }
         if (strlen(value) < 1){
             printf(f_LRED);
             gotoxy(70,33); printf("*Ingrese un valor");
             printf(s_RESET_ALL);
-        }else{
-        if (strlen(description) < 1) strcpy(description, "Sin descripcion");
-        for (int i = 0; i < numNeedsList; i++){
-            printf(f_LRED);
-            if (needList[i].type == type && totalNeeds[i] < needList[i].goal){
-                gotoxy(2, 5+3*i); printf("%d.", i+1);
+        }else if (have == 1){
+            if (strlen(description) < 1) strcpy(description, "Sin descripcion");
+            for (int i = 0; i < numNeedsList; i++){
+                printf(f_LRED);
+                if (needList[i].type == type && totalNeeds[i] < needList[i].goal){
+                    gotoxy(2, 5+3*i); printf("%d.", i+1);
+                }
+                printf(s_RESET_ALL);
+                gotoxy(48, 33); printf("  ");
+                gotoxy(70,7); printf("  ");
+                gotoxy(70,13); printf("  ");
+                gotoxy(70,19); printf("  ");
+                gotoxy(70,29); printf("  ");
             }
-            printf(s_RESET_ALL);
-            gotoxy(48, 33); printf("  ");
-            gotoxy(70,7); printf("  ");
-            gotoxy(70,13); printf("  ");
-            gotoxy(70,19); printf("  ");
-            gotoxy(70,29); printf("  ");
-        }
-        do{
+            do{
+                cuadrado(70, 33, 40, 2, ' ');
+                userInputMenu(70,33);
+                if (inputMenu == '0') return;
+            }
+            while (needList[(inputMenu-'0')-1].type != type || totalNeeds[(inputMenu-'0')-1] > needList[(inputMenu-'0')-1].goal);
+
+            char time[20];
+            actualTime(time);
+            formatingText(description);
+            addNodeDonationStart(headDonations, actualUser.cedula, time, type, value, description, (inputMenu-'0')-1);
+
             cuadrado(70, 33, 40, 2, ' ');
+            printf(f_LRED); gotoxy(70,33); printf("*Donacion hecha, pulsa ENTER para continuar...");
             userInputMenu(70,33);
-        }
-        while (needList[(inputMenu-'0')-1].type != type || totalNeeds[(inputMenu-'0')-1] > needList[(inputMenu-'0')-1].goal);
 
-        char time[20];
-        actualTime(time);
-        formatingText(description);
-        addNodeDonationStart(headDonations, actualUser.cedula, time, type, value, description, (inputMenu-'0')-1);
-
-        cuadrado(70, 33, 40, 2, ' ');
-        printf(f_LRED); gotoxy(70,33); printf("*Donacion hecha, pulsa ENTER para continuar...");
-        userInputMenu(70,33);
-
-        firstTime = 1;
-        inputMenu = 'n';
+            firstTime = 1;
+            inputMenu = 'n';
+        }else if (have == 0){
+            printf(f_LRED);
+            gotoxy(70,33); printf("*No hay causa disponible");
+            printf(s_RESET_ALL);
         }
     }
     free(totalNeeds);
@@ -589,25 +609,25 @@ void layer_myDonations(NodeDonation* headDonations, User user){
         cardIndex = realIndexUserDonation(copyhead, user.cedula, 1+5*donationPage)-1;
         pageIndex = 8;
         lastPageIndex = 7;
-    }else if (inputMenu == '3'&& nonePage >= 0 && nonePage >= 2){
+    }else if (inputMenu == '3'&& (nonePage == 0 || nonePage >= 2)){
         transition();
         firstTime = 1;
         cardIndex = realIndexUserDonation(copyhead, user.cedula, 2+5*donationPage)-1;
         pageIndex = 8;
         lastPageIndex = 7;
-    }else if (inputMenu == '4'&& nonePage >= 0 && nonePage >= 3){
+    }else if (inputMenu == '4'&& (nonePage == 0 || nonePage >= 3)){
         transition();
         firstTime = 1;
         cardIndex = realIndexUserDonation(copyhead, user.cedula, 3+5*donationPage)-1;
         pageIndex = 8;
         lastPageIndex = 7;
-    }else if (inputMenu == '5'&& nonePage >= 0 && nonePage >= 4){
+    }else if (inputMenu == '5'&& (nonePage == 0 || nonePage >= 4)){
         transition();
         firstTime = 1;
         cardIndex = realIndexUserDonation(copyhead, user.cedula, 4+5*donationPage)-1;
         pageIndex = 8;
         lastPageIndex = 7;
-    }else if (inputMenu == '6'&& nonePage >= 0 && nonePage >= 5){
+    }else if (inputMenu == '6'&& (nonePage == 0 || nonePage >= 5)){
         transition();
         firstTime = 1;
         cardIndex = realIndexUserDonation(copyhead, user.cedula, 5+5*donationPage)-1;
@@ -659,25 +679,25 @@ void layer_listDonations(NodeDonation* headDonations){
         cardIndex = 0+5*donationPage;
         pageIndex = 8;
         lastPageIndex = 6;
-    }else if (inputMenu == '3' && nonePage >= 0 && nonePage >= 2){
+    }else if (inputMenu == '3' && (nonePage == 0 || nonePage >= 2)){
         transition();
         firstTime = 1;
         cardIndex = 1+5*donationPage;
         pageIndex = 8;
         lastPageIndex = 6;
-    }else if (inputMenu == '4'  && nonePage >= 0 && nonePage >= 3){
+    }else if (inputMenu == '4'  && (nonePage == 0 || nonePage >= 3)){
         transition();
         firstTime = 1;
         cardIndex = 2+5*donationPage;
         pageIndex = 8;
         lastPageIndex = 6;
-    }else if (inputMenu == '5'  && nonePage >= 0 && nonePage >= 4){
+    }else if (inputMenu == '5'  && (nonePage == 0 || nonePage >= 4)){
         transition();
         firstTime = 1;
         cardIndex = 3+5*donationPage;
         pageIndex = 8;
         lastPageIndex = 6;
-    }else if (inputMenu == '6'  && nonePage >= 0 && nonePage >= 5){
+    }else if (inputMenu == '6'  && (nonePage == 0 || nonePage >= 5)){
         transition();
         firstTime = 1;
         cardIndex = 4+5*donationPage;
@@ -814,6 +834,7 @@ int main (){
     free(actualUser);
     free(needsList);
     freeLinkedDonations(&headDonations);
-    freeUsers(UsersList);
+    freeUsers(UsersList, numUsersList);
+    free(UsersList);
     return 0;
 }

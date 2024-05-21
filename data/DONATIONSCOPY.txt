@@ -1,9 +1,0 @@
-cedulaD 01/05/2024 0 500 DescriccionWaza 0
-cedulaD 01/05/2024 0 700 DescriccionWaza 0
-cedulaJ 02/05/2024 0 200 DescriccionWaza 1
-cedulaD 03/05/2024 1 7 DescriccionWaza 2
-cedulaJ 04/05/2024 0 500 DescriccionWaza 1
-cedulaD 03/05/2024 1 7 DescriccionWaza 0
-cedulaD 20/05/2024 2 9 hola 5
-cedulaD 20/05/2024 2 3 hola 5
-cedulaD 20/05/2024 0 45 Sin_descripcion 4

@@ -10,7 +10,7 @@ int countUsers();
 void loadDonations(NodeDonation* head, char* file_name);
 void loadUsers(User** users, char* file_name);
 void verUsers(User** users);
-void freeUsers(User** users);
+void freeUsers(User** users, int size);
 
 #include "./code/txtHandler.c"
 

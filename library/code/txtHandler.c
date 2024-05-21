@@ -238,10 +238,9 @@ void verUsers(User** users){
         users++;
     }
 }
-void freeUsers(User** users){
-    while (*users != NULL){
+void freeUsers(User** users, int size){
+    for (int i = 0; i < size; i++){
         free(*users);
         *users++;
     }
-    free(users);
 }
