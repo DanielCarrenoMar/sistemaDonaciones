@@ -19,7 +19,7 @@
 
 char inputMenu;
 int lastPageIndex = 0;
-int pageIndex = 7;
+int pageIndex = 0;
 int cardIndex = 0;
 
 int strIsNumber(char* str){
@@ -774,10 +774,10 @@ int main (){
     loadDonations(headDonations, "./data/DONATIONS.txt");
 
     User* actualUser = (User*)malloc(sizeof(User));
-    strcpy(actualUser->nombre, "Daniel");
+    /*strcpy(actualUser->nombre, "Daniel");
     strcpy(actualUser->cedula, "cedulaD");
     strcpy(actualUser->telefono, "telefonoD");
-    strcpy(actualUser->direccion, "direccionD");
+    strcpy(actualUser->direccion, "direccionD");*/
     
     char buffer[20];
 
@@ -789,7 +789,7 @@ int main (){
     layer_global();
 
     imgTreeMain1(2, 13, f_LGREEN);
-    //startAnimation();
+    startAnimation();
     while (1)
     {   
 
