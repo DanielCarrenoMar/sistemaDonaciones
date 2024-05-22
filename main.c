@@ -227,6 +227,7 @@ void layer_login(User* actualUser, User** UsersList,int numUsersList){
         cuadrado(41, 19, 39, 2, ' ');
         userInputStr(41,19, cedula);
         if (strIsNumber(cedula) == 0){
+            cuadrado(41, 13, 39, 2, ' ');
             gotoxy(41,19); printf(f_LRED); printf("Ingresar un Numero");
             cedula[0] = 0;
         }
@@ -299,6 +300,7 @@ void layer_register(User* actualUser, User** UsersList, int numUsersList){
         cuadrado(14, 13, 39, 2, ' ');
         userInputStr(14,13, actualUser->nombre);
         if (findUserName(UsersList, numUsersList, actualUser->nombre) != NULL){
+            cuadrado(14, 13, 39, 2, ' ');
             gotoxy(14,13); printf(f_LRED); printf("Nombre ocupado");
             actualUser->nombre[0] = 0;
         }
@@ -308,10 +310,12 @@ void layer_register(User* actualUser, User** UsersList, int numUsersList){
         cuadrado(14, 19, 39, 2, ' ');
         userInputStr(14,19, actualUser->cedula);
         if (strIsNumber(actualUser->cedula) == 0){
+            cuadrado(14, 19, 39, 2, ' ');
             gotoxy(14,19); printf(f_LRED); printf("Ingresar un Numero");
             actualUser->cedula[0] = 0;
         }
         if (findUserID(UsersList, numUsersList, actualUser->cedula) != NULL){
+            cuadrado(14, 19, 39, 2, ' ');
             gotoxy(14,19); printf(f_LRED); printf("Cedula ocupada");
             actualUser->cedula[0] = 0;
         }
@@ -321,6 +325,7 @@ void layer_register(User* actualUser, User** UsersList, int numUsersList){
         cuadrado(69, 13, 39, 2, ' ');
         userInputStr(69,13, actualUser->telefono);
         if (strIsNumber(actualUser->telefono) == 0){
+            cuadrado(69, 13, 39, 2, ' ');
             gotoxy(69,13); printf(f_LRED); printf("Ingresar un Numero");
             actualUser->telefono[0] = 0;
         }
@@ -867,10 +872,10 @@ int main (){
     loadDonations(headDonations, "./data/DONATIONS.txt");
 
     User* actualUser = (User*)malloc(sizeof(User));
-    /*strcpy(actualUser->nombre, "Daniel");
-    strcpy(actualUser->cedula, "123");
-    strcpy(actualUser->telefono, "123");
-    strcpy(actualUser->direccion, "Mi Casa");*/
+    strcpy(actualUser->nombre, "");
+    strcpy(actualUser->cedula, "");
+    strcpy(actualUser->telefono, "");
+    strcpy(actualUser->direccion, "");
     
     char buffer[20];
 
