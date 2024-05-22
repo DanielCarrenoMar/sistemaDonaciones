@@ -8,7 +8,7 @@ Un sistema de donaciones para un refugio de animales ficticio con animaciones y 
 
 Creado como primer proyecto de la materia *Estructura de Datos* en el segundo semestre.
 
-![1](https://github.com/DanielCarrenoMar/sistemaDonaciones/assets/144462396/cd56f9a0-1bce-4d09-8c73-427e79c31fed)
+![image](https://github.com/DanielCarrenoMar/sistemaDonaciones/assets/144462396/e5d8e5ae-fc82-41e7-b538-0d02277e955b)
 
 ## Como ejecutar 💻
 
@@ -45,3 +45,11 @@ Copilar el main.c
 - <windows.h> (Solo en Windows)
 
 ### Más imágenes
+
+![image](https://github.com/DanielCarrenoMar/sistemaDonaciones/assets/144462396/2231dd5a-7000-4e19-a1c8-3a57540f5c56)
+![image](https://github.com/DanielCarrenoMar/sistemaDonaciones/assets/144462396/909789a7-b9c1-4246-aa9e-a8a96fad40ce)
+![image](https://github.com/DanielCarrenoMar/sistemaDonaciones/assets/144462396/66c06dd7-8c5a-4ab9-9fe0-d60e55008466)
+![image](https://github.com/DanielCarrenoMar/sistemaDonaciones/assets/144462396/899a6122-d79f-49bd-90f3-5367df6cf086)
+![image](https://github.com/DanielCarrenoMar/sistemaDonaciones/assets/144462396/dce6f6ee-12d3-4c3e-a3d2-39b4c6d61b93)
+![image](https://github.com/DanielCarrenoMar/sistemaDonaciones/assets/144462396/7cef2c1f-807b-499f-81a0-7821c08ed100)
+![image](https://github.com/DanielCarrenoMar/sistemaDonaciones/assets/144462396/9ed83613-68e5-4ced-9fe5-b237e0efd1e5)
