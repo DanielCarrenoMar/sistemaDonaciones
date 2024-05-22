@@ -5,7 +5,8 @@ Ejemplo: Reforestacion|Reforestacion de arboles nativos|1000|0
 ----------------------------------------------
 Reforestacion|Reforestacion de arboles nativos|1000|0
 Proteccion|Proteccion de animales en peligro de extincion|1000|0
-Juguetes|Juguetes para los animales|10|1
+Juguetes|Juguetes para los animales|20|1
 Comida de animales|Comprar comida para cada animal|150|0
 Casas para perro|Comprar casas para los perros|100|0
-Voluntarios|Voluntarios para ir a carupano|10|2
+Voluntarios|Voluntarios para ayudar en la finca|15|2
+Vacunas para animales|Vacunas para vacunar a los animales|25|1

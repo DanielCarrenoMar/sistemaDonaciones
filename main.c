@@ -444,7 +444,7 @@ void layer_makeDonation(NodeDonation* headDonations, User actualUser, Need* need
         gotoxy(98, 10); printf("Voluntariado");
 
         printf(f_LBLUE);
-        gotoxy(3, 3); printf("--- Causas a las que donar ---");
+        gotoxy(5, 3); printf("--- CAUSAS A DONDE DONAR ---");
         for (int i = 0; i < numNeedsList; i++){
             printf(f_LGREEN);
             gotoxy(5, 5+3*i); printf("- %s", needList[i].name);
@@ -581,15 +581,22 @@ void layer_myDonations(NodeDonation* headDonations, User user){
         
         imgTextMisDonaciones(55,1, f_LBLUE);
         printf(f_LBLUE);
-        gotoxy(22, 6); printf("USUARIO");
-        gotoxy(20, 13); printf("Estadisticas");
+        gotoxy(18, 5); printf("--- USUARIO ---");
+        gotoxy(16, 13); printf("--- ESTADISTICAS ---");
         
-        printf(f_LGREEN);
-        gotoxy(12, 8); printf("- %s", user.nombre);
-        gotoxy(28, 8); printf("- %s", user.cedula);
-        gotoxy(12, 10); printf("- %s", user.telefono);
-        gotoxy(28, 10); printf("- %s", user.direccion);
-        gotoxy(12, 15); printf("Porcentaje de donaciones");
+        gotoxy(12, 7); printf(f_LGREEN); printf("Nombre");
+        gotoxy(12, 8); printf(f_LBLUE); printf("- %s", user.nombre);
+
+        gotoxy(28, 7); printf(f_LGREEN); printf("Cedula");
+        gotoxy(28, 8); printf(f_LBLUE); printf("- %s", user.cedula);
+
+        gotoxy(12, 9); printf(f_LGREEN); printf("Telefono");
+        gotoxy(12, 10); printf(f_LBLUE); printf("- %s", user.telefono);
+
+        gotoxy(28, 9); printf(f_LGREEN); printf("Direccion");
+        gotoxy(28, 10); printf(f_LBLUE); printf("- %s", user.direccion);
+
+        gotoxy(12, 15); printf(f_LGREEN); printf("Porcentaje de donaciones");
         printf(f_LRED);
         gotoxy(47, 14); printf(f_LRED); printf("1."); printf(f_LBLUE); printf(" Regresar");
         gotoxy(47, 16); printf(f_LRED); printf("0."); printf(f_LBLUE); printf(" Salir del programa");
@@ -719,49 +726,115 @@ void layer_infoDonation(NodeDonation* headDonations, User** UsersList,int numUse
     if (firstTime){
         borrarPantalla();
         layer_global();
-        gotoxy(3,4); printf("Cedula: %s", donation->donation.cedula);
-        gotoxy(3,5); printf("Fecha: %s", donation->donation.fecha);
-        gotoxy(3,6); printf("Tipo: ");
-        if (donation->donation.tipo == 0) printf("Monetaria");
-        else if (donation->donation.tipo == 1) printf("Material");
-        else if (donation->donation.tipo == 2) printf("Voluntariado");
-        gotoxy(3,7); 
-        if (donation->donation.tipo == 0) printf("Valor: ");
-        else if (donation->donation.tipo == 1) printf("Cantidad: ");
-        else if (donation->donation.tipo == 2) printf("Horas: ");
-        printf("%s", donation->donation.valor);
-        gotoxy(3,8); printf("Descripcion: %s", donation->donation.descriccion);
 
+        gotoxy(14,3); printf(f_LBLUE); printf("--- USUARIO ---");
+        printf(f_LGREEN); line(46, 2, 46, 36, '|');
+        if (user){
+            gotoxy(3,5); printf(f_LGREEN); printf("Nombre");
+            gotoxy(3,6); printf(f_LBLUE); printf("- %s", user->nombre);
+
+            gotoxy(3,8); printf(f_LGREEN); printf("Cedula");
+            gotoxy(3,9); printf(f_LBLUE); printf("- %s", user->cedula);
+
+            gotoxy(3,11); printf(f_LGREEN); printf("Telefono");
+            gotoxy(3,12); printf(f_LBLUE); printf("- %s", user->telefono);
+
+            gotoxy(3,14); printf(f_LGREEN); printf("Direccion");
+            gotoxy(3,15); printf(f_LBLUE); printf("- %s", user->direccion);
+
+            NodeDonation* temp = headDonations;
+            int count = 0;
+            int percent = 0;
+            temp = temp->next;
+            while (temp){
+                if (strcmp(temp->donation.cedula, user->cedula) == 0){
+                    percent++;
+                }
+                count++;
+                temp = temp->next;
+            }
+            percent = (percent * 100) / count;
+
+            gotoxy(3,17); printf(f_LGREEN); printf("Cantidad de donaciones");
+            gotoxy(3,18); printf(f_LBLUE); printf("%d", countDonationsUser(headDonations, user->cedula)); printf(f_LGREEN); printf(" - "); printf(f_LBLUE); printf("%d%% de total", percent);
+
+            graficaPastel(19, 28, 16, 8, '*', f_LBLUE, f_LGREEN, percent);
+        }else if (strcmp(actualUser.cedula, donation->donation.cedula) == 0){
+            gotoxy(3,5); printf(f_LGREEN); printf("Nombre");
+            gotoxy(3,6); printf(f_LBLUE); printf("- %s", actualUser.nombre);
+
+            gotoxy(3,8); printf(f_LGREEN); printf("Cedula");
+            gotoxy(3,9); printf(f_LBLUE); printf("- %s", actualUser.cedula);
+
+            gotoxy(3,11); printf(f_LGREEN); printf("Direccion");
+            gotoxy(3,12); printf(f_LBLUE); printf("- %s", actualUser.direccion);
+
+            gotoxy(3,14); printf(f_LGREEN); printf("Telefono");
+            gotoxy(3,15); printf(f_LBLUE); printf("- %s", actualUser.telefono);
+
+            NodeDonation* temp = headDonations;
+            int count = 0;
+            int percent = 0;
+            temp = temp->next;
+            while (temp){
+                if (strcmp(temp->donation.cedula, actualUser.cedula) == 0){
+                    percent++;
+                }
+                count++;
+                temp = temp->next;
+            }
+            percent = (percent * 100) / count;
+
+            gotoxy(3,17); printf(f_LGREEN); printf("Cantidad de donaciones");
+            gotoxy(3,18); printf(f_LBLUE); printf("%d", countDonationsUser(headDonations, actualUser.cedula)); printf(f_LGREEN); printf(" - "); printf(f_LBLUE); printf("%d%% de total", percent);
+
+            graficaPastel(19, 28, 16, 8, '*', f_LBLUE, f_LGREEN, percent);
+        }
+
+        imgTextVerDetalles(62,1, f_LBLUE);
+
+        gotoxy(80,7); printf(f_LBLUE); printf("--- CAUSA ---"); printf(s_RESET_ALL);
         if (donation->donation.destino != -1){
             Need need = needList[donation->donation.destino];
-            gotoxy(3,10); printf("Nombre: %s", need.name);
-            gotoxy(3,11); printf("Objetivo: %d", need.goal);
-            gotoxy(3,12); printf("Descripccion: %s", need.description);
+            gotoxy(50,9); printf(f_LGREEN); printf("Nombre:");
+            gotoxy(50,10); printf(f_LBLUE); printf("- %s", need.name);
+
+            gotoxy(50,12); printf(f_LGREEN); printf("Objetivo");
+            gotoxy(50,13); printf(f_LBLUE); printf("- %d", need.goal);
+
+            gotoxy(50,15); printf(f_LGREEN); printf("Descripccion:");
+            gotoxy(50,16); printf(f_LBLUE); printf("- %s", need.description);
         }
 
-        if (user){
-            gotoxy(53,4); printf("Nombre: %s", user->nombre);
-            gotoxy(53,5); printf("Cedula: %s", user->cedula);
-            gotoxy(53,6); printf("Direccion: %s", user->direccion);
-            gotoxy(53,7); printf("Telefono: %s", user->telefono);
-            gotoxy(53,8); printf("Cantidad de donaciones: %d", countDonationsUser(headDonations, user->cedula));
-        }else if (strcmp(actualUser.cedula, donation->donation.cedula) == 0){
-            gotoxy(53,4); printf("Nombre: %s", actualUser.nombre);
-            gotoxy(53,5); printf("Cedula: %s", actualUser.cedula);
-            gotoxy(53,6); printf("Direccion: %s", actualUser.direccion);
-            gotoxy(53,7); printf("Telefono: %s", actualUser.telefono);
-            gotoxy(53,8); printf("Cantidad de donaciones: %d", countDonationsUser(headDonations, actualUser.cedula));
-        }
+        gotoxy(79,19); printf(f_LBLUE); printf("--- DONACION ---"); printf(s_RESET_ALL);
+
+        gotoxy(50,21); printf(f_LGREEN); printf("Tipo"); 
+        gotoxy(50,22); printf(f_LBLUE);
+        if (donation->donation.tipo == 0) printf("- Monetaria");
+        else if (donation->donation.tipo == 1) printf("- Material");
+        else if (donation->donation.tipo == 2) printf("- Voluntariado");
+
+        gotoxy(50,24); printf(f_LGREEN);
+        if (donation->donation.tipo == 0) printf("Valor");
+        else if (donation->donation.tipo == 1) printf("Cantidad");
+        else if (donation->donation.tipo == 2) printf("Horas");
+        gotoxy(50,25); printf(f_LBLUE); printf("- %s", donation->donation.valor);
+
+        gotoxy(50,27); printf(f_LGREEN); printf("Fecha");
+        gotoxy(50,28); printf(f_LBLUE); printf("- %s", donation->donation.fecha);
+
+        gotoxy(50,30); printf(f_LGREEN); printf("Descripcion");
+        gotoxy(50,31); printf(f_LBLUE); printf("- %s", donation->donation.descriccion);
 
         printf(f_LRED);
-        gotoxy(58, 18); printf("1. Regresar");
-        gotoxy(58, 19); printf("0. Salir");
+        gotoxy(50, 34); printf(f_LRED); printf("1."); printf(f_LBLUE); printf(" Regresar");
+        gotoxy(50, 35); printf(f_LRED); printf("0."); printf(f_LBLUE); printf(" Salir del programa");
         printf(s_RESET_ALL);
         firstTime = 0;
     }
 
-    cuadrado(80, 18, 40, 2, ' ');
-    userInputMenu(80,18);
+    cuadrado(80, 34, 40, 2, ' ');
+    userInputMenu(80,34);
     
     if(inputMenu == '1'){
         transition();
@@ -795,9 +868,9 @@ int main (){
 
     User* actualUser = (User*)malloc(sizeof(User));
     /*strcpy(actualUser->nombre, "Daniel");
-    strcpy(actualUser->cedula, "cedulaD");
-    strcpy(actualUser->telefono, "telefonoD");
-    strcpy(actualUser->direccion, "direccionD");*/
+    strcpy(actualUser->cedula, "123");
+    strcpy(actualUser->telefono, "123");
+    strcpy(actualUser->direccion, "Mi Casa");*/
     
     char buffer[20];
 
