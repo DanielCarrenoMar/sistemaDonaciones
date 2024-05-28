@@ -877,11 +877,6 @@ int main (){
     strcpy(actualUser->telefono, "");
     strcpy(actualUser->direccion, "");
     
-    char buffer[20];
-
-    actualTime(buffer);
-    printf("%s\n", buffer);
-    
     ocultarCursor();
     borrarPantalla();
     layer_global();
