@@ -6,7 +6,7 @@
 
 Un sistema de donaciones para un refugio de animales ficticio con animaciones y menú con hecho en ASCII.
 
-Creado como primer proyecto de la materia *Estructura de Datos* en el segundo semestre.
+Creado como primer proyecto de la materia *Estructura de Datos* en el segundo semestre de la [UCAB](https://www.ucab.edu.ve/).
 
 ![image](https://github.com/DanielCarrenoMar/sistemaDonaciones/assets/144462396/e5d8e5ae-fc82-41e7-b538-0d02277e955b)
 
