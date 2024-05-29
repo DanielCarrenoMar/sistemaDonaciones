@@ -1,1 +1,6 @@
 123 21/05/2024 0 50 Para_los_arboles,_nadie_piensa_en_ellos 1
+123 29/05/2024 2 2 algo_es_algo 5
+123 29/05/2024 0 500 si 4
+123 29/05/2024 1 2 Varias_vacunas 6
+123 29/05/2024 0 400 Sin_descripcion 0
+123 29/05/2024 0 350 Salven_a_los_pinguinos 1
