@@ -42,6 +42,7 @@ Copilar el main.c
 - <string.h>
 - <time.h>
 - <math.h>
+- <conio.h> (Solo en Windows)
 - <windows.h> (Solo en Windows)
 
 ### Más imágenes
