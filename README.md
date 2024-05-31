@@ -4,7 +4,7 @@
 
 # ![C](https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white) Sistema de donaciones 
 
-Un sistema de donaciones para un refugio de animales ficticio con animaciones y menú con hecho en ASCII.
+Un sistema de donaciones para un refugio de animales ficticio con animaciones y menú con hecho en ASCII. Enc colaboracion con [@juangalletic](https://github.com/juangalletic) y [@Queik5450](https://github.com/Queik5450)
 
 Creado como primer proyecto de la materia *Estructura de Datos* en el segundo semestre de la [UCAB](https://www.ucab.edu.ve/).
 
