@@ -10,21 +10,6 @@ Creado como primer proyecto de la materia *Estructura de Datos* en el segundo se
 
 ![image](https://github.com/DanielCarrenoMar/sistemaDonaciones/assets/144462396/e5d8e5ae-fc82-41e7-b538-0d02277e955b)
 
-## Como ejecutar 💻
-
-### Linux
-Copilar el main.c incluyendo el flag -lm.
-  ```
-  gcc main.c -o Main -lm
-  ```
-### Windows
-- *Requisitos*: Tener instalado un copilador de C como [tmd-gcc](https://jmeubank.github.io/tdm-gcc/).
-
-Copilar el main.c
-  ```
-  gcc main.c -o Main
-  ```
-
 ## Características ⭐
 - Compatibilidad tanto con Windows como con Linux y Mac.
 - Animación de entrada.
@@ -44,6 +29,21 @@ Copilar el main.c
 - <math.h>
 - <conio.h> (Solo en Windows)
 - <windows.h> (Solo en Windows)
+
+## Como ejecutar 💻
+
+### Linux
+Copilar el main.c incluyendo el flag -lm.
+  ```
+  gcc main.c -o Main -lm
+  ```
+### Windows
+- *Requisitos*: Tener instalado un copilador de C como [tmd-gcc](https://jmeubank.github.io/tdm-gcc/).
+
+Copilar el main.c
+  ```
+  gcc main.c -o Main
+  ```
 
 ### Más imágenes
 
